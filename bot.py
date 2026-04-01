@@ -4,88 +4,91 @@ from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import Command
 from aiogram.types import LabeledPrice, PreCheckoutQuery, InlineKeyboardMarkup, InlineKeyboardButton
 
-# --- КОНФИГУРАЦИЯ ---
-# Твой токен бота
-TOKEN = "8734424678:AAH7K4Ubg61Jd5umYnSPsbmI9wA4jMKyGKc"
-
-# Твой тестовый токен платежного провайдера (Sberbank/ЮKassa и т.д.)
-PAYMENT_PROVIDER_TOKEN = "1744374395:TEST:fe69aeca23963436d65b" 
-
-MIN_STARS = 15
-PRICE_PER_STAR = 1.2  # ₽ за 1 звезду
-
+# --- ЛОГГИРОВАНИЕ ---
 logging.basicConfig(level=logging.INFO)
-bot = Bot(TOKEN, parse_mode="HTML")
-dp = Dispatcher()
 
-# --- КЛАВИАТУРА ---
+# --- КОНФИГУРАЦИЯ БОТА №1 (Оплата) ---
+TOKEN_1 = "8734424678:AAH7K4Ubg61Jd5umYnSPsbmI9wA4jMKyGKc"
+PAYMENT_TOKEN = "1744374395:TEST:fe69aeca23963436d65b"
+bot1 = Bot(TOKEN_1, parse_mode="HTML")
+dp1 = Dispatcher()
+
+# --- КОНФИГУРАЦИЯ БОТА №2 (Твой второй бот) ---
+TOKEN_2 = "ВСТАВЬ_ТОКЕН_ВТОРОГО_БОТА"
+bot2 = Bot(TOKEN_2, parse_mode="HTML")
+dp2 = Dispatcher()
+
+# =====================================================
+# ХЕНДЛЕРЫ ДЛЯ БОТА №1 (ОПЛАТА)
+# =====================================================
+
 def main_kb():
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="💎 Купить Звёзды", callback_data="buy_stars")]
     ])
 
-# --- КОМАНДА /START ---
-@dp.message(Command("start"))
-async def start(message: types.Message):
-    await message.answer(
-        "<b>Добро пожаловать!</b> 💎\n\nВы можете купить звёзды через кнопку ниже:",
-        reply_markup=main_kb()
-    )
+@dp1.message(Command("start"))
+async def start_1(message: types.Message):
+    await message.answer("<b>Бот №1 (Оплата):</b> Нажмите кнопку для покупки:", reply_markup=main_kb())
 
-# --- ОБРАБОТКА НАЖАТИЯ КНОПКИ ---
-@dp.callback_query(F.data == "buy_stars")
+@dp1.callback_query(F.data == "buy_stars")
 async def ask_quantity(call: types.CallbackQuery):
-    await call.message.answer(f"Введите число — сколько ⭐ вы хотите купить?\n(Минимум: <b>{MIN_STARS}</b>)")
+    await call.message.answer(f"Введите число звезд (минимум 15):")
     await call.answer()
 
-# --- ОБРАБОТКА ВВОДА ЧИСЛА ---
-@dp.message(F.text.regexp(r'^\d+$')) # Проверка, что введено только число
-async def process_quantity(msg: types.Message):
-    try:
-        quantity = int(msg.text)
-        if quantity < MIN_STARS:
-            return await msg.answer(f"❌ Минимальная покупка: {MIN_STARS} ⭐")
-            
-        # Сумма в копейках (amount=100 это 1 рубль)
-        price_rub = int(quantity * PRICE_PER_STAR * 100) 
-        
-        await msg.answer_invoice(
-            title="Пополнение баланса",
-            description=f"Покупка {quantity} ⭐ для вашего профиля",
-            provider_token=PAYMENT_PROVIDER_TOKEN,
-            currency="RUB",
-            prices=[LabeledPrice(label=f"{quantity} ⭐", amount=price_rub)],
-            payload=str(quantity), # Передаем количество звезд в чек для обработки после оплаты
-            start_parameter="top-up-stars"
-        )
-    except ValueError:
-        await msg.answer("Пожалуйста, введите корректное число звезд.")
-
-# --- ПРОВЕРКА ПЛАТЕЖА (ДО ОПЛАТЫ) ---
-@dp.pre_checkout_query()
-async def pre_checkout(query: PreCheckoutQuery):
-    # Здесь можно добавить проверку наличия товара на складе
-    await query.answer(ok=True)
-
-# --- УСПЕШНАЯ ОПЛАТА ---
-@dp.message(F.successful_payment)
-async def successful_payment(message: types.Message):
-    quantity = int(message.successful_payment.invoice_payload)
+@dp1.message(F.text.regexp(r'^\d+$'))
+async def process_payment(msg: types.Message):
+    # Твоя логика формирования инвойса (из предыдущего кода)
+    quantity = int(msg.text)
+    if quantity < 15:
+        return await msg.answer("Минимум 15 звезд.")
     
-    # ТУТ ЛОГИКА НАЧИСЛЕНИЯ
-    # Например: await db.add_stars(user_id=message.from_user.id, count=quantity)
-    
-    await message.answer(
-        f"✅ <b>Оплата прошла успешно!</b>\n\nВам начислено: <b>{quantity} ⭐</b>\n"
-        f"Спасибо за покупку!"
+    price_rub = int(quantity * 1.2 * 100)
+    await msg.answer_invoice(
+        title="Пополнение",
+        description=f"Покупка {quantity} ⭐",
+        provider_token=PAYMENT_TOKEN,
+        currency="RUB",
+        prices=[LabeledPrice(label="⭐", amount=price_rub)],
+        payload=str(quantity),
+        start_parameter="top-up"
     )
 
-# --- ЗАПУСК ---
+@dp1.pre_checkout_query()
+async def pre_checkout(query: PreCheckoutQuery):
+    await query.answer(ok=True)
+
+@dp1.message(F.successful_payment)
+async def success(message: types.Message):
+    await message.answer(f"✅ Оплачено! Начислено {message.successful_payment.invoice_payload} ⭐")
+
+# =====================================================
+# ХЕНДЛЕРЫ ДЛЯ БОТА №2 (ТВОЯ ЛОГИКА)
+# =====================================================
+
+@dp2.message(Command("start"))
+async def start_2(message: types.Message):
+    await message.answer("Привет! Это твой <b>второй бот</b>, запущенный в том же процессе.")
+
+# Сюда можно копировать остальные хендлеры второго бота, 
+# используя @dp2 вместо @dp
+
+# =====================================================
+# ЗАПУСК ОБОИХ БОТОВ
+# =====================================================
+
 async def main():
-    print("Бот для оплаты запущен...")
-    # Удаляем вебхуки, чтобы бот отвечал только на новые сообщения
-    await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot)
+    print("Запуск обоих ботов...")
+    
+    # Удаляем вебхуки для обоих ботов
+    await bot1.delete_webhook(drop_pending_updates=True)
+    await bot2.delete_webhook(drop_pending_updates=True)
+    
+    # Запускаем polling параллельно
+    await asyncio.gather(
+        dp1.start_polling(bot1),
+        dp2.start_polling(bot2)
+    )
 
 if __name__ == "__main__":
     try:
