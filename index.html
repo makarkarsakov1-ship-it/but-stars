@@ -135,7 +135,6 @@
         }
         .celebrating { animation: celebrate 1.5s ease infinite; }
         
-        /* Встроенный генератор эффекта конфетти поверх элемента */
         .confetti-layer { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:hidden; display:none; }
         .celebrating .confetti-layer { display: block; }
         
@@ -205,9 +204,14 @@
             <div style="font-size: 12px; color: var(--text-sub); text-transform: uppercase;" id="lang-total-bal">Доступные средства</div>
             <div class="balance-num"><span id="main-balance">500 000</span> ₽</div>
             <div style="display: flex; gap: 10px; margin-top: 15px;">
-                <button class="btn" style="margin:0;" onclick="openModal('modal-deposit')"><i class="fa-solid fa-wallet"></i> Пополнить</button>
-                <button class="btn btn-sec" style="margin:0;" onclick="openModal('modal-transfer')"><i class="fa-solid fa-paper-plane"></i> Перевести</button>
+                <button class="btn" style="margin:0;" onclick="openModal('modal-deposit')" id="lang-btn-deposit-main"><i class="fa-solid fa-wallet"></i> Пополнить</button>
+                <button class="btn btn-sec" style="margin:0;" onclick="openModal('modal-transfer')" id="lang-btn-transfer-main"><i class="fa-solid fa-paper-plane"></i> Перевести</button>
             </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-size: 12px; color: var(--text-sub);" id="lang-your-phone-badge">Ваш аккаунт:</span>
+            <span id="user-phone-display" style="font-weight: 600; color: var(--accent);">+7...</span>
         </div>
 
         <h3 style="margin-bottom: 15px;" id="lang-my-cards">Мои счета и карты</h3>
@@ -269,7 +273,7 @@
 
     <div id="tab-settings" class="tab-content">
         <div class="glass">
-            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-shield" style="color: var(--accent)"></i> Безопасность и Коды</h3>
+            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-shield" style="color: var(--accent)"></i> <span id="lang-set-sec-title">Безопасность и Коды</span></h3>
             <div class="list-row">
                 <div>
                     <span style="font-weight: 600;" id="lang-set-pin-tx">Код авторизации переводов</span>
@@ -277,35 +281,36 @@
                 </div>
                 <input type="checkbox" id="secure-tx-toggle" class="switch-input" onchange="updateSecureTxState()">
             </div>
+            <button class="btn btn-sec" onclick="logOutAccount()" style="border-color: var(--red); color: var(--red); margin-top: 15px;" id="lang-logout-btn">Выйти из аккаунта</button>
         </div>
 
         <div class="glass">
-            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-gear" style="color: var(--accent)"></i> Системные параметры</h3>
+            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-gear" style="color: var(--accent)"></i> <span id="lang-sys-params-title">Системные параметры</span></h3>
             <div class="list-row">
                 <div>
-                    <span style="font-weight:600;">Включить уведомления</span>
-                    <div style="font-size: 11px; color: var(--text-sub);">Push-уведомления об операциях</div>
+                    <span style="font-weight:600;" id="lang-sys-notify">Включить уведомления</span>
+                    <div style="font-size: 11px; color: var(--text-sub);" id="lang-sys-notify-desc">Push-уведомления об операциях</div>
                 </div>
                 <input type="checkbox" id="sys-notify" class="switch-input" onchange="toggleSysParam('notify')">
             </div>
             <div class="list-row">
                 <div>
-                    <span style="font-weight:600;">Звуковые эффекты</span>
-                    <div style="font-size: 11px; color: var(--text-sub);">Звуки кликов и транзакций</div>
+                    <span style="font-weight:600;" id="lang-sys-sounds">Звуковые эффекты</span>
+                    <div style="font-size: 11px; color: var(--text-sub);" id="lang-sys-sounds-desc">Звуки кликов и транзакций</div>
                 </div>
                 <input type="checkbox" id="sys-sounds" class="switch-input" onchange="toggleSysParam('sounds')">
             </div>
             <div class="list-row">
                 <div>
-                    <span style="font-weight:600;">Плавные анимации</span>
-                    <div style="font-size: 11px; color: var(--text-sub);">Использовать сложные переходы и блюр</div>
+                    <span style="font-weight:600;" id="lang-sys-anims">Плавные анимации</span>
+                    <div style="font-size: 11px; color: var(--text-sub);" id="lang-sys-anims-desc">Использовать сложные переходы и блюр</div>
                 </div>
                 <input type="checkbox" id="sys-anims" class="switch-input" onchange="toggleSysParam('anims')">
             </div>
         </div>
 
         <div class="glass">
-            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-globe" style="color: var(--accent)"></i> Локализация / Язык</h3>
+            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-globe" style="color: var(--accent)"></i> <span id="lang-localization-title">Локализация / Язык</span></h3>
             <div class="input-group" style="margin: 0;">
                 <select id="lang-selector" class="form-ctrl" onchange="changeLanguage()" style="background: rgba(0,0,0,0.2);">
                     <option value="ru">Русский (RU)</option>
@@ -319,7 +324,7 @@
         </div>
 
         <div class="glass">
-            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-palette" style="color: var(--accent)"></i> Визуальный стиль системы (6 тем)</h3>
+            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-palette" style="color: var(--accent)"></i> <span id="lang-themes-title">Визуальный стиль системы (6 тем)</span></h3>
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
                 <button class="btn btn-sec" onclick="setTheme('default')">Dark Space</button>
                 <button class="btn btn-sec" style="border-color: #64748b;" onclick="setTheme('light')">Pure Light</button>
@@ -348,8 +353,8 @@
             <input type="number" id="deposit-input" class="form-ctrl" placeholder="5000">
         </div>
         <div style="display: flex; gap: 10px;">
-            <button class="btn btn-sec" onclick="closeModal('modal-deposit')">Отмена</button>
-            <button class="btn" onclick="actionDeposit()">Пополнить</button>
+            <button class="btn btn-sec" onclick="closeModal('modal-deposit')" id="lang-mdep-cancel">Отмена</button>
+            <button class="btn" onclick="actionDeposit()" id="lang-mdep-execute">Пополнить</button>
         </div>
     </div>
 </div>
@@ -358,8 +363,8 @@
     <div class="glass" style="width: 100%; max-width: 360px;">
         <h3 style="margin-bottom: 15px;" id="lang-mtx-title">Перевод средств</h3>
         <div class="input-group">
-            <label id="lang-mtx-card">Номер карты / получатель</label>
-            <input type="text" id="transfer-target" class="form-ctrl" placeholder="0000 0000 0000 0000">
+            <label id="lang-mtx-card">Номер телефона получателя в базе</label>
+            <input type="text" id="transfer-target" class="form-ctrl" placeholder="+7 (999) 999-99-99">
         </div>
         <div class="input-group">
             <label id="lang-mtx-amount">Сумма перевода (₽)</label>
@@ -371,28 +376,28 @@
             <input type="number" id="transfer-secure-input" class="form-ctrl" style="margin-top: 10px; padding: 8px; text-align: center;" placeholder="Введите код">
         </div>
         <div style="display: flex; gap: 10px;">
-            <button class="btn btn-sec" onclick="closeModal('modal-transfer')">Отмена</button>
-            <button class="btn" onclick="actionTransfer()">Отправить</button>
+            <button class="btn btn-sec" onclick="closeModal('modal-transfer')" id="lang-mtx-cancel">Отмена</button>
+            <button class="btn" onclick="actionTransfer()" id="lang-mtx-execute">Отправить</button>
         </div>
     </div>
 </div>
 
 <div class="modal-bg" id="modal-refill-piggy">
     <div class="glass" style="width: 100%; max-width: 360px;">
-        <h3>Внести деньги в копилку</h3>
+        <h3 id="lang-mpig-title">Внести деньги в копилку</h3>
         <div class="input-group" style="margin-top: 15px;">
-            <label>Сумма внесения (₽)</label>
+            <label id="lang-mpig-amount">Сумма внесения (₽)</label>
             <input type="number" id="piggy-refill-input" class="form-ctrl" placeholder="0">
         </div>
         <div style="display: flex; gap: 10px;">
-            <button class="btn btn-sec" onclick="closeModal('modal-refill-piggy')">Отмена</button>
-            <button class="btn" onclick="actionRefillPiggy()">Внести</button>
+            <button class="btn btn-sec" onclick="closeModal('modal-refill-piggy')" id="lang-mpig-cancel">Отмена</button>
+            <button class="btn" onclick="actionRefillPiggy()" id="lang-mpig-execute">Внести</button>
         </div>
     </div>
 </div>
 
 <script>
-    // Изначальное расширенное состояние банка со всеми инструментами и тумблерами
+    // Первоначальное расширенное состояние текущей сессии
     let state = {
         phone: '', pin: '', balance: 500000, investBalance: 0, initialInvestCost: 0,
         transactions: [], piggies: [],
@@ -413,88 +418,167 @@
     let activePiggyId = null;
     let activeTxSecureCode = '';
 
-    // База мультиязычности i18n
+    // ГЛОБАЛЬНАЯ ТАБЛИЦА БАЗЫ ДАННЫХ (Имитация Telegram-бота / Сервера)
+    let globalUsersDB = {};
+
+    // Полная i18n Локализация всех элементов интерфейса
     const languages = {
         ru: {
             authTitle: "Вход в систему", authDesc: "Укажите номер телефона для авторизации", labelPhone: "Номер телефона", btnCode: "Получить код",
             simCode: "Код из SMS пуш-уведомления:", labelSms: "Введите полученный код", btnEnter: "Подтвердить", totalBal: "Доступные средства",
             myCards: "Мои счета и карты", txHist: "История операций", invBal: "Инвестиционный портфель", activePiggies: "Активные цели накопления",
             marketAssets: "Доступные биржевые активы", piggyTitle: "Создать новую цель", piggyName: "Название цели", piggyTarget: "Какая сумма нужна (₽)",
-            piggyBtn: "Запустить смарт-копилку", nav1: "Главная", nav2: "Копилки", nav3: "Инвестиции", nav4: "Настройки"
+            piggyBtn: "Запустить смарт-копилку", nav1: "Главная", nav2: "Копилки", nav3: "Инвестиции", nav4: "Настройки",
+            btnDepMain: "<i class='fa-solid fa-wallet'></i> Пополнить", btnTxMain: "<i class='fa-solid fa-paper-plane'></i> Перевести",
+            yourPhoneBadge: "Ваш аккаунт:", setSecTitle: "Безопасность и Коды", setPinTx: "Код авторизации переводов", setPinTxDesc: "Запрашивать динамический пин-код при отправке денег",
+            logoutBtn: "Выйти из аккаунта", sysParamsTitle: "Системные параметры", sysNotify: "Включить уведомления", sysNotifyDesc: "Push-уведомления об операциях",
+            sysSounds: "Звуковые эффекты", sysSoundsDesc: "Звуки кликов и транзакций", sysAnims: "Плавные анимации", sysAnimsDesc: "Использовать сложные переходы и блюр",
+            localizationTitle: "Локализация / Язык", themesTitle: "Визуальный стиль системы (6 тем)", mdepTitle: "Пополнение баланса", mdepAmount: "Сумма (₽)",
+            mdepCancel: "Отмена", mdepExecute: "Пополнить", mtxTitle: "Перевод средств", mtxCard: "Номер телефона получателя в базе", mtxAmount: "Сумма перевода (₽)",
+            mtxSecInfo: "Код подтверждения операции:", mtxCancel: "Отмена", mtxExecute: "Отправить", mpigTitle: "Внести деньги в копилку", mpigAmount: "Сумма внесения (₽)",
+            mpigCancel: "Отмена", mpigExecute: "Внести", pincodeTitleCreate: "Придумайте код-пароль", pincodeTitleEnter: "Введите код-пароль", pincodeSub: "Для быстрого и безопасного доступа к банку"
         },
         en: {
             authTitle: "Sign In", authDesc: "Enter your phone number to authorize", labelPhone: "Phone Number", btnCode: "Get Code",
             simCode: "Code from SMS push notification:", labelSms: "Enter received code", btnEnter: "Confirm", totalBal: "Available Funds",
             myCards: "My Accounts & Cards", txHist: "Transaction History", invBal: "Investment Portfolio", activePiggies: "Active Savings Goals",
             marketAssets: "Available Market Assets", piggyTitle: "Create New Goal", piggyName: "Goal Name", piggyTarget: "Target Amount (₽)",
-            piggyBtn: "Launch Smart Piggy", nav1: "Home", nav2: "Piggy Bank", nav3: "Investments", nav4: "Settings"
+            piggyBtn: "Launch Smart Piggy", nav1: "Home", nav2: "Piggy Bank", nav3: "Investments", nav4: "Settings",
+            btnDepMain: "<i class='fa-solid fa-wallet'></i> Deposit", btnTxMain: "<i class='fa-solid fa-paper-plane'></i> Transfer",
+            yourPhoneBadge: "Your account:", setSecTitle: "Security & Codes", setPinTx: "Transfer authorization code", setPinTxDesc: "Request a dynamic PIN code when sending money",
+            logoutBtn: "Log Out Account", sysParamsTitle: "System Parameters", sysNotify: "Enable Notifications", sysNotifyDesc: "Push alerts on actions",
+            sysSounds: "Sound Effects", sysSoundsDesc: "Click and transaction tones", sysAnims: "Smooth Animations", sysAnimsDesc: "Use complex rendering and blur",
+            localizationTitle: "Localization / Language", themesTitle: "System Visual Style (6 themes)", mdepTitle: "Deposit Balance", mdepAmount: "Amount (₽)",
+            mdepCancel: "Cancel", mdepExecute: "Deposit", mtxTitle: "Money Transfer", mtxCard: "Recipient phone number in database", mtxAmount: "Transfer Amount (₽)",
+            mtxSecInfo: "Operation confirmation code:", mtxCancel: "Cancel", mtxExecute: "Send", mpigTitle: "Add Money to Piggy", mpigAmount: "Deposit Amount (₽)",
+            mpigCancel: "Cancel", mpigExecute: "Add", pincodeTitleCreate: "Create a PIN code", pincodeTitleEnter: "Enter PIN code", pincodeSub: "For rapid secure terminal access"
         },
         zh: {
             authTitle: "登录系统", authDesc: "输入手机号码进行身份验证", labelPhone: "手机号码", btnCode: "获取验证码",
             simCode: "来自短消息推送的验证码:", labelSms: "输入收到的验证码", btnEnter: "确认", totalBal: "可用资金",
-            myCards: "我的账户与 memory 卡", txHist: "交易历史", invBal: "投资组合", activePiggies: "进行中的储蓄目标",
+            myCards: "我的账户与卡片", txHist: "交易历史", invBal: "投资组合", activePiggies: "进行中的储蓄目标",
             marketAssets: "可投资资产", piggyTitle: "创建新目标", piggyName: "目标名称", piggyTarget: "目标金额 (₽)",
-            piggyBtn: "启动智能储蓄", nav1: "主页", nav2: "储蓄罐", nav3: "投资理财", nav4: "系统设置"
+            piggyBtn: "启动智能储蓄", nav1: "主页", nav2: "储蓄罐", nav3: "投资理财", nav4: "系统设置",
+            btnDepMain: "<i class='fa-solid fa-wallet'></i> 充值", btnTxMain: "<i class='fa-solid fa-paper-plane'></i> 转账",
+            yourPhoneBadge: "您的账户:", setSecTitle: "安全与密码", setPinTx: "转账授权码", setPinTxDesc: "发送资金时要求动态PIN码",
+            logoutBtn: "退出登录", sysParamsTitle: "系统参数", sysNotify: "开启通知", sysNotifyDesc: "交易推送通知",
+            sysSounds: "声音特效", sysSoundsDesc: "点击及交易声效", sysAnims: "流畅动画", sysAnimsDesc: "启用复杂过渡与模糊",
+            localizationTitle: "本地化 / 语言", themesTitle: "系统视觉风格 (6种主题)", mdepTitle: "账户充值", mdepAmount: "金额 (₽)",
+            mdepCancel: "取消", mdepExecute: "充值", mtxTitle: "资金转账", mtxCard: "数据库中的收款人手机号", mtxAmount: "转账金额 (₽)",
+            mtxSecInfo: "操作确认码:", mtxCancel: "取消", mtxExecute: "发送", mpigTitle: "存入储蓄罐", mpigAmount: "存入金额 (₽)",
+            mpigCancel: "取消", mpigExecute: "存入", pincodeTitleCreate: "设置PIN码", pincodeTitleEnter: "输入PIN码", pincodeSub: "用于快速安全的银行访问"
         },
         es: {
             authTitle: "Iniciar Sesión", authDesc: "Ingrese su número de teléfono para acceder", labelPhone: "Número de Teléfono", btnCode: "Obtener Código",
             simCode: "Código de la notificación SMS:", labelSms: "Ingrese el código recibido", btnEnter: "Confirmar", totalBal: "Fondos Disponibles",
             myCards: "Mis Cuentas y Tarjetas", txHist: "Historial de Transacciones", invBal: "Portafolio de Inversión", activePiggies: "Objetivos de Ahorro Activos",
             marketAssets: "Activos de Mercado Disponibles", piggyTitle: "Crear Nuevo Objetivo", piggyName: "Nombre del Objetivo", piggyTarget: "Monto Objetivo (₽)",
-            piggyBtn: "Lanzar Alcancía Inteligente", nav1: "Inicio", nav2: "Alcancía", nav3: "Inversiones", nav4: "Ajustes"
+            piggyBtn: "Lanzar Alcancía Inteligente", nav1: "Inicio", nav2: "Alcancía", nav3: "Inversiones", nav4: "Ajustes",
+            btnDepMain: "<i class='fa-solid fa-wallet'></i> Depósito", btnTxMain: "<i class='fa-solid fa-paper-plane'></i> Transferir",
+            yourPhoneBadge: "Su cuenta:", setSecTitle: "Seguridad y Códigos", setPinTx: "Código de autorización de transferencia", setPinTxDesc: "Solicitar un código PIN dinámico al enviar dinero",
+            logoutBtn: "Cerrar Sesión", sysParamsTitle: "Parámetros del Sistema", sysNotify: "Habilitar Notificaciones", sysNotifyDesc: "Alertas push de transacciones",
+            sysSounds: "Efectos de Sonido", sysSoundsDesc: "Sonidos de clics y transacciones", sysAnims: "Animaciones Suaves", sysAnimsDesc: "Usar transiciones complejas y desenfoque",
+            localizationTitle: "Localización / Idioma", themesTitle: "Estilo Visual del Sistema (6 temas)", mdepTitle: "Depositar Saldo", mdepAmount: "Monto (₽)",
+            mdepCancel: "Cancelar", mdepExecute: "Depositar", mtxTitle: "Transferencia de Fondos", mtxCard: "Número de teléfono del destinatario en la base", mtxAmount: "Monto a Transferir (₽)",
+            mtxSecInfo: "Código de confirmación de operación:", mtxCancel: "Cancelar", mtxExecute: "Enviar", mpigTitle: "Añadir Dinero a la Alcancía", mpigAmount: "Monto a depositar (₽)",
+            mpigCancel: "Cancelar", mpigExecute: "Añadir", pincodeTitleCreate: "Cree un código PIN", pincodeTitleEnter: "Ingrese código PIN", pincodeSub: "Para un acceso rápido y seguro al banco"
         },
         de: {
             authTitle: "Anmelden", authDesc: "Geben Sie Ihre Telefonnummer ein", labelPhone: "Telefonnummer", btnCode: "Code anfordern",
             simCode: "Code aus der SMS-Benachrichtigung:", labelSms: "Code eingeben", btnEnter: "Bestätigen", totalBal: "Verfügbares Guthaben",
             myCards: "Konten & Karten", txHist: "Transaktionsverlauf", invBal: "Investmentportfolio", activePiggies: "Aktive Sparziele",
             marketAssets: "Verfügbare Vermögenswerte", piggyTitle: "Neues Ziel erstellen", piggyName: "Name des Ziels", piggyTarget: "Zielbetrag (₽)",
-            piggyBtn: "Spardose starten", nav1: "Home", nav2: "Spardose", nav3: "Investments", nav4: "Ajustes"
+            piggyBtn: "Spardose starten", nav1: "Home", nav2: "Spardose", nav3: "Investments", nav4: "Ajustes",
+            btnDepMain: "<i class='fa-solid fa-wallet'></i> Einzahlen", btnTxMain: "<i class='fa-solid fa-paper-plane'></i> Senden",
+            yourPhoneBadge: "Ihr Konto:", setSecTitle: "Sicherheit & Codes", setPinTx: "Überweisungs-Autorisierungscode", setPinTxDesc: "Dynamischen PIN-Code beim Senden von Geld anfordern",
+            logoutBtn: "Abmelden", sysParamsTitle: "Systemparameter", sysNotify: "Benachrichtigungen einschalten", sysNotifyDesc: "Push-Benachrichtigungen bei Transaktionen",
+            sysSounds: "Soundeffekte", sysSoundsDesc: "Klick- und Transaktionsgeräusche", sysAnims: "Fließende Animationen", sysAnimsDesc: "Komplexe Übergänge und Unschärfe verwenden",
+            localizationTitle: "Lokalisierung / Sprache", themesTitle: "Visueller Stil des Systems (6 Themen)", mdepTitle: "Guthaben aufladen", mdepAmount: "Betrag (₽)",
+            mdepCancel: "Abbrechen", mdepExecute: "Aufladen", mtxTitle: "Geld überweisen", mtxCard: "Telefonnummer des Empfängers in der Datenbank", mtxAmount: "Überweisungsbetrag (₽)",
+            mtxSecInfo: "Bestätigungscode der Operation:", mtxCancel: "Abbrechen", mtxExecute: "Senden", mpigTitle: "Geld in die Spardose einzahlen", mpigAmount: "Einzahlungsbetrag (₽)",
+            mpigCancel: "Abbrechen", mpigExecute: "Einzahlen", pincodeTitleCreate: "PIN-Code erstellen", pincodeTitleEnter: "PIN-Code eingeben", pincodeSub: "Für den schnellen und sicheren Bankzugriff"
         },
         fr: {
             authTitle: "Connexion", authDesc: "Entrez votre numéro de téléphone", labelPhone: "Numéro de téléphone", btnCode: "Obtenir le code",
             simCode: "Code de la notification SMS:", labelSms: "Entrez le code reçu", btnEnter: "Confirmer", totalBal: "Fonds disponibles",
             myCards: "Mes comptes & cartes", txHist: "Historique des transactions", invBal: "Portefeuille d'investissement", activePiggies: "Objectifs d'épargne actifs",
             marketAssets: "Actifs disponibles", piggyTitle: "Créer un objectif", piggyName: "Nom de l'objectif", piggyTarget: "Montant cible (₽)",
-            piggyBtn: "Lancer la tirelire", nav1: "Accueil", nav2: "Tirelire", nav3: "Investissements", nav4: "Configuration"
+            piggyBtn: "Lancer la tirelire", nav1: "Accueil", nav2: "Tirelire", nav3: "Investissements", nav4: "Configuration",
+            btnDepMain: "<i class='fa-solid fa-wallet'></i> Créditer", btnTxMain: "<i class='fa-solid fa-paper-plane'></i> Transférer",
+            yourPhoneBadge: "Votre compte:", setSecTitle: "Sécurité & Codes", setPinTx: "Code d'autorisation de transfert", setPinTxDesc: "Demander un code PIN dynamique lors de l'envoi d'argent",
+            logoutBtn: "Déconnexion", sysParamsTitle: "Paramètres système", sysNotify: "Activer les notifications", sysNotifyDesc: "Alertes push sur les transactions",
+            sysSounds: "Effets sonores", sysSoundsDesc: "Sons de clics et de transactions", sysAnims: "Animations fluides", sysAnimsDesc: "Utiliser des transitions complexes et du flou",
+            localizationTitle: "Localisation / Langue", themesTitle: "Style visuel du système (6 thèmes)", mdepTitle: "Approvisionner le compte", mdepAmount: "Montant (₽)",
+            mdepCancel: "Annuler", mdepExecute: "Créditer", mtxTitle: "Transfert de fonds", mtxCard: "Numéro de téléphone du destinataire dans la base", mtxAmount: "Montant du transfert (₽)",
+            mtxSecInfo: "Code de confirmation de l'opération:", mtxCancel: "Annuler", mtxExecute: "Envoyer", mpigTitle: "Déposer dans la tirelire", mpigAmount: "Montant du dépôt (₽)",
+            mpigCancel: "Annuler", mpigExecute: "Déposer", pincodeTitleCreate: "Créer un code PIN", pincodeTitleEnter: "Saisir le code PIN", pincodeSub: "Pour un accès rapide et sécurisé à la banque"
         }
     };
 
     function init() {
+        // 1. Инициализация глобальной базы данных пользователей из localStorage
+        const globalDBRaw = localStorage.getItem('neobank_users_db');
+        if (globalDBRaw) {
+            globalUsersDB = JSON.parse(globalDBRaw);
+        }
+
+        // 2. Инициализация сессии текущего активного юзера
         const local = localStorage.getItem('neobank_state');
         if (local) {
             const parsed = JSON.parse(local);
-            // Мерджим структуры на случай обновления состава активов
             state = { ...state, ...parsed };
         }
+        
         applyTheme(state.theme);
         applySystemParameters();
         updateUI();
         checkAuthStates();
         
-        // Симуляция живого рынка акций и крипты (каждые 4 секунды)
         setInterval(simulateMarketTicks, 4000);
     }
 
+    // Сохранение и синхронизация сессии с глобальной "базой данных"
     function save() {
         localStorage.setItem('neobank_state', JSON.stringify(state));
+        
+        // Если пользователь авторизован, дублируем изменения в его ячейку в глобальной базе данных
+        if (state.phone) {
+            globalUsersDB[state.phone] = {
+                pin: state.pin,
+                balance: state.balance,
+                investBalance: state.investBalance,
+                initialInvestCost: state.initialInvestCost,
+                transactions: state.transactions,
+                piggies: state.piggies,
+                assets: state.assets,
+                secureTx: state.secureTx,
+                theme: state.theme,
+                lang: state.lang
+            };
+            localStorage.setItem('neobank_users_db', JSON.stringify(globalUsersDB));
+        }
     }
 
     function checkAuthStates() {
         if (!state.phone) {
             document.getElementById('auth-screen').style.display = 'flex';
+            document.getElementById('pincode-screen').style.display = 'none';
+            document.getElementById('main-bank').style.display = 'none';
         } else if (!state.pin) {
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('pincode-screen').style.display = 'flex';
-            document.getElementById('pincode-title').innerText = "Придумайте код-пароль";
+            document.getElementById('main-bank').style.display = 'none';
+            translateText();
         } else {
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('pincode-screen').style.display = 'flex';
-            document.getElementById('pincode-title').innerText = "Введите код-пароль";
+            document.getElementById('main-bank').style.display = 'none';
+            translateText();
         }
     }
 
     function sendSmsCode() {
-        const phone = document.getElementById('auth-phone').value;
+        const phone = document.getElementById('auth-phone').value.trim();
         if(phone.length < 7) return alert('Введите корректный номер!');
         playSystemSound();
         currentSmsCode = Math.floor(10000 + Math.random() * 90000).toString();
@@ -506,8 +590,36 @@
         const input = document.getElementById('auth-code-input').value;
         if (input === currentSmsCode) {
             playSystemSound();
-            state.phone = document.getElementById('auth-phone').value;
+            const checkedPhone = document.getElementById('auth-phone').value.trim();
+            
+            // Проверяем: есть ли уже этот пользователь в нашей "базе данных"
+            if (globalUsersDB[checkedPhone]) {
+                // Если юзер найден, выгружаем все его сохраненные данные из базы данных
+                const userData = globalUsersDB[checkedPhone];
+                state.phone = checkedPhone;
+                state.pin = userData.pin;
+                state.balance = userData.balance;
+                state.investBalance = userData.investBalance;
+                state.initialInvestCost = userData.initialInvestCost || 0;
+                state.transactions = userData.transactions || [];
+                state.piggies = userData.piggies || [];
+                state.assets = userData.assets || state.assets;
+                state.secureTx = userData.secureTx || false;
+                state.theme = userData.theme || 'default';
+                state.lang = userData.lang || 'ru';
+            } else {
+                // Если юзер абсолютно новый, регистрируем его с дефолтным чистым стейтом
+                state.phone = checkedPhone;
+                state.pin = '';
+                state.balance = 500000;
+                state.transactions = [];
+                state.piggies = [];
+                state.investBalance = 0;
+                state.initialInvestCost = 0;
+            }
+            
             save();
+            applyTheme(state.theme);
             checkAuthStates();
         } else {
             alert('Неверный код безопасности!');
@@ -532,8 +644,10 @@
                         playSystemSound();
                         document.getElementById('pincode-screen').style.display = 'none';
                         document.getElementById('main-bank').style.display = 'block';
+                        document.getElementById('user-phone-display').innerText = state.phone;
                         tempPin = '';
                         renderPinDots();
+                        updateUI();
                     } else {
                         alert('Неверный код-пароль!');
                         tempPin = '';
@@ -557,6 +671,21 @@
         });
     }
 
+    function logOutAccount() {
+        playSystemSound();
+        state = {
+            phone: '', pin: '', balance: 500000, investBalance: 0, initialInvestCost: 0,
+            transactions: [], piggies: [], assets: state.assets, secureTx: false, 
+            notify: true, sounds: true, anims: true, theme: 'default', lang: 'ru'
+        };
+        localStorage.removeItem('neobank_state');
+        document.getElementById('auth-phone').value = '';
+        document.getElementById('auth-code-input').value = '';
+        document.getElementById('sms-block').style.display = 'none';
+        applyTheme('default');
+        checkAuthStates();
+    }
+
     function switchTab(id, el) {
         playSystemSound();
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -570,8 +699,10 @@
         document.getElementById('invest-balance').innerText = state.investBalance.toLocaleString('ru-RU');
         document.getElementById('secure-tx-toggle').checked = state.secureTx;
         document.getElementById('lang-selector').value = state.lang;
+        if(state.phone) {
+            document.getElementById('user-phone-display').innerText = state.phone;
+        }
         
-        // Калькуляция доходности портфеля в реальном времени
         let currentPortfolioValue = 0;
         state.assets.forEach(a => { currentPortfolioValue += a.owned * a.price; });
         state.investBalance = currentPortfolioValue;
@@ -615,19 +746,40 @@
         document.getElementById('deposit-input').value = '';
     }
 
+    // Взаимодействие между аккаунтами внутри общей Базы Данных (B2B Transfer Simulation)
     function actionTransfer() {
         const amt = parseInt(document.getElementById('transfer-input').value);
-        const target = document.getElementById('transfer-target').value;
+        const targetPhone = document.getElementById('transfer-target').value.trim();
         
-        if (!target || isNaN(amt) || amt <= 0 || amt > state.balance) return alert('Ошибка лимитов или нехватки средств');
-        
+        if (!targetPhone || isNaN(amt) || amt <= 0 || amt > state.balance) return alert('Ошибка лимитов или нехватки средств');
+        if (targetPhone === state.phone) return alert('Вы не можете переводить средства самому себе!');
+
         if (state.secureTx) {
             const secInput = document.getElementById('transfer-secure-input').value;
             if (secInput !== activeTxSecureCode) return alert('Неверный код подтверждения операции!');
         }
 
-        state.balance -= amt;
-        state.transactions.unshift({ name: `Перевод пользователю ${target}`, amount: amt, type: 'minus', date: 'Сегодня' });
+        // Перевод по внутренней базе данных
+        if (globalUsersDB[targetPhone]) {
+            // Списываем средства с текущего аккаунта
+            state.balance -= amt;
+            state.transactions.unshift({ name: `Перевод абоненту ${targetPhone}`, amount: amt, type: 'minus', date: 'Сегодня' });
+
+            // Начисляем средства получателю в базе данных
+            globalUsersDB[targetPhone].balance += amt;
+            globalUsersDB[targetPhone].transactions = globalUsersDB[targetPhone].transactions || [];
+            globalUsersDB[targetPhone].transactions.unshift({ name: `Получен перевод от ${state.phone}`, amount: amt, type: 'plus', date: 'Сегодня' });
+            
+            // Сохраняем обновленную базу данных
+            localStorage.setItem('neobank_users_db', JSON.stringify(globalUsersDB));
+            alert(`Успешно переведено ${amt} ₽ пользователю ${targetPhone}`);
+        } else {
+            // Если пользователя нет в базе данных, транзакция падает на внешний "клиринг" (как в старой версии)
+            state.balance -= amt;
+            state.transactions.unshift({ name: `Внешний перевод: ${targetPhone}`, amount: amt, type: 'minus', date: 'Сегодня' });
+            alert(`Успешно отправлено ${amt} ₽ по внешним реквизитам`);
+        }
+
         save(); updateUI(); closeModal('modal-transfer');
         document.getElementById('transfer-input').value = '';
         document.getElementById('transfer-target').value = '';
@@ -646,7 +798,6 @@
         });
     }
 
-    // Модуль: Копилки
     function createPiggyTarget() {
         const name = document.getElementById('piggy-name').value;
         const target = parseInt(document.getElementById('piggy-target').value);
@@ -711,17 +862,14 @@
         alert('Поздравляем! Финансовая цель успешно достигнута! Прогресс бар заполнен на 100%! 🚀');
     }
 
-    // Модуль: Рынок инвестиций и торговля
     function renderAssets() {
         const container = document.getElementById('assets-container');
         container.innerHTML = '';
         state.assets.forEach((a, idx) => {
-            // Вычисляем направление тренда по истории цен
             const lastPrice = a.history[a.history.length - 2] || a.price;
             const isUp = a.price >= lastPrice;
             const trendClass = isUp ? 'up' : 'down';
 
-            // Генерируем мини SVG / CSS график тренда
             let chartHTML = `<div class="mini-chart">`;
             a.history.slice(-5).forEach(h => {
                 const heightPercent = Math.max(20, Math.min(100, (h / a.price) * 50));
@@ -767,7 +915,6 @@
         if (asset.owned <= 0) return alert('У вас нет этого актива для продажи');
         state.balance += asset.price;
         asset.owned -= 1;
-        // Корректируем базовую стоимость портфеля при частичной продаже
         state.initialInvestCost = Math.max(0, state.initialInvestCost - asset.price);
         state.transactions.unshift({ name: `Продажа актива ${asset.name}`, amount: asset.price, type: 'plus', date: 'Сегодня' });
         save(); updateUI();
@@ -775,7 +922,7 @@
 
     function simulateMarketTicks() {
         state.assets.forEach(a => {
-            const changePercent = (Math.random() * 6 - 3) / 100; // колебания от -3% до +3%
+            const changePercent = (Math.random() * 6 - 3) / 100;
             a.price = Math.round(a.price * (1 + changePercent));
             if(a.price <= 0) a.price = 1;
             a.history.push(a.price);
@@ -786,7 +933,6 @@
         }
     }
 
-    // Системные Настройки
     function updateSecureTxState() {
         state.secureTx = document.getElementById('secure-tx-toggle').checked;
         save();
@@ -812,7 +958,6 @@
 
     function playSystemSound() {
         if(state.sounds) {
-            // Синтезируем легкий приятный системный клик через Web Audio API
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = ctx.createOscillator();
@@ -843,9 +988,11 @@
         translateText();
     }
 
+    // Мгновенная динамическая очистка и перевод каждого UI элемента
     function translateText() {
         const l = languages[state.lang] || languages['ru'];
         
+        // Внутренние тексты экранов авторизации
         document.getElementById('lang-auth-title').innerText = l.authTitle;
         document.getElementById('lang-auth-desc').innerText = l.authDesc;
         document.getElementById('lang-label-phone').innerText = l.labelPhone;
@@ -854,6 +1001,15 @@
         document.getElementById('lang-label-sms').innerText = l.labelSms;
         document.getElementById('lang-btn-enter').innerText = l.btnEnter;
         
+        // Динамический пин-экран
+        if (!state.pin) {
+            document.getElementById('pincode-title').innerText = l.pincodeTitleCreate;
+        } else {
+            document.getElementById('pincode-title').innerText = l.pincodeTitleEnter;
+        }
+        document.getElementById('pincode-sub').innerText = l.pincodeSub;
+
+        // Перевод контента главного приложения (если оно инициализировано)
         if(document.getElementById('lang-total-bal')) {
             document.getElementById('lang-total-bal').innerText = l.totalBal;
             document.getElementById('lang-my-cards').innerText = l.myCards;
@@ -866,14 +1022,54 @@
             document.getElementById('lang-piggy-target-lbl').innerText = l.piggyTarget;
             document.getElementById('lang-piggy-btn-create').innerText = l.piggyBtn;
             
+            document.getElementById('lang-btn-deposit-main').innerHTML = l.btnDepMain;
+            document.getElementById('lang-btn-transfer-main').innerHTML = l.btnTxMain;
+            document.getElementById('lang-your-phone-badge').innerText = l.yourPhoneBadge;
+            
+            // Меню навигации
             document.getElementById('nav-l-1').innerText = l.nav1;
             document.getElementById('nav-l-2').innerText = l.nav2;
             document.getElementById('nav-l-3').innerText = l.nav3;
             document.getElementById('nav-l-4').innerText = l.nav4;
+
+            // Раздел Настройки
+            document.getElementById('lang-set-sec-title').innerText = l.setSecTitle;
+            document.getElementById('lang-set-pin-tx').innerText = l.setPinTx;
+            document.getElementById('lang-set-pin-tx-desc').innerText = l.setPinTxDesc;
+            document.getElementById('lang-logout-btn').innerText = l.logoutBtn;
+            document.getElementById('lang-sys-params-title').innerText = l.sysParamsTitle;
+            
+            document.getElementById('lang-sys-notify').innerText = l.sysNotify;
+            document.getElementById('lang-sys-notify-desc').innerText = l.sysNotifyDesc;
+            document.getElementById('lang-sys-sounds').innerText = l.sysSounds;
+            document.getElementById('lang-sys-sounds-desc').innerText = l.sysSoundsDesc;
+            document.getElementById('lang-sys-anims').innerText = l.sysAnims;
+            document.getElementById('lang-sys-anims-desc').innerText = l.sysAnimsDesc;
+            
+            document.getElementById('lang-localization-title').innerText = l.localizationTitle;
+            document.getElementById('lang-themes-title').innerText = l.themesTitle;
+
+            // Модалки
+            document.getElementById('lang-mdep-title').innerText = l.mdepTitle;
+            document.getElementById('lang-mdep-amount').innerText = l.mdepAmount;
+            document.getElementById('lang-mdep-cancel').innerText = l.mdepCancel;
+            document.getElementById('lang-mdep-execute').innerText = l.mdepExecute;
+
+            document.getElementById('lang-mtx-title').innerText = l.mtxTitle;
+            document.getElementById('lang-mtx-card').innerText = l.mtxCard;
+            document.getElementById('lang-mtx-amount').innerText = l.mtxAmount;
+            document.getElementById('lang-mtx-sec-info').innerText = l.mtxSecInfo;
+            document.getElementById('lang-mtx-cancel').innerText = l.mtxCancel;
+            document.getElementById('lang-mtx-execute').innerText = l.mtxExecute;
+
+            document.getElementById('lang-mpig-title').innerText = l.mpigTitle;
+            document.getElementById('lang-mpig-amount').innerText = l.mpigAmount;
+            document.getElementById('lang-mpig-cancel').innerText = l.mpigCancel;
+            document.getElementById('lang-mpig-execute').innerText = l.mpigExecute;
         }
     }
 
     window.onload = init;
 </script>
 </body>
-    </html>
+</html>
