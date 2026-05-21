@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AURA Neobank</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -63,19 +63,29 @@
             transition: background var(--anim-speed), border-color var(--anim-speed);
         }
 
+        /* Исправлено: экраны теперь корректно скроллятся, если клавиатура перекрывает кнопку */
         #auth-screen, #pincode-screen { 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center; 
+            justify-content: flex-start; 
             min-height: 100vh; 
-            padding: 20px; 
+            padding: 24px 20px; 
             position: fixed; 
             top: 0; left: 0; width: 100%; height: 100%; 
             background: var(--bg); 
             z-index: 1000; 
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
-        .auth-card { width: 100%; max-width: 360px; text-align: center; }
+        
+        /* Исправлено для центрирования на больших экранах и адаптивности на смартфонах */
+        .auth-card { 
+            width: 100%; 
+            max-width: 360px; 
+            text-align: center; 
+            margin: auto 0;
+        }
 
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn var(--anim-speed) cubic-bezier(0.4, 0, 0.2, 1); }
@@ -165,7 +175,6 @@
         .cards-wrap { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; min-height: 150px; }
         .cards-wrap::-webkit-scrollbar { display: none; }
         
-        /* Стилизация уникальных карт AURA */
         .bank-card { 
             min-width: 270px; 
             height: 150px; 
@@ -183,7 +192,6 @@
         }
         .bank-card:active { transform: scale(0.97); }
         
-        /* Стили линеек карт */
         .card-style-virtual { background: linear-gradient(135deg, #a855f7, #6d28d9); }
         .card-style-plastic { background: linear-gradient(135deg, #1f2937, #111827); border: 1px solid #374151; }
         .card-style-crypto { background: linear-gradient(135deg, #0284c7, #0f172a); border-left: 4px solid #38bdf8; }
@@ -209,11 +217,13 @@
         .pin-dot-wrap { display: flex; gap: 14px; margin-bottom: 35px; }
         .pin-dot { width: 12px; height: 12px; border: 2px solid var(--border); border-radius: 50%; }
         .pin-dot.fill { background: var(--accent); border-color: var(--accent); }
-        .pin-btn { width: 68px; height: 68px; border-radius: 50%; background: var(--panel); border: 1px solid var(--border); color: var(--text); font-size: 24px; display: flex; align-items: center; justify-content: center; }
+        .pin-btn { width: 68px; height: 68px; border-radius: 50%; background: var(--panel); border: 1px solid var(--border); color: var(--text); font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-        .ai-tip { background: var(--accent-light); border-radius: 16px; padding: 14px 18px; color: var(--accent); font-size: 13px; font-weight: 500; display: flex; gap: 10px; margin-bottom: 16px; }
+        /* Добавлены недостающие стили для копилок */
+        .piggy-card { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 12px; }
+        .progress-bar { background: var(--bg); height: 8px; border-radius: 4px; margin: 12px 0; overflow: hidden; }
+        .progress-fill { background: var(--accent); height: 100%; border-radius: 4px; transition: width 0.3s ease; }
 
-        /* Дизайн карточки в детальном просмотре */
         .modal-card-view {
             width: 100%;
             height: 180px;
@@ -292,7 +302,6 @@
 </div>
 
 <div class="container" id="main-bank">
-    
     <div id="tab-home" class="tab-content active">
         <div class="profile-header-area">
             <div class="profile-btn-trigger" onclick="openModal('modal-profile-view')">
@@ -321,8 +330,7 @@
         </div>
 
         <h3 class="section-title">Ваши активные карты</h3>
-        <div class="cards-wrap" id="home-cards-container">
-            </div>
+        <div class="cards-wrap" id="home-cards-container"></div>
 
         <h3 class="section-title">История операций</h3>
         <div class="glass" id="history-box" style="padding: 4px 20px; max-height: 250px; overflow-y: auto;"></div>
@@ -438,9 +446,7 @@
 <div class="modal-bg" id="modal-card-details" onclick="if(event.target===this) closeModal('modal-card-details')">
     <div class="glass">
         <h3 style="margin-bottom: 16px; font-size: 18px; font-weight: 700;">Реквизиты карты</h3>
-        
         <div id="modal-card-render-zone"></div>
-
         <div class="glass" style="background:var(--bg); border:none;">
             <div class="list-row" style="padding:10px 0;">
                 <span style="color:var(--text-sub); font-size:13px;">Номер карты</span>
@@ -459,7 +465,6 @@
                 <strong id="det-card-cvc" style="color:var(--accent);">000</strong>
             </div>
         </div>
-
         <button class="btn" onclick="closeModal('modal-card-details')">Закрыть</button>
     </div>
 </div>
@@ -721,7 +726,6 @@
         document.getElementById(id).classList.add('active'); el.classList.add('active');
     }
 
-    /* Функция выпуска карт */
     function issueCard(type) {
         let typesData = {
             'virtual': { name: 'AURA NEO', style: 'card-style-virtual', badge: 'Digital' },
@@ -860,7 +864,13 @@
         document.getElementById('transfer-fee-calc').innerText = (val * 0.015).toLocaleString('ru-RU');
     }
 
-    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    // Исправлено: Скроллинг модального окна наверх при его открытии
+    function openModal(id) { 
+        const modal = document.getElementById(id);
+        modal.classList.add('active'); 
+        const glass = modal.querySelector('.glass');
+        if (glass) glass.scrollTop = 0;
+    }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
     function actionDeposit() {
@@ -1004,4 +1014,4 @@
     window.onload = init;
 </script>
 </body>
-</html>
+            </html>
