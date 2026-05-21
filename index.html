@@ -31,121 +31,25 @@
             --accent-light: #23193a;
         }
 
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            min-height: 100vh; 
-            padding-bottom: 100px; 
-            overflow-x: hidden; 
-            transition: var(--transition);
-        }
-        
-        .container { 
-            width: 100%; 
-            max-width: 480px; 
-            margin: 0 auto; 
-            padding: 16px; 
-            display: none; 
-        }
-        
-        .block-card { 
-            background: var(--panel); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-xl); 
-            padding: 20px; 
-            margin-bottom: 16px; 
-            transition: var(--transition);
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 100px; overflow-x: hidden; transition: var(--transition); }
+        .container { width: 100%; max-width: 480px; margin: 0 auto; padding: 16px; display: none; }
+        .block-card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 20px; margin-bottom: 16px; transition: var(--transition); }
 
-        #auth-screen, #pincode-screen { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--bg); 
-            z-index: 10000; 
-        }
-
+        #auth-screen, #pincode-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 10000; }
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: screenFade 0.3s ease; }
         
-        .nav-bar { 
-            position: fixed; 
-            bottom: 0; left: 50%; 
-            transform: translateX(-50%);
-            width: 100%; max-width: 480px;
-            height: 72px; 
-            background: var(--panel);
-            border-top: 1px solid var(--border); 
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; 
-            z-index: 999; 
-            transition: var(--transition);
-        }
-        .nav-item { 
-            color: var(--text-sub); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            font-size: 11px; 
-            font-weight: 500; 
-            cursor: pointer; 
-            width: 20%; 
-            text-align: center; 
-        }
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 72px; background: var(--panel); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 999; transition: var(--transition); }
+        .nav-item { color: var(--text-sub); display: flex; flex-direction: column; align-items: center; font-size: 11px; font-weight: 500; cursor: pointer; width: 20%; text-align: center; }
         .nav-item i { font-size: 18px; margin-bottom: 4px; }
         .nav-item.active { color: var(--accent); }
 
-        /* Фикс кнопок: Жесткий контроль цвета текста для темной темы */
-        .btn { 
-            background: var(--accent); 
-            border: none; 
-            padding: 14px 20px; 
-            border-radius: var(--radius-lg); 
-            color: #ffffff !important; 
-            font-size: 14px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            width: 100%; 
-            transition: var(--transition); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 6px; 
-        }
+        .btn { background: var(--accent); border: none; padding: 14px 20px; border-radius: var(--radius-lg); color: #ffffff !important; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px; }
         .btn:active { transform: scale(0.98); opacity: 0.95; }
+        .btn-sec { background: var(--border); color: var(--text) !important; border: 1px solid var(--border); }
         
-        /* Фикс вторичной кнопки: контраст текста 100% */
-        .btn-sec { 
-            background: var(--border); 
-            color: var(--text) !important; 
-            border: 1px solid var(--border); 
-        }
-        
-        /* Фикс валютных кнопок */
-        .curr-btn {
-            flex: 1; 
-            background: var(--panel); 
-            border: 1px solid var(--border); 
-            padding: 10px; 
-            border-radius: 12px; 
-            color: var(--text) !important; 
-            font-size: 12px; 
-            font-weight: 600; 
-            cursor: pointer;
-            transition: var(--transition);
-        }
+        .curr-btn { flex: 1; background: var(--panel); border: 1px solid var(--border); padding: 10px; border-radius: 12px; color: var(--text) !important; font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); }
 
         .input-group { margin-bottom: 16px; width: 100%; }
         .input-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -157,7 +61,6 @@
         .pin-dot.fill { background: var(--accent); border-color: var(--accent); transform: scale(1.1); }
         .pin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; max-width: 280px; }
         .pin-btn { width: 72px; height: 72px; border-radius: 50%; background: var(--panel); border: 1px solid var(--border); color: var(--text); font-size: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); }
-        .pin-btn:active { background: var(--bg); }
 
         @keyframes screenFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -167,41 +70,26 @@
 <div id="auth-screen">
     <div class="block-card" style="width: 90%; max-width: 360px; text-align: center;">
         <div style="font-size: 40px; margin-bottom: 16px; color: var(--accent);">💠</div>
-        <h2 style="margin-bottom: 6px; font-weight: 800; letter-spacing: -0.5px; color: var(--text);">AURA NEOBANK</h2>
+        <h2 style="margin-bottom: 6px; font-weight: 800; color: var(--text);">AURA NEOBANK</h2>
         <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 24px;">Вход в персональный финансовый узел</p>
-        
-        <div class="input-group">
-            <label>Имя</label>
-            <input type="text" id="auth-firstname" class="form-ctrl" placeholder="Иван">
-        </div>
-        <div class="input-group">
-            <label>Номер телефона</label>
-            <input type="tel" id="auth-phone" class="form-ctrl" placeholder="+7 (999) 999-00-00">
-        </div>
+        <div class="input-group"><label>Имя</label><input type="text" id="auth-firstname" class="form-ctrl" placeholder="Иван"></div>
+        <div class="input-group"><label>Номер телефона</label><input type="tel" id="auth-phone" class="form-ctrl" placeholder="+7 (999) 999-00-00"></div>
         <button class="btn" onclick="registerAndGoToPin()">Создать кошелек</button>
     </div>
 </div>
 
 <div id="pincode-screen" style="display: none;">
-    <h3 id="pincode-title" style="margin-bottom: 6px; font-weight: 700; color: var(--text);">Вход в AURA Vault</h3>
+    <h3 style="margin-bottom: 6px; font-weight: 700; color: var(--text);">Вход в AURA Vault</h3>
     <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 32px;" id="pin-screen-desc">Задайте ПИН-код из 4 цифр</p>
-    <div class="pin-dot-wrap" id="pin-dots-container">
-        <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
-    </div>
+    <div class="pin-dot-wrap" id="pin-dots-container"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div>
     <div class="pin-grid">
-        <button class="pin-btn" onclick="pressPin(1)">1</button>
-        <button class="pin-btn" onclick="pressPin(2)">2</button>
-        <button class="pin-btn" onclick="pressPin(3)">3</button>
-        <button class="pin-btn" onclick="pressPin(4)">4</button>
-        <button class="pin-btn" onclick="pressPin(5)">5</button>
-        <button class="pin-btn" onclick="pressPin(6)">6</button>
-        <button class="pin-btn" onclick="pressPin(7)">7</button>
-        <button class="pin-btn" onclick="pressPin(8)">8</button>
-        <button class="pin-btn" onclick="pressPin(9)">9</button>
-        <button class="pin-btn" style="background:transparent; border:none;" onclick="clearPin()"><i class="fa-solid fa-delete-left"></i></button>
-        <button class="pin-btn" onclick="pressPin(0)">0</button>
+        <button class="pin-btn" onclick="pressPin(1)">1</button><button class="pin-btn" onclick="pressPin(2)">2</button><button class="pin-btn" onclick="pressPin(3)">3</button>
+        <button class="pin-btn" onclick="pressPin(4)">4</button><button class="pin-btn" onclick="pressPin(5)">5</button><button class="pin-btn" onclick="pressPin(6)">6</button>
+        <button class="pin-btn" onclick="pressPin(7)">7</button><button class="pin-btn" onclick="pressPin(8)">8</button><button class="pin-btn" onclick="pressPin(9)">9</button>
+        <button class="pin-btn" style="background:transparent; border:none;" onclick="clearPin()"><i class="fa-solid fa-delete-left"></i></button><button class="pin-btn" onclick="pressPin(0)">0</button>
     </div>
 </div>
+
 <div class="container" id="main-bank">
     <div id="tab-home" class="tab-content active">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -212,7 +100,7 @@
                     <div style="font-size: 11px; color: var(--text-sub);" id="user-phone-display">+7 (999) 000-00-00</div>
                 </div>
             </div>
-            <button class="btn-sec" style="width: auto; padding: 10px 16px; border-radius: 30px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;" onclick="toggleTheme()">
+            <button class="btn-sec" style="width: auto; padding: 10px 16px; border-radius: 30px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px;" onclick="toggleTheme()">
                 <i class="fa-solid fa-moon" id="theme-icon"></i> <span id="theme-text">Темная тема</span>
             </button>
         </div>
@@ -225,25 +113,17 @@
             <div style="font-size: 36px; font-weight: 700; margin: 10px 0; letter-spacing: -0.8px; color: var(--text);">
                 <span id="main-balance">0</span> <span id="curr-symbol">₽</span>
             </div>
-            
             <div style="display: flex; gap: 8px; margin-top: 16px;">
                 <button class="curr-btn" id="curr-tab-RUB" onclick="changeCurrency('RUB')">RUB ₽</button>
                 <button class="curr-btn" id="curr-tab-USD" onclick="changeCurrency('USD')">USD $</button>
                 <button class="curr-btn" id="curr-tab-EUR" onclick="changeCurrency('EUR')">EUR €</button>
             </div>
-            
             <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
                 <div style="display: flex; gap: 10px; width: 100%;">
-                    <button class="btn" style="flex: 1;" onclick="openModal('modal-deposit')">
-                        <i class="fa-solid fa-wallet"></i> Пополнить
-                    </button>
-                    <button class="btn" style="flex: 1;" onclick="openModal('modal-transfer')">
-                        <i class="fa-solid fa-paper-plane"></i> Перевести
-                    </button>
+                    <button class="btn" style="flex: 1;" onclick="openModal('modal-deposit')"><i class="fa-solid fa-wallet"></i> Пополнить</button>
+                    <button class="btn" style="flex: 1;" onclick="openModal('modal-transfer')"><i class="fa-solid fa-paper-plane"></i> Перевести</button>
                 </div>
-                <button class="btn btn-sec" style="width: 100%;" onclick="openModal('modal-split')">
-                    <i class="fa-solid fa-arrows-split-up-and-left"></i> Разделить счет (Сплит)
-                </button>
+                <button class="btn btn-sec" style="width: 100%;" onclick="openModal('modal-split')"><i class="fa-solid fa-arrows-split-up-and-left"></i> Разделить счет (Сплит)</button>
             </div>
         </div>
 
@@ -251,132 +131,86 @@
             <span style="color: var(--text);">Мои карты</span>
             <span style="font-size: 12px; color: var(--accent); cursor: pointer; font-weight: 600;" onclick="switchTab('tab-cards', document.getElementById('nav-item-cards'))">Управление</span>
         </div>
-        
-        <div style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none;" id="home-cards-container">
-            </div>
+        <div style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none;" id="home-cards-container"></div>
 
-        <div style="margin: 24px 4px 12px; font-size: 16px; font-weight: 700; color: var(--text);">Последние транзакции</div>
-        <div class="block-card" id="history-box" style="padding: 4px 16px; max-height: 260px; overflow-y: auto;">
-            </div>
+        <div style="margin: 24px 4px 12px; font-size: 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: var(--text);">Последние транзакции</span>
+            <span style="font-size: 12px; color: var(--accent); cursor: pointer; font-weight: 600;" onclick="openAllTransactionsModal()">Все операции</span>
+        </div>
+        <div class="block-card" id="history-box" style="padding: 4px 16px; max-height: 260px; overflow-y: auto;"></div>
     </div>
-
     <div id="tab-cards" class="tab-content">
-        <div style="margin: 0 4px 16px; font-size: 20px; font-weight: 800; color: var(--text);">Управление картами</div>
-        
-        <div class="block-card" style="border-left: 4px solid #111115;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                <div>
-                    <h4 style="font-size: 15px; font-weight: 700; color: var(--text);">Премиальный черный пластик</h4>
-                    <p style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">Матовый слой, физическая доставка</p>
-                </div>
-                <span style="font-size: 11px; background: rgba(16,185,129,0.1); color: var(--green); padding: 2px 8px; border-radius: 8px; font-weight: 700;">NEW</span>
+        <h3 style="margin-bottom: 16px; font-weight: 700; color: var(--text);">Мои карты и лимиты</h3>
+        <div id="tab-cards-list-container"></div>
+        <div class="block-card" style="margin-top: 16px;">
+            <h4 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Выпустить новую карту</h4>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-sec" style="flex: 1; font-size: 13px;" onclick="issueCard('virtual')"><i class="fa-solid fa-bolt"></i> Цифровая</button>
+                <button class="btn" style="flex: 1; font-size: 13px;" onclick="issueCard('plastic')"><i class="fa-solid fa-credit-card"></i> Премиум Black</button>
             </div>
-            <div style="background: var(--card-black); height: 135px; border-radius: 16px; margin-bottom: 14px; padding: 20px; color: #ffffff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.2);">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 13px; font-weight: 700; letter-spacing: 1px; color: #fff !important;">AURA BLACK PREMIUM</span>
-                    <i class="fa-solid fa-bolt" style="color: #eab308;"></i>
-                </div>
-                <div style="font-size: 16px; letter-spacing: 2px; font-family: monospace; color: #fff !important;">•••• •••• •••• 0000</div>
-            </div>
-            <button class="btn btn-sec" style="font-weight: 700;" onclick="issueCard('plastic')">Заказать пластиковую карту</button>
         </div>
-
-        <div class="block-card" style="border-left: 4px solid var(--accent);">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                <div>
-                    <h4 style="font-size: 15px; font-weight: 700; color: var(--text);">Цифровая виртуальная карта</h4>
-                    <p style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">Мгновенные безопасные интернет-расчеты</p>
-                </div>
-            </div>
-            <button class="btn" onclick="issueCard('virtual')">Выпустить цифровую карту</button>
-        </div>
-
-        <div style="margin: 24px 4px 12px; font-size: 14px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px;">Ваш портфель карт</div>
-        <div style="display: flex; flex-direction: column; gap: 12px;" id="tab-cards-list-container">
-            </div>
     </div>
+
     <div id="tab-piggy" class="tab-content">
-        <div style="margin: 0 4px 16px; font-size: 20px; font-weight: 800; color: var(--text);">Смарт-копилки</div>
+        <h3 style="margin-bottom: 6px; font-weight: 700; color: var(--text);">Умные сейфы</h3>
+        <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 20px;">Автоматическое накопление средств на ваши цели</p>
         
-        <div class="block-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <h4 style="font-size: 15px; font-weight: 700; color: var(--text);"><i class="fa-solid fa-calculator" style="color: var(--accent); margin-right: 6px;"></i>Автоокругление трат</h4>
-                <label class="switch" style="position: relative; display: inline-block; width: 44px; height: 24px;">
-                    <input type="checkbox" id="round-toggle" onchange="toggleAutoRounding()" style="opacity: 0; width: 0; height: 0;">
-                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .2s; border-radius: 24px;" id="round-slider-design"></span>
-                </label>
+        <div class="block-card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
+            <div>
+                <div style="font-size: 14px; font-weight: 700; color: var(--text);">Округление расходов</div>
+                <div style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">Сдача с покупок отправляется в сейф</div>
             </div>
-            <p style="font-size: 12px; color: var(--text-sub); line-height: 1.4;">
-                Автоматически округляет ваши расходы до ближайших 100 рублей. «Сдача» мгновенно отправляется в ваш накопительный фонд.
-            </p>
+            <label style="position: relative; display: inline-block; width: 44px; height: 24px;">
+                <input type="checkbox" id="round-toggle" style="opacity: 0; width: 0; height: 0;" onchange="toggleAutoRounding()">
+                <span id="round-slider-design" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 24px;"></span>
+            </label>
         </div>
 
         <div class="block-card">
-            <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 14px; color: var(--text);">Открыть новый сейф-цель</h4>
-            <div class="input-group">
-                <label>Название цели</label>
-                <input type="text" id="piggy-name" class="form-ctrl" placeholder="Например: Капитал">
-            </div>
-            <div class="input-group">
-                <label>Целевая сумма (₽)</label>
-                <input type="number" id="piggy-target" class="form-ctrl" placeholder="50000">
-            </div>
-            <button class="btn" onclick="createPiggyTarget()">Активировать сейф</button>
+            <h4 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 14px;">Создать цель накопления</h4>
+            <div class="input-group"><label>Название цели</label><input type="text" id="piggy-name" class="form-ctrl" placeholder="На новый ноутбук"></div>
+            <div class="input-group"><label>Сумма цели (₽)</label><input type="number" id="piggy-target" class="form-ctrl" placeholder="120000"></div>
+            <button class="btn" onclick="createPiggyTarget()"><i class="fa-solid fa-plus"></i> Открыть сейф</button>
         </div>
 
-        <div style="margin: 24px 4px 12px; font-size: 14px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px;">Активные накопительные фонды</div>
-        <div id="piggies-container" style="display: flex; flex-direction: column; gap: 12px;">
-            </div>
+        <div style="margin: 20px 4px 10px; font-size: 14px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px;">Активные накопительные цели</div>
+        <div id="piggies-container"></div>
     </div>
 
     <div id="tab-invest" class="tab-content">
-        <div style="margin: 0 4px 16px; font-size: 20px; font-weight: 800; color: var(--text);">DeFi & P2P кредитование</div>
+        <h3 style="margin-bottom: 6px; font-weight: 700; color: var(--text);">Децентрализованные рынки</h3>
+        <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 20px;">Управление стейкингом и пулами ликвидности</p>
         
-        <div class="block-card" style="background: linear-gradient(135deg, #0f766e 0%, #115e59 100%); color: #ffffff; border: none;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                <div>
-                    <div style="font-size: 11px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; color: #fff !important;">Ликвидный стейкинг</div>
-                    <div style="font-size: 32px; font-weight: 700; margin: 6px 0 2px; color: #fff !important;"><span id="staked-balance-view" style="color: #fff !important;">0</span> USDT</div>
-                    <div style="font-size: 11px; opacity: 0.9; color: #fff !important;"><i class="fa-solid fa-chart-line"></i> Ставка: +14.2% APY фиксировано</div>
-                </div>
-                <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff;">
-                    <i class="fa-solid fa-cubes"></i>
-                </div>
-            </div>
+        <div class="block-card" style="background: linear-gradient(135deg, #10b981 0%, #047857 100%); color: #ffffff;">
+            <div style="font-size: 12px; opacity: 0.85; font-weight: 600; color:#fff !important;">В DeFi-стейкинге под 14.5% APY</div>
+            <div style="font-size: 32px; font-weight: 800; margin: 8px 0; color:#fff !important;"><span id="staked-balance-view">0</span> USDT</div>
+            <div style="font-size: 11px; opacity: 0.75; color:#fff !important;">Доход начисляется в режиме реального времени каждые 5 секунд</div>
         </div>
 
         <div class="block-card">
-            <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--text);">USDT Смарт-Контракт</h4>
-            <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 14px;">Конвертация и мгновенное зачисление с рублевого счета.</p>
-            <div style="display: flex; gap: 10px;">
-                <input type="number" id="stake-input-amt" class="form-ctrl" placeholder="Сумма USDT" style="flex: 2; padding: 12px;">
-                <button class="btn" style="flex: 1; margin: 0; padding: 12px;" onclick="actionStakeCrypto()">В стейкинг</button>
-            </div>
+            <h4 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 14px;">Инвестировать в стейкинг-пул</h4>
+            <div class="input-group"><label>Сумма для размещения (USDT)</label><input type="number" id="stake-input-amt" class="form-ctrl" placeholder="100"></div>
+            <button class="btn" style="background: var(--green);" onclick="actionStakeCrypto()">Разместить ликвидность</button>
         </div>
 
-        <div style="margin: 24px 4px 12px; font-size: 16px; font-weight: 700; color: var(--text);">Пул P2P-ликвидности</div>
-        <div class="block-card">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 12px; color: var(--text-sub);">
-                <span>Лимит кредитования: 75 000 ₽</span>
-                <span>Ставка: 6.5% фиксировано</span>
+        <div class="block-card" style="display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--accent);">
+            <div>
+                <div style="font-size: 14px; font-weight: 700; color: var(--text);">Быстрый P2P-займ</div>
+                <div style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">Моментальный лимит 15 000 ₽ без проверок</div>
             </div>
-            <p style="font-size: 12px; line-height: 1.4; margin-bottom: 14px; color: var(--text-sub);">
-                Займы выдаются мгновенно напрямую из резервов платформы без бумажной волокиты и проверок истории.
-            </p>
-            <button class="btn btn-sec" style="font-weight: 700;" onclick="actionTakeP2PLoan()">Получить P2P-займ (15 000 ₽)</button>
+            <button class="btn" style="width: auto; padding: 10px 16px; font-size: 12px;" onclick="actionTakeP2PLoan()">Взять</button>
         </div>
 
-        <div style="margin: 24px 4px 12px; font-size: 16px; font-weight: 700; color: var(--text);">Рыночные котировки</div>
-        <div id="assets-container" style="display: flex; flex-direction: column; gap: 10px;">
-            </div>
+        <div style="margin: 20px 4px 10px; font-size: 14px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px;">Котировки токенизированных активов</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;" id="assets-container"></div>
     </div>
+</div>
 
-    <nav class="nav-bar">
-        <div class="nav-item active" onclick="switchTab('tab-home', this)"><i class="fa-solid fa-wallet"></i><span>Главная</span></div>
-        <div class="nav-item" id="nav-item-cards" onclick="switchTab('tab-cards', this)"><i class="fa-solid fa-credit-card"></i><span>Карты</span></div>
-        <div class="nav-item" onclick="switchTab('tab-piggy', this)"><i class="fa-solid fa-box-archive"></i><span>Копилки</span></div>
-        <div class="nav-item" onclick="switchTab('tab-invest', this)"><i class="fa-solid fa-chart-pie"></i><span>DeFi / P2P</span></div>
-    </nav>
+<div class="nav-bar">
+    <div class="nav-item active" onclick="switchTab('tab-home', this)"><i class="fa-solid fa-house-chimney"></i> Главная</div>
+    <div class="nav-item" id="nav-item-cards" onclick="switchTab('tab-cards', this)"><i class="fa-solid fa-credit-card"></i> Карты</div>
+    <div class="nav-item" onclick="switchTab('tab-piggy', this)"><i class="fa-solid fa-piggy-bank"></i> Сейфы</div>
+    <div class="nav-item" onclick="switchTab('tab-invest', this)"><i class="fa-solid fa-chart-line"></i> DeFi</div>
 </div>
 <div class="modal-bg" id="modal-deposit" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: flex-end; z-index: 11000;" onclick="if(event.target===this) closeModal('modal-deposit')">
     <div class="block-card" style="width: 100%; max-width: 480px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin-bottom: 0; padding-bottom: 34px; background: var(--panel);">
@@ -398,7 +232,6 @@
             <h3 style="font-size: 18px; font-weight: 700; color: var(--text);">Перевод по номеру</h3>
             <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-sub); font-size: 18px;" onclick="closeModal('modal-transfer')"></i>
         </div>
-        
         <div id="transfer-step-inputs">
             <div class="input-group">
                 <label>Номер телефона получателя</label>
@@ -410,19 +243,18 @@
             </div>
             <button class="btn" onclick="requestTransferVerification()">Запросить код подтверждения</button>
         </div>
-
         <div id="transfer-step-secure" style="display: none; text-align: center; margin-top: 10px;">
             <div style="background: var(--accent-light); padding: 14px; border-radius: var(--radius-lg); margin-bottom: 16px; border: 1px solid var(--border);">
-                <span style="font-size: 12px; color: var(--text-sub); font-weight: 600;">Временный код транзакции:</span>
-                <div id="secure-sms-view" style="font-size: 26px; font-weight: 800; color: var(--accent); letter-spacing: 4px; margin-top: 4px;">5591</div>
+                <span style="font-size: 12px; color: var(--text-sub); font-weight: 600;">Код транзакции:</span>
+                <div style="font-size: 26px; font-weight: 800; color: var(--accent); letter-spacing: 4px; margin-top: 4px;">5591</div>
             </div>
             <div class="input-group" style="text-align: left;">
-                <label>Введите 4-значный код подтверждения</label>
+                <label>Введите код подтверждения</label>
                 <input type="number" id="transfer-secure-code-input" class="form-ctrl" placeholder="0000" style="text-align: center; font-size: 20px; letter-spacing: 4px;">
             </div>
             <div style="display: flex; gap: 10px;">
                 <button class="btn btn-sec" style="flex: 1;" onclick="cancelTransferSecure()">Назад</button>
-                <button class="btn" style="flex: 2; background: var(--green) !important;" onclick="actionTransferSecureExecute()">Подтвердить операцию</button>
+                <button class="btn" style="flex: 2; background: var(--green) !important;" onclick="actionTransferSecureExecute()">Подтвердить</button>
             </div>
         </div>
     </div>
@@ -431,11 +263,11 @@
 <div class="modal-bg" id="modal-split" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: flex-end; z-index: 11000;" onclick="if(event.target===this) closeModal('modal-split')">
     <div class="block-card" style="width: 100%; max-width: 480px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin-bottom: 0; padding-bottom: 34px; background: var(--panel);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h3 style="font-size: 18px; font-weight: 700; color: var(--text);"><i class="fa-solid fa-arrows-split-up-and-left"></i> Сплит счета</h3>
+            <h3 style="font-size: 18px; font-weight: 700; color: var(--text);">Сплит счета</h3>
             <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-sub); font-size: 18px;" onclick="closeModal('modal-split')"></i>
         </div>
         <div class="input-group">
-            <label>Общая сумма счета к разделению (₽)</label>
+            <label>Общая сумма счета (₽)</label>
             <input type="number" id="split-total-sum" class="form-ctrl" placeholder="3000" oninput="recalcSplitValue()">
         </div>
         <div class="input-group">
@@ -446,82 +278,65 @@
             <span style="color: var(--text-sub);">С каждого человека:</span>
             <strong style="color: var(--accent); font-weight: 700;"><span id="split-per-person-view">1 500</span> ₽</strong>
         </div>
-        <button class="btn" onclick="executeSplitBillGeneration()">Создать ссылки на оплату</button>
+        <button class="btn" onclick="executeSplitBillGeneration()">Создать ссылки для оплаты</button>
+    </div>
+</div>
+
+<div class="modal-bg" id="modal-all-transactions" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: flex-end; z-index: 10500;" onclick="if(event.target===this) closeModal('modal-all-transactions')">
+    <div class="block-card" style="width: 100%; max-width: 480px; height: 80vh; border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin-bottom: 0; padding-bottom: 20px; background: var(--panel); display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-top: 4px;">
+            <h3 style="font-size: 18px; font-weight: 700; color: var(--text);">История всех операций</h3>
+            <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-sub); font-size: 18px;" onclick="closeModal('modal-all-transactions')"></i>
+        </div>
+        <div id="all-history-box" style="flex: 1; overflow-y: auto; padding-right: 4px;"></div>
     </div>
 </div>
 
 <div class="modal-bg" id="modal-receipt" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 12000;" onclick="if(event.target===this) closeModal('modal-receipt')">
     <div class="block-card" style="width: 90%; max-width: 380px; text-align: center; background: var(--panel); border: 2px dashed var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
         <div style="font-size: 32px; color: var(--green); margin-bottom: 10px;"><i class="fa-solid fa-circle-check"></i></div>
-        <h3 style="font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text);">Фискальный чек</h3>
+        <h3 style="font-size: 16px; font-weight: 800; text-transform: uppercase; color: var(--text);">Фискальный чек</h3>
         <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;" id="receipt-tx-id">ID: TXN-000000</p>
-        
         <div style="border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); padding: 14px 0; margin-bottom: 20px; text-align: left; font-size: 13px; display: flex; flex-direction: column; gap: 8px;">
             <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Операция:</span><strong id="receipt-tx-name" style="color: var(--text);">Перевод</strong></div>
             <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Дата проведения:</span><span id="receipt-tx-date" style="color: var(--text);">Сегодня</span></div>
-            <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Статус:</span><span style="color: var(--green); font-weight: 600;">Успешно завершено</span></div>
-            <div style="display: flex; justify-content: space-between; font-size: 15px; margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--border);"><span style="font-weight: 700; color: var(--text);">Сумма платежа:</span><strong id="receipt-tx-amount" style="color: var(--accent); font-weight: 800;">0 ₽</strong></div>
+            <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Статус:</span><span style="color: var(--green); font-weight: 600;">Успешно</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 15px; margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--border);"><span style="font-weight: 700; color: var(--text);">Сумма:</span><strong id="receipt-tx-amount" style="color: var(--accent); font-weight: 800;">0 ₽</strong></div>
         </div>
-
         <div style="display: flex; gap: 10px;">
             <button class="btn btn-sec" style="flex: 1;" onclick="closeModal('modal-receipt')">Закрыть</button>
-            <button class="btn" style="flex: 1; background: var(--text) !important;" onclick="downloadReceiptAsFile()">Скачать файл</button>
+            <button class="btn" style="flex: 1; background: var(--text) !important;" onclick="downloadReceiptAsFile()">Скачать</button>
         </div>
     </div>
 </div>
+
 <script>
-    // Глобальное состояние приложения с привязкой к localStorage
     let state = {
-        phone: '', firstName: '', 
-        balance: 450000, 
-        currentCurrency: 'RUB',
-        stakedBalance: 0,
-        autoRoundingActive: false,
-        transactions: [], 
-        piggies: [], 
-        cards: [],
-        assets: [
-            { id: 'gold', name: 'Токенизированное Золото (XAU)', price: 7400 },
-            { id: 'btc', name: 'Bitcoin Vault (wBTC)', price: 6200000 }
-        ]
+        phone: '', firstName: '', balance: 450000, currentCurrency: 'RUB', stakedBalance: 0, autoRoundingActive: false,
+        transactions: [], piggies: [], cards: [],
+        assets: [{ id: 'gold', name: 'Токенизированное Золото (XAU)', price: 7400 }, { id: 'btc', name: 'Bitcoin Vault (wBTC)', price: 6200000 }]
     };
 
     const currencyRates = { 'RUB': 1, 'USD': 0.011, 'EUR': 0.0105 };
     const currencySymbols = { 'RUB': '₽', 'USD': '$', 'EUR': '€' };
-    let tempPin = '';
-    let pendingTransferData = null;
-    let selectedReceiptIndex = null;
+    let tempPin = '', pendingTransferData = null, selectedReceiptIndex = null;
 
-    // Инициализация системы при загрузке страницы
     function init() {
         const localData = localStorage.getItem('aura_neobank_pro_state');
-        if (localData) {
-            state = { ...state, ...JSON.parse(localData) };
-        } else {
-            // Начальная конфигурация при первом входе
-            state.cards = [
-                { id: 101, style: 'card-style-virtual', badge: 'virtual', number: '4276880011223344' }
-            ];
-            state.transactions = [
-                { id: 'TXN-982142', name: 'Стартовый баланс узла', amount: 450000, type: 'plus', date: '21.05.2026' }
-            ];
+        if (localData) { state = { ...state, ...JSON.parse(localData) }; } 
+        else {
+            state.cards = [{ id: 101, style: 'card-style-virtual', badge: 'virtual', number: '4276880011223344' }];
+            state.transactions = [{ id: 'TXN-982142', name: 'Стартовый баланс узла', amount: 450000, type: 'plus', date: '21.05.2026' }];
         }
-        
-        // Корректное восстановление и инициализация темы оформления
         const savedTheme = localStorage.getItem('aura_theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeUI(savedTheme);
-
         checkAuthStatus();
         updateUI();
-        
-        // Фоновое начисление процентов по стейкингу
         setInterval(simulateDeFiYield, 5000);
     }
 
-    function save() {
-        localStorage.setItem('aura_neobank_pro_state', JSON.stringify(state));
-    }
+    function save() { localStorage.setItem('aura_neobank_pro_state', JSON.stringify(state)); }
 
     function checkAuthStatus() {
         if (!state.phone) {
@@ -532,33 +347,26 @@
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('pincode-screen').style.display = 'flex';
             document.getElementById('main-bank').style.display = 'none';
-            document.getElementById('pin-screen-desc').innerText = 'Введите 4-значный мастер-код';
             document.getElementById('user-name-display').innerText = state.firstName;
             document.getElementById('user-phone-display').innerText = state.phone;
-            document.getElementById('user-avatar-letters').innerText = state.firstName.substring(0, 2).toUpperCase();
+            document.getElementById('user-avatar-letters').innerText = state.firstName.substring(0,2).toUpperCase();
         }
     }
 
     function registerAndGoToPin() {
         const name = document.getElementById('auth-firstname').value.trim();
         const phone = document.getElementById('auth-phone').value.trim();
-        if (!name || !phone) return alert('Пожалуйста, заполните поля авторизации');
-        
-        state.firstName = name;
-        state.phone = phone;
-        
+        if (!name || !phone) return alert('Заполните поля авторизации');
+        state.firstName = name; state.phone = phone;
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('pincode-screen').style.display = 'flex';
-        document.getElementById('pin-screen-desc').innerText = 'Задайте новый 4-значный ПИН-код безопасности';
     }
 
     function pressPin(num) {
         if (tempPin.length >= 4) return;
         tempPin += num;
-        
         const dots = document.querySelectorAll('#pin-dots-container .pin-dot');
         dots.forEach((dot, idx) => idx < tempPin.length ? dot.classList.add('fill') : dot.classList.remove('fill'));
-
         if (tempPin.length === 4) {
             setTimeout(() => {
                 document.getElementById('pincode-screen').style.display = 'none';
@@ -577,365 +385,187 @@
     }
 
     function toggleTheme() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('aura_theme', newTheme);
-        updateThemeUI(newTheme);
+        const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('aura_theme', theme);
+        updateThemeUI(theme);
     }
 
     function updateThemeUI(theme) {
-        const icon = document.getElementById('theme-icon');
-        const text = document.getElementById('theme-text');
-        if (theme === 'dark') {
-            icon.className = 'fa-solid fa-sun';
-            text.innerText = 'Светлая тема';
-        } else {
-            icon.className = 'fa-solid fa-moon';
-            text.innerText = 'Темная тема';
-        }
+        document.getElementById('theme-icon').className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        document.getElementById('theme-text').innerText = theme === 'dark' ? 'Светлая тема' : 'Темная тема';
     }
 
-    function switchTab(tabId, element) {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.nav-bar .nav-item').forEach(item => item.classList.remove('active'));
-        
-        document.getElementById(tabId).classList.add('active');
-        if (element) element.classList.add('active');
+    function switchTab(id, el) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-bar .nav-item').forEach(i => i.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if (el) el.classList.add('active');
     }
 
-    function changeCurrency(currency) {
-        state.currentCurrency = currency;
-        document.getElementById('current-currency-badge').innerText = `${currency} (${currencySymbols[currency]})`;
-        document.getElementById('curr-symbol').innerText = currencySymbols[currency];
-        document.querySelectorAll('.modal-curr-symbol').forEach(el => el.innerText = currencySymbols[currency]);
-        
+    function changeCurrency(curr) {
+        state.currentCurrency = curr;
+        document.getElementById('current-currency-badge').innerText = `${curr} (${currencySymbols[curr]})`;
+        document.getElementById('curr-symbol').innerText = currencySymbols[curr];
+        document.querySelectorAll('.modal-curr-symbol').forEach(el => el.innerText = currencySymbols[curr]);
         updateUI();
     }
 
     function updateUI() {
-        const rate = currencyRates[state.currentCurrency];
-        const computedBalance = state.balance * rate;
+        const computedBalance = state.balance * currencyRates[state.currentCurrency];
         document.getElementById('main-balance').innerText = Math.round(computedBalance).toLocaleString('ru-RU');
         document.getElementById('staked-balance-view').innerText = state.stakedBalance.toLocaleString('ru-RU');
-        
-        // Перерисовка табов валют (управление контрастом активного состояния)
         ['RUB', 'USD', 'EUR'].forEach(c => {
             const btn = document.getElementById(`curr-tab-${c}`);
             if (c === state.currentCurrency) {
-                btn.style.background = 'var(--accent)';
-                btn.style.color = '#ffffff';
-                btn.style.borderColor = 'var(--accent)';
+                btn.style.background = 'var(--accent)'; btn.style.color = '#ffffff';
             } else {
-                btn.style.background = 'var(--panel)';
-                btn.style.color = 'var(--text)';
-                btn.style.borderColor = 'var(--border)';
+                btn.style.background = 'var(--panel)'; btn.style.color = 'var(--text)';
             }
         });
+        renderHistory(); renderCards(); renderPiggies(); renderAssets();
+    }
 
-        renderHistory();
-        renderCards();
-        renderPiggies();
-        renderAssets();
+    function generateTxHtml(tx, index) {
+        const sign = tx.type === 'plus' ? '+' : '-';
+        const color = tx.type === 'plus' ? 'color: var(--green);' : 'color: var(--text);';
+        const amt = tx.amount * currencyRates[state.currentCurrency];
+        return `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--border); cursor:pointer;" onclick="viewDetailedReceipt(${index})">
+                <div>
+                    <div style="font-size:14px; font-weight:600; color:var(--text);">${tx.name}</div>
+                    <div style="font-size:11px; color:var(--text-sub); margin-top:2px;">${tx.date || 'Сегодня'} • <span style="color:var(--accent); font-weight:600;">Чек <i class="fa-solid fa-receipt"></i></span></div>
+                </div>
+                <div style="font-weight:700; font-size:14px; ${color}">${sign} ${Math.round(amt).toLocaleString()} ${currencySymbols[state.currentCurrency]}</div>
+            </div>`;
     }
 
     function renderHistory() {
-        const box = document.getElementById('history-box');
-        box.innerHTML = '';
+        const box = document.getElementById('history-box'); box.innerHTML = '';
         if (state.transactions.length === 0) {
             box.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-sub); font-size:13px;">Операций пока нет</div>';
             return;
         }
-        state.transactions.forEach((tx, index) => {
-            const sign = tx.type === 'plus' ? '+' : '-';
-            const colorStyle = tx.type === 'plus' ? 'color: var(--green);' : 'color: var(--text);';
-            const convertedAmount = tx.amount * currencyRates[state.currentCurrency];
-            
-            box.innerHTML += `
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--border); cursor:pointer;" onclick="viewDetailedReceipt(${index})">
-                    <div>
-                        <div style="font-size:14px; font-weight:600; color:var(--text);">${tx.name}</div>
-                        <div style="font-size:11px; color:var(--text-sub); margin-top:2px;">${tx.date || 'Сегодня'} • <span style="color:var(--accent); font-weight:600;">Чек <i class="fa-solid fa-receipt"></i></span></div>
-                    </div>
-                    <div style="font-weight:700; font-size:14px; ${colorStyle}">${sign} ${Math.round(convertedAmount).toLocaleString()} ${currencySymbols[state.currentCurrency]}</div>
-                </div>`;
-        });
+        state.transactions.slice(0, 3).forEach((tx, idx) => { box.innerHTML += generateTxHtml(tx, idx); });
     }
 
-    function viewDetailedReceipt(index) {
-        selectedReceiptIndex = index;
-        const tx = state.transactions[index];
-        if (!tx) return;
+    function openAllTransactionsModal() {
+        const box = document.getElementById('all-history-box'); box.innerHTML = '';
+        if (state.transactions.length === 0) { box.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-sub);">История пуста</div>'; } 
+        else { state.transactions.forEach((tx, idx) => { box.innerHTML += generateTxHtml(tx, idx); }); }
+        openModal('modal-all-transactions');
+    }
+
+    function viewDetailedReceipt(idx) {
+        selectedReceiptIndex = idx; const tx = state.transactions[idx]; if (!tx) return;
         document.getElementById('receipt-tx-id').innerText = `ID: ${tx.id}`;
         document.getElementById('receipt-tx-name').innerText = tx.name;
         document.getElementById('receipt-tx-date').innerText = tx.date || 'Сегодня';
         document.getElementById('receipt-tx-amount').innerText = `${tx.type === 'plus' ? '+' : '-'} ${tx.amount.toLocaleString()} ₽`;
-        openModal('modal-receipt');
+        closeModal('modal-all-transactions'); openModal('modal-receipt');
     }
 
-    // Скачивание текстового фискального чека на устройство в виде файла
     function downloadReceiptAsFile() {
         if (selectedReceiptIndex === null) return;
-        const tx = state.transactions[selectedReceiptIndex];
-        if (!tx) return;
-
-        // Формирование структуры официального чека
-        const receiptText = `
-=========================================
-          AURA NEOBANK FISCAL RECEIPT
-=========================================
-ID ТРАНЗАКЦИИ:  ${tx.id}
-НАЗНАЧЕНИЕ:     ${tx.name}
-ДАТА И ВРЕМЯ:   ${tx.date || 'В режиме реального времени'}
-СТАТУС:         УСПЕШНО (ПЕРЕВОД ПРОВЕДЕН)
-ТИП ОПЕРАЦИИ:   ${tx.type === 'plus' ? 'ЗАЧИСЛЕНИЕ (+)' : 'СПИСАНИЕ (-)'}
------------------------------------------
-ИТОГОВАЯ СУММА: ${tx.amount.toLocaleString()} RUB (₽)
-=========================================
-СПАСИБО ЧТО ВЫБИРАЕТЕ НАШИ ЦИФРОВЫЕ СЕРВИСЫ
-        `.trim();
-
-        // Создание Blob-объекта файловой структуры браузера для скачивания
-        const blob = new Blob([receiptText], { type: 'text/plain;charset=utf-8' });
+        const tx = state.transactions[selectedReceiptIndex]; if (!tx) return;
+        const receiptText = `=========================================\n          AURA NEOBANK FISCAL RECEIPT\n=========================================\nID TRANSACT:    ${tx.id}\nOPERATION:      ${tx.name}\nDATE-TIME:      ${tx.date || 'Текущее время'}\nSTATUS:         SUCCESS / ВЫПОЛНЕНО\nTYPE:           ${tx.type === 'plus' ? 'ЗАЧИСЛЕНИЕ (+)' : 'СПИСАНИЕ (-)'}\n-----------------------------------------\nAMOUNT:         ${tx.amount.toLocaleString()} RUB (Р)\n=========================================\nСПАСИБО ЧТО ВЫБИРАЕТЕ НАШИ СЕРВИСЫ!`;
+        
+        const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+        const blob = new Blob([bom, receiptText], { type: 'text/plain;charset=utf-8' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = `aura_receipt_${tx.id}.txt`;
-        
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
+        link.download = `receipt_${tx.id}.txt`;
+        document.body.appendChild(link); link.click(); document.body.removeChild(link);
         closeModal('modal-receipt');
     }
 
     function renderCards() {
-        const homeContainer = document.getElementById('home-cards-container');
-        const listContainer = document.getElementById('tab-cards-list-container');
-        homeContainer.innerHTML = '';
-        listContainer.innerHTML = '';
-
+        const hContainer = document.getElementById('home-cards-container');
+        const lContainer = document.getElementById('tab-cards-list-container');
+        hContainer.innerHTML = ''; lContainer.innerHTML = '';
         state.cards.forEach(card => {
-            const styleClass = card.style === 'card-style-plastic' ? 'background: var(--card-black);' : 'background: linear-gradient(135deg, var(--accent), #4c1d95);';
-            const formattedNumber = `•••• •••• •••• ${card.number.substring(12)}`;
-            
-            homeContainer.innerHTML += `
-                <div style="${styleClass} min-width: 240px; width: 240px; height: 130px; border-radius: var(--radius-lg); padding: 16px; color:#ffffff; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:11px; font-weight:700; letter-spacing:0.5px; color:#fff !important;">AURA PRO</span>
-                        <span style="font-size:9px; text-transform:uppercase; background:rgba(255,255,255,0.2); padding:2px 6px; border-radius:4px; color:#fff !important;">${card.badge}</span>
-                    </div>
-                    <div style="font-size:14px; letter-spacing:1.5px; font-family:monospace; color:#fff !important;">${formattedNumber}</div>
-                </div>`;
-            
-            listContainer.innerHTML += `
-                <div class="block-card" style="display:flex; justify-content:space-between; align-items:center; padding:16px;">
-                    <div>
-                        <div style="font-size:14px; font-weight:700; color:var(--text); text-transform:capitalize;">${card.badge === 'plastic' ? 'Черный премиальный пластик' : 'Цифровая виртуальная карта'}</div>
-                        <div style="font-size:12px; color:var(--text-sub); margin-top:2px;">${formattedNumber}</div>
-                    </div>
-                    <span style="font-size:12px; font-weight:600; color:var(--green);">Активна</span>
-                </div>`;
+            const style = card.style === 'card-style-plastic' ? 'background: var(--card-black);' : 'background: linear-gradient(135deg, var(--accent), #4c1d95);';
+            const num = `•••• •••• •••• ${card.number.substring(12)}`;
+            hContainer.innerHTML += `<div style="${style} min-width: 240px; width: 240px; height: 130px; border-radius: var(--radius-lg); padding: 16px; color:#ffffff; display:flex; flex-direction:column; justify-content:space-between; flex-shrink: 0;"><div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:11px; font-weight:700; color:#fff !important;">AURA PRO</span><span style="font-size:9px; text-transform:uppercase; background:rgba(255,255,255,0.2); padding:2px 6px; border-radius:4px; color:#fff !important;">${card.badge}</span></div><div style="font-size:14px; letter-spacing:1.5px; font-family:monospace; color:#fff !important;">${num}</div></div>`;
+            lContainer.innerHTML += `<div class="block-card" style="display:flex; justify-content:space-between; align-items:center; padding:16px;"><div><div style="font-size:14px; font-weight:700; color:var(--text); text-transform:capitalize;">${card.badge === 'plastic' ? 'Черный премиальный пластик' : 'Цифровая карта'}</div><div style="font-size:12px; color:var(--text-sub); margin-top:2px;">${num}</div></div><span style="font-size:12px; font-weight:600; color:var(--green);">Активна</span></div>`;
         });
     }
 
     function issueCard(type) {
-        const newCard = {
-            id: Date.now(),
-            style: type === 'plastic' ? 'card-style-plastic' : 'card-style-virtual',
-            badge: type,
-            number: '4276' + Math.floor(100000000000 + Math.random() * 900000000000).toString()
-        };
-        state.cards.push(newCard);
-        if (type === 'plastic') {
-            alert('Ваш премиальный черный пластик отправлен в производство.');
-        }
+        state.cards.push({ id: Date.now(), style: type === 'plastic' ? 'card-style-plastic' : 'card-style-virtual', badge: type, number: '4276' + Math.floor(100000000000 + Math.random() * 900000000000).toString() });
+        if (type === 'plastic') alert('Черный премиальный пластик отправлен в производство.');
         save(); updateUI();
     }
 
-    function toggleAutoRounding() {
-        state.autoRoundingActive = document.getElementById('round-toggle').checked;
-        const slider = document.getElementById('round-slider-design');
-        slider.style.backgroundColor = state.autoRoundingActive ? 'var(--accent)' : '#ccc';
-        save();
-    }
+    function toggleAutoRounding() { state.autoRoundingActive = document.getElementById('round-toggle').checked; document.getElementById('round-slider-design').style.backgroundColor = state.autoRoundingActive ? 'var(--accent)' : '#ccc'; save(); }
 
     function createPiggyTarget() {
-        const name = document.getElementById('piggy-name').value.trim();
-        const target = parseFloat(document.getElementById('piggy-target').value) || 0;
-        if (!name || target <= 0) return alert('Введите корректные параметры цели');
-        
-        state.piggies.push({ name, target, current: 0 });
-        document.getElementById('piggy-name').value = '';
-        document.getElementById('piggy-target').value = '';
-        save(); updateUI();
+        const name = document.getElementById('piggy-name').value.trim(), target = parseFloat(document.getElementById('piggy-target').value) || 0;
+        if (!name || target <= 0) return alert('Введите параметры цели');
+        state.piggies.push({ name, target, current: 0 }); document.getElementById('piggy-name').value = ''; document.getElementById('piggy-target').value = ''; save(); updateUI();
     }
 
     function renderPiggies() {
-        const container = document.getElementById('piggies-container');
-        container.innerHTML = '';
-        if (state.piggies.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-sub); font-size:13px;">Активных сейфов нет</div>';
-            return;
-        }
-        state.piggies.forEach(piggy => {
-            const percentage = Math.min((piggy.current / piggy.target) * 100, 100);
-            container.innerHTML += `
-                <div class="block-card" style="padding:16px;">
-                    <div style="display:flex; justify-content:space-between; font-size:14px; font-weight:600; margin-bottom:8px; color:var(--text);">
-                        <span>${piggy.name}</span>
-                        <span>${Math.round(piggy.current).toLocaleString()} / ${piggy.target.toLocaleString()} ₽</span>
-                    </div>
-                    <div style="background:var(--bg); height:6px; border-radius:3px; overflow:hidden; border:1px solid var(--border);">
-                        <div style="background:var(--accent); height:100%; width:${percentage}%; transition:width 0.4s ease;"></div>
-                    </div>
-                </div>`;
+        const container = document.getElementById('piggies-container'); container.innerHTML = '';
+        if (state.piggies.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-sub); font-size:13px;">Активных сейфов нет</div>'; return; }
+        state.piggies.forEach(p => {
+            const pct = Math.min((p.current / p.target) * 100, 100);
+            container.innerHTML += `<div class="block-card" style="padding:16px;"><div style="display:flex; justify-content:space-between; font-size:14px; font-weight:600; margin-bottom:8px; color:var(--text);"><span>${p.name}</span><span>${Math.round(p.current).toLocaleString()} / ${p.target.toLocaleString()} ₽</span></div><div style="background:var(--bg); height:6px; border-radius:3px; overflow:hidden; border:1px solid var(--border);"><div style="background:var(--accent); height:100%; width:${pct}%;"></div></div></div>`;
         });
     }
 
     function requestTransferVerification() {
-        const target = document.getElementById('transfer-target').value.trim();
-        const inputAmt = parseFloat(document.getElementById('transfer-input-amt').value) || 0;
-        const currentRate = currencyRates[state.currentCurrency];
-        const rubAmount = inputAmt / currentRate;
-
-        if (!target || inputAmt <= 0) return alert('Заполните параметры перевода');
-        if (rubAmount > state.balance) return alert('Превышен баланс счета');
-
-        pendingTransferData = { target, rubAmount, originalAmount: inputAmt };
-        
-        document.getElementById('transfer-step-inputs').style.display = 'none';
-        document.getElementById('transfer-step-secure').style.display = 'block';
+        const target = document.getElementById('transfer-target').value.trim(), amt = parseFloat(document.getElementById('transfer-input-amt').value) || 0;
+        if (!target || amt <= 0) return alert('Заполните параметры перевода');
+        if ((amt / currencyRates[state.currentCurrency]) > state.balance) return alert('Превышен баланс счета');
+        pendingTransferData = { target, rubAmount: amt / currencyRates[state.currentCurrency] };
+        document.getElementById('transfer-step-inputs').style.display = 'none'; document.getElementById('transfer-step-secure').style.display = 'block';
     }
 
-    function cancelTransferSecure() {
-        document.getElementById('transfer-step-secure').style.display = 'none';
-        document.getElementById('transfer-step-inputs').style.display = 'block';
-        pendingTransferData = null;
-    }
+    function cancelTransferSecure() { document.getElementById('transfer-step-secure').style.display = 'none'; document.getElementById('transfer-step-inputs').style.display = 'block'; pendingTransferData = null; }
 
     function actionTransferSecureExecute() {
-        const codeInput = document.getElementById('transfer-secure-code-input').value.trim();
-        if (codeInput !== "5591") return alert('Неверный проверочный код транзакции');
-
-        let baseAmount = pendingTransferData.rubAmount;
-        let roundingDiff = 0;
-
+        if (document.getElementById('transfer-secure-code-input').value.trim() !== "5591") return alert('Неверный код транзакции');
+        let base = pendingTransferData.rubAmount, rDiff = 0;
         if (state.autoRoundingActive && state.piggies.length > 0) {
-            const nextHundred = Math.ceil(baseAmount / 100) * 100;
-            if (nextHundred !== baseAmount) {
-                roundingDiff = nextHundred - baseAmount;
-                state.piggies[0].current += roundingDiff;
-                state.transactions.unshift({
-                    id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
-                    name: `Автоокругление: ${state.piggies[0].name}`,
-                    amount: roundingDiff,
-                    type: 'minus',
-                    date: 'Сегодня'
-                });
-            }
+            const nextH = Math.ceil(base / 100) * 100;
+            if (nextH !== base) { rDiff = nextH - base; state.piggies[0].current += rDiff; state.transactions.unshift({ id: 'TXN-' + Math.floor(100000 + Math.random() * 900000), name: `Автоокругление: ${state.piggies[0].name}`, amount: rDiff, type: 'minus', date: 'Сегодня' }); }
         }
-
-        state.balance -= (baseAmount + roundingDiff);
-        state.transactions.unshift({
-            id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
-            name: `Перевод на ${pendingTransferData.target}`,
-            amount: baseAmount,
-            type: 'minus',
-            date: 'Сегодня'
-        });
-
-        document.getElementById('transfer-target').value = '';
-        document.getElementById('transfer-input-amt').value = '';
-        document.getElementById('transfer-secure-code-input').value = '';
-        
-        cancelTransferSecure();
-        closeModal('modal-transfer');
-        save(); updateUI();
+        state.balance -= (base + rDiff);
+        state.transactions.unshift({ id: 'TXN-' + Math.floor(100000 + Math.random() * 900000), name: `Перевод на ${pendingTransferData.target}`, amount: base, type: 'minus', date: 'Сегодня' });
+        document.getElementById('transfer-target').value = ''; document.getElementById('transfer-input-amt').value = ''; document.getElementById('transfer-secure-code-input').value = '';
+        cancelTransferSecure(); closeModal('modal-transfer'); save(); updateUI();
     }
 
     function actionDeposit() {
-        const inputVal = parseFloat(document.getElementById('deposit-input').value) || 0;
-        if (inputVal <= 0) return;
-        const rubAmount = inputVal / currencyRates[state.currentCurrency];
-        
-        state.balance += rubAmount;
-        state.transactions.unshift({
-            id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
-            name: 'Внесение наличных',
-            amount: rubAmount,
-            type: 'plus',
-            date: 'Сегодня'
-        });
-        
-        document.getElementById('deposit-input').value = '';
-        closeModal('modal-deposit');
-        save(); updateUI();
+        const val = parseFloat(document.getElementById('deposit-input').value) || 0; if (val <= 0) return;
+        const rub = val / currencyRates[state.currentCurrency]; state.balance += rub;
+        state.transactions.unshift({ id: 'TXN-' + Math.floor(100000 + Math.random() * 900000), name: 'Внесение наличных', amount: rub, type: 'plus', date: 'Сегодня' });
+        document.getElementById('deposit-input').value = ''; closeModal('modal-deposit'); save(); updateUI();
     }
 
     function recalcSplitValue() {
-        const total = parseFloat(document.getElementById('split-total-sum').value) || 0;
-        const persons = parseInt(document.getElementById('split-total-persons').value) || 2;
-        document.getElementById('split-per-person-view').innerText = Math.round(total / persons).toLocaleString('ru-RU');
+        const total = parseFloat(document.getElementById('split-total-sum').value) || 0, p = parseInt(document.getElementById('split-total-persons').value) || 2;
+        document.getElementById('split-per-person-view').innerText = Math.round(total / p).toLocaleString('ru-RU');
     }
 
-    function executeSplitBillGeneration() {
-        const total = parseFloat(document.getElementById('split-total-sum').value) || 0;
-        if (total <= 0) return alert('Введите сумму счета');
-        alert('Запросы распределения отправлены. Ссылки скопированы.');
-        closeModal('modal-split');
-    }
+    function executeSplitBillGeneration() { if ((parseFloat(document.getElementById('split-total-sum').value) || 0) <= 0) return alert('Введите сумму'); alert('Запросы скопированы в буфер.'); closeModal('modal-split'); }
 
     function actionStakeCrypto() {
-        const usdtAmt = parseFloat(document.getElementById('stake-input-amt').value) || 0;
-        const rubCost = usdtAmt * 92; 
-        if (usdtAmt <= 0) return;
-        if (rubCost > state.balance) return alert('Недостаточно обеспечения');
-
-        state.balance -= rubCost;
-        state.stakedBalance += usdtAmt;
-        state.transactions.unshift({
-            id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
-            name: 'DeFi Стейкинг контракта',
-            amount: rubCost,
-            type: 'minus',
-            date: 'Сегодня'
-        });
-        document.getElementById('stake-input-amt').value = '';
-        save(); updateUI();
+        const amt = parseFloat(document.getElementById('stake-input-amt').value) || 0, cost = amt * 92; if (amt <= 0) return;
+        if (cost > state.balance) return alert('Недостаточно средств');
+        state.balance -= cost; state.stakedBalance += amt;
+        state.transactions.unshift({ id: 'TXN-' + Math.floor(100000 + Math.random() * 900000), name: 'DeFi Стейкинг', amount: cost, type: 'minus', date: 'Сегодня' });
+        document.getElementById('stake-input-amt').value = ''; save(); updateUI();
     }
 
-    function simulateDeFiYield() {
-        if (state.stakedBalance > 0) {
-            state.stakedBalance = parseFloat((state.stakedBalance * 1.0001).toFixed(4));
-            if (document.getElementById('tab-invest').classList.contains('active')) {
-                document.getElementById('staked-balance-view').innerText = state.stakedBalance.toLocaleString('ru-RU');
-            }
-        }
-    }
+    function simulateDeFiYield() { if (state.stakedBalance > 0) { state.stakedBalance = parseFloat((state.stakedBalance * 1.0001).toFixed(4)); if (document.getElementById('tab-invest').classList.contains('active')) { document.getElementById('staked-balance-view').innerText = state.stakedBalance.toLocaleString('ru-RU'); } } }
 
-    function actionTakeP2PLoan() {
-        state.balance += 15000;
-        state.transactions.unshift({
-            id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
-            name: 'P2P Пул Кредит',
-            amount: 15000,
-            type: 'plus',
-            date: 'Сегодня'
-        });
-        save(); updateUI();
-        alert('Кредитные лимиты зачислены.');
-    }
+    function actionTakeP2PLoan() { state.balance += 15000; state.transactions.unshift({ id: 'TXN-' + Math.floor(100000 + Math.random() * 900000), name: 'P2P Займ', amount: 15000, type: 'plus', date: 'Сегодня' }); save(); updateUI(); alert('Займ одобрен.'); }
 
     function renderAssets() {
-        const container = document.getElementById('assets-container');
-        container.innerHTML = '';
-        state.assets.forEach(asset => {
-            container.innerHTML += `
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius-lg);">
-                    <span style="font-size:13px; font-weight:600; color:var(--text);">${asset.name}</span>
-                    <strong style="font-size:13px; color:var(--accent);">${asset.price.toLocaleString()} ₽</strong>
-                </div>`;
-        });
+        const container = document.getElementById('assets-container'); container.innerHTML = '';
+        state.assets.forEach(a => { container.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius-lg);"><span style="font-size:13px; font-weight:600; color:var(--text);">${a.name}</span><strong style="font-size:13px; color:var(--accent);">${a.price.toLocaleString()} ₽</strong></div>`; });
     }
 
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
