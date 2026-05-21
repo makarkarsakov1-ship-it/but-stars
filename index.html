@@ -107,7 +107,7 @@
         .nav-item i { font-size: 18px; margin-bottom: 4px; }
         .nav-item.active { color: var(--accent); }
 
-        /* Кнопки с жестким контролем цвета текста для темной темы */
+        /* Фикс кнопок: Жесткий контроль цвета текста для темной темы */
         .btn { 
             background: var(--accent); 
             border: none; 
@@ -126,21 +126,21 @@
         }
         .btn:active { transform: scale(0.98); opacity: 0.95; }
         
-        /* Исправленная вторичная кнопка (теперь текст идеально виден в темной теме) */
+        /* Фикс вторичной кнопки: контраст текста 100% */
         .btn-sec { 
             background: var(--border); 
             color: var(--text) !important; 
             border: 1px solid var(--border); 
         }
         
-        /* Исправленные кнопки выбора валют */
+        /* Фикс валютных кнопок */
         .curr-btn {
             flex: 1; 
             background: var(--panel); 
             border: 1px solid var(--border); 
             padding: 10px; 
             border-radius: 12px; 
-            color: var(--text); 
+            color: var(--text) !important; 
             font-size: 12px; 
             font-weight: 600; 
             cursor: pointer;
@@ -167,7 +167,7 @@
 <div id="auth-screen">
     <div class="block-card" style="width: 90%; max-width: 360px; text-align: center;">
         <div style="font-size: 40px; margin-bottom: 16px; color: var(--accent);">💠</div>
-        <h2 style="margin-bottom: 6px; font-weight: 800; letter-spacing: -0.5px;">AURA NEOBANK</h2>
+        <h2 style="margin-bottom: 6px; font-weight: 800; letter-spacing: -0.5px; color: var(--text);">AURA NEOBANK</h2>
         <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 24px;">Вход в персональный финансовый узел</p>
         
         <div class="input-group">
@@ -183,7 +183,7 @@
 </div>
 
 <div id="pincode-screen" style="display: none;">
-    <h3 id="pincode-title" style="margin-bottom: 6px; font-weight: 700;">Вход в AURA Vault</h3>
+    <h3 id="pincode-title" style="margin-bottom: 6px; font-weight: 700; color: var(--text);">Вход в AURA Vault</h3>
     <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 32px;" id="pin-screen-desc">Задайте ПИН-код из 4 цифр</p>
     <div class="pin-dot-wrap" id="pin-dots-container">
         <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
@@ -201,7 +201,8 @@
         <button class="pin-btn" style="background:transparent; border:none;" onclick="clearPin()"><i class="fa-solid fa-delete-left"></i></button>
         <button class="pin-btn" onclick="pressPin(0)">0</button>
     </div>
-</div><div class="container" id="main-bank">
+</div>
+<div class="container" id="main-bank">
     <div id="tab-home" class="tab-content active">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -266,7 +267,7 @@
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
                 <div>
                     <h4 style="font-size: 15px; font-weight: 700; color: var(--text);">Премиальный черный пластик</h4>
-                    <p style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">Тактильный матовый слой, доставка лично в руки</p>
+                    <p style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">Матовый слой, физическая доставка</p>
                 </div>
                 <span style="font-size: 11px; background: rgba(16,185,129,0.1); color: var(--green); padding: 2px 8px; border-radius: 8px; font-weight: 700;">NEW</span>
             </div>
@@ -277,7 +278,7 @@
                 </div>
                 <div style="font-size: 16px; letter-spacing: 2px; font-family: monospace; color: #fff !important;">•••• •••• •••• 0000</div>
             </div>
-            <button class="btn btn-sec" style="font-weight: 700;" onclick="issueCard('plastic')">Заказать черную пластиковую карту</button>
+            <button class="btn btn-sec" style="font-weight: 700;" onclick="issueCard('plastic')">Заказать пластиковую карту</button>
         </div>
 
         <div class="block-card" style="border-left: 4px solid var(--accent);">
@@ -416,7 +417,7 @@
                 <div id="secure-sms-view" style="font-size: 26px; font-weight: 800; color: var(--accent); letter-spacing: 4px; margin-top: 4px;">5591</div>
             </div>
             <div class="input-group" style="text-align: left;">
-                <label>Введите 4-значный код из СМАС/Пуш</label>
+                <label>Введите 4-значный код подтверждения</label>
                 <input type="number" id="transfer-secure-code-input" class="form-ctrl" placeholder="0000" style="text-align: center; font-size: 20px; letter-spacing: 4px;">
             </div>
             <div style="display: flex; gap: 10px;">
@@ -672,7 +673,7 @@
         openModal('modal-receipt');
     }
 
-    // Реальное скачивание текстового фискального чека на устройство в виде файла
+    // Скачивание текстового фискального чека на устройство в виде файла
     function downloadReceiptAsFile() {
         if (selectedReceiptIndex === null) return;
         const tx = state.transactions[selectedReceiptIndex];
@@ -694,7 +695,7 @@ ID ТРАНЗАКЦИИ:  ${tx.id}
 СПАСИБО ЧТО ВЫБИРАЕТЕ НАШИ ЦИФРОВЫЕ СЕРВИСЫ
         `.trim();
 
-        // Создание Blob-объекта файловой структуры браузера
+        // Создание Blob-объекта файловой структуры браузера для скачивания
         const blob = new Blob([receiptText], { type: 'text/plain;charset=utf-8' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
@@ -746,7 +747,7 @@ ID ТРАНЗАКЦИИ:  ${tx.id}
         };
         state.cards.push(newCard);
         if (type === 'plastic') {
-            alert('Ваш премиальный черный пластик отправлен в производство. С вами свяжется курьер службы доставки.');
+            alert('Ваш премиальный черный пластик отправлен в производство.');
         }
         save(); updateUI();
     }
