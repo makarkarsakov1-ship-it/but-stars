@@ -1,0 +1,19 @@
+# Системные файлы операционных систем
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Настройки графических редакторов и IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Логи ошибок
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
