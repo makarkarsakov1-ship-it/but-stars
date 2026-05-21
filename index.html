@@ -19,16 +19,16 @@
             --card-black: linear-gradient(135deg, #1e1e24 0%, #0a0a0c 100%);
             --radius-xl: 24px;
             --radius-lg: 16px;
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         [data-theme="dark"] {
             --bg: #090a0f;
-            --panel: #12141c;
-            --border: #1e2230;
+            --panel: #141622;
+            --border: #222738;
             --text: #f8fafc;
             --text-sub: #94a3b8;
-            --accent-light: #1e152e;
+            --accent-light: #23193a;
         }
 
         * { 
@@ -107,13 +107,14 @@
         .nav-item i { font-size: 18px; margin-bottom: 4px; }
         .nav-item.active { color: var(--accent); }
 
+        /* Кнопки с жестким контролем цвета текста для темной темы */
         .btn { 
             background: var(--accent); 
             border: none; 
             padding: 14px 20px; 
             border-radius: var(--radius-lg); 
-            color: #fff; 
-            font-size: 15px; 
+            color: #ffffff !important; 
+            font-size: 14px; 
             font-weight: 600; 
             cursor: pointer; 
             width: 100%; 
@@ -121,11 +122,30 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            gap: 8px; 
+            gap: 6px; 
         }
         .btn:active { transform: scale(0.98); opacity: 0.95; }
-        .btn-sec { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
-        .btn-danger { background: rgba(239, 68, 66, 0.1); color: var(--red); border: 1px solid rgba(239, 68, 66, 0.2); }
+        
+        /* Исправленная вторичная кнопка (теперь текст идеально виден в темной теме) */
+        .btn-sec { 
+            background: var(--border); 
+            color: var(--text) !important; 
+            border: 1px solid var(--border); 
+        }
+        
+        /* Исправленные кнопки выбора валют */
+        .curr-btn {
+            flex: 1; 
+            background: var(--panel); 
+            border: 1px solid var(--border); 
+            padding: 10px; 
+            border-radius: 12px; 
+            color: var(--text); 
+            font-size: 12px; 
+            font-weight: 600; 
+            cursor: pointer;
+            transition: var(--transition);
+        }
 
         .input-group { margin-bottom: 16px; width: 100%; }
         .input-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -181,18 +201,17 @@
         <button class="pin-btn" style="background:transparent; border:none;" onclick="clearPin()"><i class="fa-solid fa-delete-left"></i></button>
         <button class="pin-btn" onclick="pressPin(0)">0</button>
     </div>
-</div>
-<div class="container" id="main-bank">
+</div><div class="container" id="main-bank">
     <div id="tab-home" class="tab-content active">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 40px; height: 40px; background: var(--accent-light); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;" id="user-avatar-letters">AA</div>
+                <div style="width: 40px; height: 40px; background: var(--accent-light); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; border: 1px solid var(--border);" id="user-avatar-letters">AA</div>
                 <div>
-                    <div style="font-size: 14px; font-weight: 700;" id="user-name-display">Пользователь</div>
+                    <div style="font-size: 14px; font-weight: 700; color: var(--text);" id="user-name-display">Пользователь</div>
                     <div style="font-size: 11px; color: var(--text-sub);" id="user-phone-display">+7 (999) 000-00-00</div>
                 </div>
             </div>
-            <button class="btn btn-sec" style="width: auto; padding: 10px 14px; border-radius: 30px; font-size: 13px;" onclick="toggleTheme()">
+            <button class="btn-sec" style="width: auto; padding: 10px 16px; border-radius: 30px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;" onclick="toggleTheme()">
                 <i class="fa-solid fa-moon" id="theme-icon"></i> <span id="theme-text">Темная тема</span>
             </button>
         </div>
@@ -202,149 +221,151 @@
                 <span style="font-size: 13px; color: var(--text-sub); font-weight: 500;">Доступный остаток</span>
                 <span id="current-currency-badge" style="font-size: 11px; font-weight: 700; background: var(--accent-light); color: var(--accent); padding: 2px 8px; border-radius: 8px;">RUB (₽)</span>
             </div>
-            <div style="font-size: 36px; font-weight: 700; margin: 8px 0; letter-spacing: -0.8px; color: var(--text);">
+            <div style="font-size: 36px; font-weight: 700; margin: 10px 0; letter-spacing: -0.8px; color: var(--text);">
                 <span id="main-balance">0</span> <span id="curr-symbol">₽</span>
             </div>
             
             <div style="display: flex; gap: 8px; margin-top: 16px;">
-                <button class="form-ctrl" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 600; text-align: center; cursor: pointer; border-radius: 12px;" id="curr-tab-RUB" onclick="changeCurrency('RUB')">RUB ₽</button>
-                <button class="form-ctrl" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 600; text-align: center; cursor: pointer; border-radius: 12px;" id="curr-tab-USD" onclick="changeCurrency('USD')">USD $</button>
-                <button class="form-ctrl" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 600; text-align: center; cursor: pointer; border-radius: 12px;" id="curr-tab-EUR" onclick="changeCurrency('EUR')">EUR €</button>
+                <button class="curr-btn" id="curr-tab-RUB" onclick="changeCurrency('RUB')">RUB ₽</button>
+                <button class="curr-btn" id="curr-tab-USD" onclick="changeCurrency('USD')">USD $</button>
+                <button class="curr-btn" id="curr-tab-EUR" onclick="changeCurrency('EUR')">EUR €</button>
             </div>
             
-            <div style="display: flex; gap: 12px; margin-top: 20px;">
-                <button class="btn" style="flex: 1; font-size: 13px; padding: 12px;" onclick="openModal('modal-deposit')">
-                    <i class="fa-solid fa-wallet"></i> Пополнить
-                </button>
-                <button class="btn" style="flex: 1; font-size: 13px; padding: 12px;" onclick="openModal('modal-transfer')">
-                    <i class="fa-solid fa-paper-plane"></i> Перевести
-                </button>
-                <button class="btn btn-sec" style="flex: 1; font-size: 13px; padding: 12px;" onclick="openModal('modal-split')">
-                    <i class="fa-solid fa-arrows-split-up-and-left"></i> Сплит
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <button class="btn" style="flex: 1;" onclick="openModal('modal-deposit')">
+                        <i class="fa-solid fa-wallet"></i> Пополнить
+                    </button>
+                    <button class="btn" style="flex: 1;" onclick="openModal('modal-transfer')">
+                        <i class="fa-solid fa-paper-plane"></i> Перевести
+                    </button>
+                </div>
+                <button class="btn btn-sec" style="width: 100%;" onclick="openModal('modal-split')">
+                    <i class="fa-solid fa-arrows-split-up-and-left"></i> Разделить счет (Сплит)
                 </button>
             </div>
         </div>
 
         <div style="margin: 20px 4px 12px; font-size: 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center;">
-            <span>Мои банковские карты</span>
+            <span style="color: var(--text);">Мои карты</span>
             <span style="font-size: 12px; color: var(--accent); cursor: pointer; font-weight: 600;" onclick="switchTab('tab-cards', document.getElementById('nav-item-cards'))">Управление</span>
         </div>
         
         <div style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none;" id="home-cards-container">
             </div>
 
-        <div style="margin: 20px 4px 12px; font-size: 16px; font-weight: 700;">Последние транзакции</div>
-        <div class="block-card" id="history-box" style="padding: 4px 16px; max-height: 240px; overflow-y: auto;">
+        <div style="margin: 24px 4px 12px; font-size: 16px; font-weight: 700; color: var(--text);">Последние транзакции</div>
+        <div class="block-card" id="history-box" style="padding: 4px 16px; max-height: 260px; overflow-y: auto;">
             </div>
     </div>
 
     <div id="tab-cards" class="tab-content">
-        <div style="margin: 0 4px 16px; font-size: 20px; font-weight: 800;">Управление картами</div>
+        <div style="margin: 0 4px 16px; font-size: 20px; font-weight: 800; color: var(--text);">Управление картами</div>
         
-        <div class="block-card" style="border-left: 4px solid #111;">
+        <div class="block-card" style="border-left: 4px solid #111115;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
                 <div>
-                    <h4 style="font-size: 15px; font-weight: 700; color: var(--text);">Премиальная пластиковая карта</h4>
-                    <p style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">Матовый черный дизайн, курьерская доставка</p>
+                    <h4 style="font-size: 15px; font-weight: 700; color: var(--text);">Премиальный черный пластик</h4>
+                    <p style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">Тактильный матовый слой, доставка лично в руки</p>
                 </div>
                 <span style="font-size: 11px; background: rgba(16,185,129,0.1); color: var(--green); padding: 2px 8px; border-radius: 8px; font-weight: 700;">NEW</span>
             </div>
-            <div style="background: var(--card-black); height: 130px; border-radius: 16px; margin-bottom: 14px; padding: 20px; color: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 16px rgba(0,0,0,0.15);">
+            <div style="background: var(--card-black); height: 135px; border-radius: 16px; margin-bottom: 14px; padding: 20px; color: #ffffff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.2);">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 13px; font-weight: 700; letter-spacing: 1px;">AURA PREMIUM</span>
+                    <span style="font-size: 13px; font-weight: 700; letter-spacing: 1px; color: #fff !important;">AURA BLACK PREMIUM</span>
                     <i class="fa-solid fa-bolt" style="color: #eab308;"></i>
                 </div>
-                <div style="font-size: 16px; letter-spacing: 2px;">•••• •••• •••• 0000</div>
+                <div style="font-size: 16px; letter-spacing: 2px; font-family: monospace; color: #fff !important;">•••• •••• •••• 0000</div>
             </div>
-            <button class="btn btn-sec" style="border-color: var(--text); font-weight: 700;" onclick="issueCard('plastic')">Заказать черную пластиковую карту</button>
+            <button class="btn btn-sec" style="font-weight: 700;" onclick="issueCard('plastic')">Заказать черную пластиковую карту</button>
         </div>
 
         <div class="block-card" style="border-left: 4px solid var(--accent);">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
                 <div>
-                    <h4 style="font-size: 15px; font-weight: 700;">Цифровая виртуальная карта</h4>
-                    <p style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">Мгновенный выпуск для безопасных покупок</p>
+                    <h4 style="font-size: 15px; font-weight: 700; color: var(--text);">Цифровая виртуальная карта</h4>
+                    <p style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">Мгновенные безопасные интернет-расчеты</p>
                 </div>
             </div>
-            <button class="btn" onclick="issueCard('virtual')">Выпустить вирт-кату мгновенно</button>
+            <button class="btn" onclick="issueCard('virtual')">Выпустить цифровую карту</button>
         </div>
 
-        <div style="margin: 20px 4px 12px; font-size: 15px; font-weight: 700; color: var(--text-sub);">Ваш активный портфель карт</div>
+        <div style="margin: 24px 4px 12px; font-size: 14px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px;">Ваш портфель карт</div>
         <div style="display: flex; flex-direction: column; gap: 12px;" id="tab-cards-list-container">
             </div>
     </div>
     <div id="tab-piggy" class="tab-content">
-        <div style="margin: 0 4px 16px; font-size: 20px; font-weight: 800;">Смарт-копилки</div>
+        <div style="margin: 0 4px 16px; font-size: 20px; font-weight: 800; color: var(--text);">Смарт-копилки</div>
         
         <div class="block-card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <h4 style="font-size: 15px; font-weight: 700;"><i class="fa-solid fa-calculator" style="color: var(--accent); margin-right: 6px;"></i>Автоокругление транзакций</h4>
+                <h4 style="font-size: 15px; font-weight: 700; color: var(--text);"><i class="fa-solid fa-calculator" style="color: var(--accent); margin-right: 6px;"></i>Автоокругление трат</h4>
                 <label class="switch" style="position: relative; display: inline-block; width: 44px; height: 24px;">
                     <input type="checkbox" id="round-toggle" onchange="toggleAutoRounding()" style="opacity: 0; width: 0; height: 0;">
-                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 24px;" id="round-slider-design"></span>
+                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .2s; border-radius: 24px;" id="round-slider-design"></span>
                 </label>
             </div>
             <p style="font-size: 12px; color: var(--text-sub); line-height: 1.4;">
-                Автоматически округляет любые ваши траты и переводы до ближайших 100 рублей, а «сдачу» мгновенно переводит в первую активную копилку.
+                Автоматически округляет ваши расходы до ближайших 100 рублей. «Сдача» мгновенно отправляется в ваш накопительный фонд.
             </p>
         </div>
 
         <div class="block-card">
-            <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 14px;">Открыть сейф-цель</h4>
+            <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 14px; color: var(--text);">Открыть новый сейф-цель</h4>
             <div class="input-group">
                 <label>Название цели</label>
-                <input type="text" id="piggy-name" class="form-ctrl" placeholder="Инвестиционный резерв">
+                <input type="text" id="piggy-name" class="form-ctrl" placeholder="Например: Капитал">
             </div>
             <div class="input-group">
                 <label>Целевая сумма (₽)</label>
-                <input type="number" id="piggy-target" class="form-ctrl" placeholder="100000">
+                <input type="number" id="piggy-target" class="form-ctrl" placeholder="50000">
             </div>
-            <button class="btn" onclick="createPiggyTarget()">Активировать алгоритм накопления</button>
+            <button class="btn" onclick="createPiggyTarget()">Активировать сейф</button>
         </div>
 
-        <div style="margin: 20px 4px 12px; font-size: 15px; font-weight: 700; color: var(--text-sub);">Ваши целевые накопительные фонды</div>
+        <div style="margin: 24px 4px 12px; font-size: 14px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px;">Активные накопительные фонды</div>
         <div id="piggies-container" style="display: flex; flex-direction: column; gap: 12px;">
             </div>
     </div>
 
     <div id="tab-invest" class="tab-content">
-        <div style="margin: 0 4px 16px; font-size: 20px; font-weight: 800;">DeFi & P2P кредитование</div>
+        <div style="margin: 0 4px 16px; font-size: 20px; font-weight: 800; color: var(--text);">DeFi & P2P кредитование</div>
         
-        <div class="block-card" style="background: linear-gradient(135deg, #0f766e 0%, #115e59 100%); color: #ffffff;">
+        <div class="block-card" style="background: linear-gradient(135deg, #0f766e 0%, #115e59 100%); color: #ffffff; border: none;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                 <div>
-                    <div style="font-size: 12px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px;">Ликвидный стейкинг</div>
-                    <div style="font-size: 32px; font-weight: 700; margin: 6px 0 2px;"><span id="staked-balance-view">0</span> USDT</div>
-                    <div style="font-size: 11px; opacity: 0.9;" id="staking-yield-text"><i class="fa-solid fa-chart-line"></i> Доходность: +14.2% APY фиксировано</div>
+                    <div style="font-size: 11px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; color: #fff !important;">Ликвидный стейкинг</div>
+                    <div style="font-size: 32px; font-weight: 700; margin: 6px 0 2px; color: #fff !important;"><span id="staked-balance-view" style="color: #fff !important;">0</span> USDT</div>
+                    <div style="font-size: 11px; opacity: 0.9; color: #fff !important;"><i class="fa-solid fa-chart-line"></i> Ставка: +14.2% APY фиксировано</div>
                 </div>
-                <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff;">
                     <i class="fa-solid fa-cubes"></i>
                 </div>
             </div>
         </div>
 
         <div class="block-card">
-            <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">USDT Смарт-Контракт</h4>
-            <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 14px;">Покупка и автоматическое зачисление из рублевого баланса.</p>
+            <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--text);">USDT Смарт-Контракт</h4>
+            <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 14px;">Конвертация и мгновенное зачисление с рублевого счета.</p>
             <div style="display: flex; gap: 10px;">
-                <input type="number" id="stake-input-amt" class="form-ctrl" placeholder="Количество USDT" style="flex: 2; padding: 12px;">
+                <input type="number" id="stake-input-amt" class="form-ctrl" placeholder="Сумма USDT" style="flex: 2; padding: 12px;">
                 <button class="btn" style="flex: 1; margin: 0; padding: 12px;" onclick="actionStakeCrypto()">В стейкинг</button>
             </div>
         </div>
 
-        <div style="margin: 24px 4px 12px; font-size: 16px; font-weight: 700;">Пул P2P-кредитования</div>
+        <div style="margin: 24px 4px 12px; font-size: 16px; font-weight: 700; color: var(--text);">Пул P2P-ликвидности</div>
         <div class="block-card">
             <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 12px; color: var(--text-sub);">
-                <span>Доступный лимит займа: 75 000 ₽</span>
-                <span>Ставка пула: 6.5% фиксировано</span>
+                <span>Лимит кредитования: 75 000 ₽</span>
+                <span>Ставка: 6.5% фиксировано</span>
             </div>
-            <p style="font-size: 12px; line-height: 1.4; margin-bottom: 14px;">
-                Займы выдаются мгновенно напрямую из децентрализованных ликвидных резервов платформы без проверки кредитных историй.
+            <p style="font-size: 12px; line-height: 1.4; margin-bottom: 14px; color: var(--text-sub);">
+                Займы выдаются мгновенно напрямую из резервов платформы без бумажной волокиты и проверок истории.
             </p>
-            <button class="btn btn-sec" style="border-color: var(--border); font-weight: 700;" onclick="actionTakeP2PLoan()">Взять мгновенный P2P-займ (15 000 ₽)</button>
+            <button class="btn btn-sec" style="font-weight: 700;" onclick="actionTakeP2PLoan()">Получить P2P-займ (15 000 ₽)</button>
         </div>
 
-        <div style="margin: 24px 4px 12px; font-size: 16px; font-weight: 700;">Рыночные маркеры</div>
+        <div style="margin: 24px 4px 12px; font-size: 16px; font-weight: 700; color: var(--text);">Рыночные котировки</div>
         <div id="assets-container" style="display: flex; flex-direction: column; gap: 10px;">
             </div>
     </div>
@@ -356,94 +377,94 @@
         <div class="nav-item" onclick="switchTab('tab-invest', this)"><i class="fa-solid fa-chart-pie"></i><span>DeFi / P2P</span></div>
     </nav>
 </div>
-<div class="modal-bg" id="modal-deposit" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: flex-end; z-index: 11000;" onclick="if(event.target===this) closeModal('modal-deposit')">
+<div class="modal-bg" id="modal-deposit" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: flex-end; z-index: 11000;" onclick="if(event.target===this) closeModal('modal-deposit')">
     <div class="block-card" style="width: 100%; max-width: 480px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin-bottom: 0; padding-bottom: 34px; background: var(--panel);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <h3 style="font-size: 18px; font-weight: 700;">Пополнить мультивалютный счет</h3>
-            <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-sub);" onclick="closeModal('modal-deposit')"></i>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="font-size: 18px; font-weight: 700; color: var(--text);">Пополнить счет</h3>
+            <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-sub); font-size: 18px;" onclick="closeModal('modal-deposit')"></i>
         </div>
         <div class="input-group">
             <label>Сумма внесения (<span class="modal-curr-symbol">₽</span>)</label>
-            <input type="number" id="deposit-input" class="form-ctrl" placeholder="15000">
+            <input type="number" id="deposit-input" class="form-ctrl" placeholder="10000">
         </div>
         <button class="btn" onclick="actionDeposit()">Внести средства</button>
     </div>
 </div>
 
-<div class="modal-bg" id="modal-transfer" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: flex-end; z-index: 11000;" onclick="if(event.target===this) closeModal('modal-transfer')">
+<div class="modal-bg" id="modal-transfer" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: flex-end; z-index: 11000;" onclick="if(event.target===this) closeModal('modal-transfer')">
     <div class="block-card" style="width: 100%; max-width: 480px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin-bottom: 0; padding-bottom: 34px; background: var(--panel);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <h3 style="font-size: 18px; font-weight: 700;">Перевод по номеру телефона</h3>
-            <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-sub);" onclick="closeModal('modal-transfer')"></i>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="font-size: 18px; font-weight: 700; color: var(--text);">Перевод по номеру</h3>
+            <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-sub); font-size: 18px;" onclick="closeModal('modal-transfer')"></i>
         </div>
         
         <div id="transfer-step-inputs">
             <div class="input-group">
                 <label>Номер телефона получателя</label>
-                <input type="text" id="transfer-target" class="form-ctrl" placeholder="+7 (999) 111-22-33">
+                <input type="text" id="transfer-target" class="form-ctrl" placeholder="+7 (999) 123-45-67">
             </div>
             <div class="input-group">
-                <label>Сумма отправления (<span class="modal-curr-symbol">₽</span>)</label>
+                <label>Сумма перевода (<span class="modal-curr-symbol">₽</span>)</label>
                 <input type="number" id="transfer-input-amt" class="form-ctrl" placeholder="5000">
             </div>
             <button class="btn" onclick="requestTransferVerification()">Запросить код подтверждения</button>
         </div>
 
         <div id="transfer-step-secure" style="display: none; text-align: center; margin-top: 10px;">
-            <div style="background: var(--accent-light); padding: 12px; border-radius: var(--radius-lg); margin-bottom: 16px;">
-                <span style="font-size: 12px; color: var(--accent); font-weight: 600;">Одноразовый пуш-код транзакции:</span>
-                <div id="secure-sms-view" style="font-size: 26px; font-weight: 800; color: var(--accent); letter-spacing: 4px; margin-top: 2px;">4402</div>
+            <div style="background: var(--accent-light); padding: 14px; border-radius: var(--radius-lg); margin-bottom: 16px; border: 1px solid var(--border);">
+                <span style="font-size: 12px; color: var(--text-sub); font-weight: 600;">Временный код транзакции:</span>
+                <div id="secure-sms-view" style="font-size: 26px; font-weight: 800; color: var(--accent); letter-spacing: 4px; margin-top: 4px;">5591</div>
             </div>
-            <div class="input-group">
-                <label style="text-align: left;">Введите 4-значный код безопасности</label>
+            <div class="input-group" style="text-align: left;">
+                <label>Введите 4-значный код из СМАС/Пуш</label>
                 <input type="number" id="transfer-secure-code-input" class="form-ctrl" placeholder="0000" style="text-align: center; font-size: 20px; letter-spacing: 4px;">
             </div>
             <div style="display: flex; gap: 10px;">
                 <button class="btn btn-sec" style="flex: 1;" onclick="cancelTransferSecure()">Назад</button>
-                <button class="btn" style="flex: 2; background: var(--green);" onclick="actionTransferSecureExecute()">Подтвердить & Отправить</button>
+                <button class="btn" style="flex: 2; background: var(--green) !important;" onclick="actionTransferSecureExecute()">Подтвердить операцию</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal-bg" id="modal-split" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: flex-end; z-index: 11000;" onclick="if(event.target===this) closeModal('modal-split')">
+<div class="modal-bg" id="modal-split" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: flex-end; z-index: 11000;" onclick="if(event.target===this) closeModal('modal-split')">
     <div class="block-card" style="width: 100%; max-width: 480px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin-bottom: 0; padding-bottom: 34px; background: var(--panel);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-            <h3 style="font-size: 18px; font-weight: 700;"><i class="fa-solid fa-arrows-split-up-and-left"></i> Сплит чека (Разделение счёта)</h3>
-            <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-sub);" onclick="closeModal('modal-split')"></i>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="font-size: 18px; font-weight: 700; color: var(--text);"><i class="fa-solid fa-arrows-split-up-and-left"></i> Сплит счета</h3>
+            <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-sub); font-size: 18px;" onclick="closeModal('modal-split')"></i>
         </div>
         <div class="input-group">
-            <label>Общая сумма к оплате в ресторане / за покупку (₽)</label>
-            <input type="number" id="split-total-sum" class="form-ctrl" placeholder="4500" oninput="recalcSplitValue()">
+            <label>Общая сумма счета к разделению (₽)</label>
+            <input type="number" id="split-total-sum" class="form-ctrl" placeholder="3000" oninput="recalcSplitValue()">
         </div>
         <div class="input-group">
-            <label>Количество участников (включая вас)</label>
-            <input type="number" id="split-total-persons" class="form-ctrl" value="3" min="2" oninput="recalcSplitValue()">
+            <label>Количество участников</label>
+            <input type="number" id="split-total-persons" class="form-ctrl" value="2" min="2" oninput="recalcSplitValue()">
         </div>
-        <div style="background: var(--bg); padding: 14px; border-radius: var(--radius-lg); margin-bottom: 18px; font-size: 14px; display: flex; justify-content: space-between;">
-            <span>Доля каждого участника:</span>
-            <strong style="color: var(--accent);"><span id="split-per-person-view">1 500</span> ₽</strong>
+        <div style="background: var(--bg); padding: 14px; border-radius: var(--radius-lg); margin-bottom: 18px; font-size: 14px; display: flex; justify-content: space-between; border: 1px solid var(--border);">
+            <span style="color: var(--text-sub);">С каждого человека:</span>
+            <strong style="color: var(--accent); font-weight: 700;"><span id="split-per-person-view">1 500</span> ₽</strong>
         </div>
-        <button class="btn" onclick="executeSplitBillGeneration()">Сформировать линки запросов</button>
+        <button class="btn" onclick="executeSplitBillGeneration()">Создать ссылки на оплату</button>
     </div>
 </div>
 
-<div class="modal-bg" id="modal-receipt" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 12000;" onclick="if(event.target===this) closeModal('modal-receipt')">
-    <div class="block-card" style="width: 90%; max-width: 380px; text-align: center; background: var(--panel); border: 2px dashed var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+<div class="modal-bg" id="modal-receipt" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 12000;" onclick="if(event.target===this) closeModal('modal-receipt')">
+    <div class="block-card" style="width: 90%; max-width: 380px; text-align: center; background: var(--panel); border: 2px dashed var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
         <div style="font-size: 32px; color: var(--green); margin-bottom: 10px;"><i class="fa-solid fa-circle-check"></i></div>
-        <h3 style="font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Электронный чек</h3>
-        <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;" id="receipt-tx-id">ID операции: TXN-000000</p>
+        <h3 style="font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text);">Фискальный чек</h3>
+        <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;" id="receipt-tx-id">ID: TXN-000000</p>
         
-        <div style="border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); padding: 14px 0; margin-bottom: 16px; text-align: left; font-size: 13px; display: flex; flex-direction: column; gap: 8px;">
-            <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Тип платежа:</span><strong id="receipt-tx-name">Перевод</strong></div>
-            <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Дата & Время:</span><span id="receipt-tx-date">Сегодня</span></div>
-            <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Статус операции:</span><span style="color: var(--green); font-weight: 600;">Успешно проведено</span></div>
-            <div style="display: flex; justify-content: space-between; font-size: 16px; margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--border);"><span style="font-weight: 700;">Итоговая сумма:</span><strong id="receipt-tx-amount" style="color: var(--accent);">0 ₽</strong></div>
+        <div style="border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); padding: 14px 0; margin-bottom: 20px; text-align: left; font-size: 13px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Операция:</span><strong id="receipt-tx-name" style="color: var(--text);">Перевод</strong></div>
+            <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Дата проведения:</span><span id="receipt-tx-date" style="color: var(--text);">Сегодня</span></div>
+            <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Статус:</span><span style="color: var(--green); font-weight: 600;">Успешно завершено</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 15px; margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--border);"><span style="font-weight: 700; color: var(--text);">Сумма платежа:</span><strong id="receipt-tx-amount" style="color: var(--accent); font-weight: 800;">0 ₽</strong></div>
         </div>
 
         <div style="display: flex; gap: 10px;">
-            <button class="btn btn-sec" style="flex: 1; padding: 10px; font-size: 13px;" onclick="closeModal('modal-receipt')">Закрыть</button>
-            <button class="btn" style="flex: 1; padding: 10px; font-size: 13px; background: var(--text); color: #fff;" onclick="downloadReceiptSimulate()">Скачать PDF чек</button>
+            <button class="btn btn-sec" style="flex: 1;" onclick="closeModal('modal-receipt')">Закрыть</button>
+            <button class="btn" style="flex: 1; background: var(--text) !important;" onclick="downloadReceiptAsFile()">Скачать файл</button>
         </div>
     </div>
 </div>
@@ -451,7 +472,7 @@
     // Глобальное состояние приложения с привязкой к localStorage
     let state = {
         phone: '', firstName: '', 
-        balance: 450000, // Исходный баланс в рублях
+        balance: 450000, 
         currentCurrency: 'RUB',
         stakedBalance: 0,
         autoRoundingActive: false,
@@ -467,16 +488,16 @@
     const currencyRates = { 'RUB': 1, 'USD': 0.011, 'EUR': 0.0105 };
     const currencySymbols = { 'RUB': '₽', 'USD': '$', 'EUR': '€' };
     let tempPin = '';
-    let isRegistering = false;
     let pendingTransferData = null;
+    let selectedReceiptIndex = null;
 
-    // Инициализация при загрузке страницы
+    // Инициализация системы при загрузке страницы
     function init() {
         const localData = localStorage.getItem('aura_neobank_pro_state');
         if (localData) {
             state = { ...state, ...JSON.parse(localData) };
         } else {
-            // Дефолтные карты при первой сессии
+            // Начальная конфигурация при первом входе
             state.cards = [
                 { id: 101, style: 'card-style-virtual', badge: 'virtual', number: '4276880011223344' }
             ];
@@ -485,7 +506,7 @@
             ];
         }
         
-        // Восстановление темы оформления
+        // Корректное восстановление и инициализация темы оформления
         const savedTheme = localStorage.getItem('aura_theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeUI(savedTheme);
@@ -493,7 +514,7 @@
         checkAuthStatus();
         updateUI();
         
-        // Симуляция начисления процентов по DeFi-стейкингу в реальном времени
+        // Фоновое начисление процентов по стейкингу
         setInterval(simulateDeFiYield, 5000);
     }
 
@@ -513,8 +534,6 @@
             document.getElementById('pin-screen-desc').innerText = 'Введите 4-значный мастер-код';
             document.getElementById('user-name-display').innerText = state.firstName;
             document.getElementById('user-phone-display').innerText = state.phone;
-            
-            // Генерация инициалов для аватара
             document.getElementById('user-avatar-letters').innerText = state.firstName.substring(0, 2).toUpperCase();
         }
     }
@@ -526,7 +545,6 @@
         
         state.firstName = name;
         state.phone = phone;
-        isRegistering = true;
         
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('pincode-screen').style.display = 'flex';
@@ -557,7 +575,6 @@
         dots.forEach((dot, idx) => idx < tempPin.length ? dot.classList.add('fill') : dot.classList.remove('fill'));
     }
 
-    // Переключение тем оформления
     function toggleTheme() {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -586,26 +603,12 @@
         if (element) element.classList.add('active');
     }
 
-    // Мультивалютный процессинг
     function changeCurrency(currency) {
         state.currentCurrency = currency;
         document.getElementById('current-currency-badge').innerText = `${currency} (${currencySymbols[currency]})`;
         document.getElementById('curr-symbol').innerText = currencySymbols[currency];
-        
         document.querySelectorAll('.modal-curr-symbol').forEach(el => el.innerText = currencySymbols[currency]);
         
-        ['RUB', 'USD', 'EUR'].forEach(c => {
-            const btn = document.getElementById(`curr-tab-${c}`);
-            if (c === currency) {
-                btn.style.background = 'var(--accent)';
-                btn.style.color = '#fff';
-                btn.style.borderColor = 'var(--accent)';
-            } else {
-                btn.style.background = 'var(--bg)';
-                btn.style.color = 'var(--text-sub)';
-                btn.style.borderColor = 'var(--border)';
-            }
-        });
         updateUI();
     }
 
@@ -615,6 +618,20 @@
         document.getElementById('main-balance').innerText = Math.round(computedBalance).toLocaleString('ru-RU');
         document.getElementById('staked-balance-view').innerText = state.stakedBalance.toLocaleString('ru-RU');
         
+        // Перерисовка табов валют (управление контрастом активного состояния)
+        ['RUB', 'USD', 'EUR'].forEach(c => {
+            const btn = document.getElementById(`curr-tab-${c}`);
+            if (c === state.currentCurrency) {
+                btn.style.background = 'var(--accent)';
+                btn.style.color = '#ffffff';
+                btn.style.borderColor = 'var(--accent)';
+            } else {
+                btn.style.background = 'var(--panel)';
+                btn.style.color = 'var(--text)';
+                btn.style.borderColor = 'var(--border)';
+            }
+        });
+
         renderHistory();
         renderCards();
         renderPiggies();
@@ -630,32 +647,63 @@
         }
         state.transactions.forEach((tx, index) => {
             const sign = tx.type === 'plus' ? '+' : '-';
-            const colorClass = tx.type === 'plus' ? 'color: var(--green);' : 'color: var(--text);';
+            const colorStyle = tx.type === 'plus' ? 'color: var(--green);' : 'color: var(--text);';
             const convertedAmount = tx.amount * currencyRates[state.currentCurrency];
             
             box.innerHTML += `
-                <div class="list-row" style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--border); cursor:pointer;" onclick="viewDetailedReceipt(${index})">
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--border); cursor:pointer;" onclick="viewDetailedReceipt(${index})">
                     <div>
-                        <div style="font-size:14px; font-weight:600;">${tx.name}</div>
-                        <div style="font-size:11px; color:var(--text-sub); margin-top:2px;">${tx.date || 'Сегодня'} • <span style="color:var(--accent);">Чек <i class="fa-solid fa-receipt"></i></span></div>
+                        <div style="font-size:14px; font-weight:600; color:var(--text);">${tx.name}</div>
+                        <div style="font-size:11px; color:var(--text-sub); margin-top:2px;">${tx.date || 'Сегодня'} • <span style="color:var(--accent); font-weight:600;">Чек <i class="fa-solid fa-receipt"></i></span></div>
                     </div>
-                    <div style="font-weight:700; font-size:14px; ${colorClass}">${sign} ${Math.round(convertedAmount).toLocaleString()} ${currencySymbols[state.currentCurrency]}</div>
+                    <div style="font-weight:700; font-size:14px; ${colorStyle}">${sign} ${Math.round(convertedAmount).toLocaleString()} ${currencySymbols[state.currentCurrency]}</div>
                 </div>`;
         });
     }
 
     function viewDetailedReceipt(index) {
+        selectedReceiptIndex = index;
         const tx = state.transactions[index];
         if (!tx) return;
-        document.getElementById('receipt-tx-id').innerText = `ID операции: ${tx.id || 'TXN-' + Math.floor(100000 + Math.random() * 900000)}`;
+        document.getElementById('receipt-tx-id').innerText = `ID: ${tx.id}`;
         document.getElementById('receipt-tx-name').innerText = tx.name;
-        document.getElementById('receipt-tx-date').innerText = tx.date || 'В режиме реального времени';
+        document.getElementById('receipt-tx-date').innerText = tx.date || 'Сегодня';
         document.getElementById('receipt-tx-amount').innerText = `${tx.type === 'plus' ? '+' : '-'} ${tx.amount.toLocaleString()} ₽`;
         openModal('modal-receipt');
     }
 
-    function downloadReceiptSimulate() {
-        alert('Электронный чек скомпилирован в буфер обмена системы и сохранен в хранилище /Downloads/ в формате PDF.');
+    // Реальное скачивание текстового фискального чека на устройство в виде файла
+    function downloadReceiptAsFile() {
+        if (selectedReceiptIndex === null) return;
+        const tx = state.transactions[selectedReceiptIndex];
+        if (!tx) return;
+
+        // Формирование структуры официального чека
+        const receiptText = `
+=========================================
+          AURA NEOBANK FISCAL RECEIPT
+=========================================
+ID ТРАНЗАКЦИИ:  ${tx.id}
+НАЗНАЧЕНИЕ:     ${tx.name}
+ДАТА И ВРЕМЯ:   ${tx.date || 'В режиме реального времени'}
+СТАТУС:         УСПЕШНО (ПЕРЕВОД ПРОВЕДЕН)
+ТИП ОПЕРАЦИИ:   ${tx.type === 'plus' ? 'ЗАЧИСЛЕНИЕ (+)' : 'СПИСАНИЕ (-)'}
+-----------------------------------------
+ИТОГОВАЯ СУММА: ${tx.amount.toLocaleString()} RUB (₽)
+=========================================
+СПАСИБО ЧТО ВЫБИРАЕТЕ НАШИ ЦИФРОВЫЕ СЕРВИСЫ
+        `.trim();
+
+        // Создание Blob-объекта файловой структуры браузера
+        const blob = new Blob([receiptText], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `aura_receipt_${tx.id}.txt`;
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
         closeModal('modal-receipt');
     }
 
@@ -669,26 +717,23 @@
             const styleClass = card.style === 'card-style-plastic' ? 'background: var(--card-black);' : 'background: linear-gradient(135deg, var(--accent), #4c1d95);';
             const formattedNumber = `•••• •••• •••• ${card.number.substring(12)}`;
             
-            const cardHtml = `
-                <div style="${styleClass} min-width: 240px; width: 240px; height: 130px; border-radius: var(--radius-lg); padding: 16px; color:#fff; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.06); flex-shrink: 0;">
+            homeContainer.innerHTML += `
+                <div style="${styleClass} min-width: 240px; width: 240px; height: 130px; border-radius: var(--radius-lg); padding: 16px; color:#ffffff; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0;">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:11px; font-weight:700; letter-spacing:0.5px; opacity:0.9;">AURA PRO</span>
-                        <span style="font-size:9px; text-transform:uppercase; background:rgba(255,255,255,0.2); padding:2px 6px; border-radius:4px;">${card.badge}</span>
+                        <span style="font-size:11px; font-weight:700; letter-spacing:0.5px; color:#fff !important;">AURA PRO</span>
+                        <span style="font-size:9px; text-transform:uppercase; background:rgba(255,255,255,0.2); padding:2px 6px; border-radius:4px; color:#fff !important;">${card.badge}</span>
                     </div>
-                    <div style="font-size:14px; letter-spacing:1.5px; font-family:monospace;">${formattedNumber}</div>
+                    <div style="font-size:14px; letter-spacing:1.5px; font-family:monospace; color:#fff !important;">${formattedNumber}</div>
                 </div>`;
             
-            homeContainer.innerHTML += cardHtml;
-            
-            const extendedListHtml = `
+            listContainer.innerHTML += `
                 <div class="block-card" style="display:flex; justify-content:space-between; align-items:center; padding:16px;">
                     <div>
-                        <div style="font-size:14px; font-weight:700; text-transform:capitalize;">${card.badge === 'plastic' ? 'Черный пластик MasterCard' : 'Цифровая карта Visa'}</div>
+                        <div style="font-size:14px; font-weight:700; color:var(--text); text-transform:capitalize;">${card.badge === 'plastic' ? 'Черный премиальный пластик' : 'Цифровая виртуальная карта'}</div>
                         <div style="font-size:12px; color:var(--text-sub); margin-top:2px;">${formattedNumber}</div>
                     </div>
                     <span style="font-size:12px; font-weight:600; color:var(--green);">Активна</span>
                 </div>`;
-            listContainer.innerHTML += extendedListHtml;
         });
     }
 
@@ -701,7 +746,7 @@
         };
         state.cards.push(newCard);
         if (type === 'plastic') {
-            alert('Заявка на выпуск премиальной пластиковой карты отправлена курьерской службе. Карта отобразится в вашем портфеле как активная.');
+            alert('Ваш премиальный черный пластик отправлен в производство. С вами свяжется курьер службы доставки.');
         }
         save(); updateUI();
     }
@@ -716,7 +761,7 @@
     function createPiggyTarget() {
         const name = document.getElementById('piggy-name').value.trim();
         const target = parseFloat(document.getElementById('piggy-target').value) || 0;
-        if (!name || target <= 0) return alert('Введите корректные параметры накопительной цели');
+        if (!name || target <= 0) return alert('Введите корректные параметры цели');
         
         state.piggies.push({ name, target, current: 0 });
         document.getElementById('piggy-name').value = '';
@@ -728,39 +773,36 @@
         const container = document.getElementById('piggies-container');
         container.innerHTML = '';
         if (state.piggies.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-sub); font-size:13px;">Активных целей накопления нет</div>';
+            container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-sub); font-size:13px;">Активных сейфов нет</div>';
             return;
         }
         state.piggies.forEach(piggy => {
             const percentage = Math.min((piggy.current / piggy.target) * 100, 100);
             container.innerHTML += `
                 <div class="block-card" style="padding:16px;">
-                    <div style="display:flex; justify-content:space-between; font-size:14px; font-weight:600; margin-bottom:8px;">
+                    <div style="display:flex; justify-content:space-between; font-size:14px; font-weight:600; margin-bottom:8px; color:var(--text);">
                         <span>${piggy.name}</span>
                         <span>${Math.round(piggy.current).toLocaleString()} / ${piggy.target.toLocaleString()} ₽</span>
                     </div>
-                    <div style="background:var(--bg); height:6px; border-radius:3px; overflow:hidden;">
+                    <div style="background:var(--bg); height:6px; border-radius:3px; overflow:hidden; border:1px solid var(--border);">
                         <div style="background:var(--accent); height:100%; width:${percentage}%; transition:width 0.4s ease;"></div>
                     </div>
                 </div>`;
         });
     }
 
-    // Двухфакторная верификация перед проведением транзакции
     function requestTransferVerification() {
         const target = document.getElementById('transfer-target').value.trim();
         const inputAmt = parseFloat(document.getElementById('transfer-input-amt').value) || 0;
         const currentRate = currencyRates[state.currentCurrency];
-        const rubAmount = inputAmt / currentRate; // Перевод в рубли для проверки лимита
+        const rubAmount = inputAmt / currentRate;
 
-        if (!target || inputAmt <= 0) return alert('Проверьте корректность реквизитов платежа');
-        if (rubAmount > state.balance) return alert('Превышен доступный лимит средств на счете');
+        if (!target || inputAmt <= 0) return alert('Заполните параметры перевода');
+        if (rubAmount > state.balance) return alert('Превышен баланс счета');
 
         pendingTransferData = { target, rubAmount, originalAmount: inputAmt };
         
-        // Показ окна генерации одноразового кода безопасности
         document.getElementById('transfer-step-inputs').style.display = 'none';
-        document.getElementById('secure-sms-view').innerText = "5591"; // Фиксированная эмуляция защитного пуша
         document.getElementById('transfer-step-secure').style.display = 'block';
     }
 
@@ -772,12 +814,11 @@
 
     function actionTransferSecureExecute() {
         const codeInput = document.getElementById('transfer-secure-code-input').value.trim();
-        if (codeInput !== "5591") return alert('Неверный код подтверждения безопасности транзакции');
+        if (codeInput !== "5591") return alert('Неверный проверочный код транзакции');
 
         let baseAmount = pendingTransferData.rubAmount;
         let roundingDiff = 0;
 
-        // Расчет автоокругления трат, если флаг включен и создана хотя бы одна копилка
         if (state.autoRoundingActive && state.piggies.length > 0) {
             const nextHundred = Math.ceil(baseAmount / 100) * 100;
             if (nextHundred !== baseAmount) {
@@ -785,7 +826,7 @@
                 state.piggies[0].current += roundingDiff;
                 state.transactions.unshift({
                     id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
-                    name: `Автоокругление в копилку: ${state.piggies[0].name}`,
+                    name: `Автоокругление: ${state.piggies[0].name}`,
                     amount: roundingDiff,
                     type: 'minus',
                     date: 'Сегодня'
@@ -809,7 +850,6 @@
         cancelTransferSecure();
         closeModal('modal-transfer');
         save(); updateUI();
-        alert('Транзакция успешно верифицирована распределенной сетью и исполнена.');
     }
 
     function actionDeposit() {
@@ -820,7 +860,7 @@
         state.balance += rubAmount;
         state.transactions.unshift({
             id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
-            name: 'Пополнение баланса через шлюз',
+            name: 'Внесение наличных',
             amount: rubAmount,
             type: 'plus',
             date: 'Сегодня'
@@ -839,23 +879,22 @@
 
     function executeSplitBillGeneration() {
         const total = parseFloat(document.getElementById('split-total-sum').value) || 0;
-        if (total <= 0) return alert('Введите корректную сумму чека');
-        alert('Запросы на разделение оплаты сгенерированы. Ссылки скопированы в буфер обмена для отправки участникам.');
+        if (total <= 0) return alert('Введите сумму счета');
+        alert('Запросы распределения отправлены. Ссылки скопированы.');
         closeModal('modal-split');
     }
 
-    // Модуль DeFi-лайт
     function actionStakeCrypto() {
         const usdtAmt = parseFloat(document.getElementById('stake-input-amt').value) || 0;
-        const rubCost = usdtAmt * 92; // Фиксированный внутренний курс симуляции
+        const rubCost = usdtAmt * 92; 
         if (usdtAmt <= 0) return;
-        if (rubCost > state.balance) return alert('Недостаточно средств для обеспечения смарт-контракта стейкинга');
+        if (rubCost > state.balance) return alert('Недостаточно обеспечения');
 
         state.balance -= rubCost;
         state.stakedBalance += usdtAmt;
         state.transactions.unshift({
             id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
-            name: 'Перевод в DeFi ликвидный стейкинг',
+            name: 'DeFi Стейкинг контракта',
             amount: rubCost,
             type: 'minus',
             date: 'Сегодня'
@@ -866,7 +905,6 @@
 
     function simulateDeFiYield() {
         if (state.stakedBalance > 0) {
-            // Начисление доходности в реальном времени (+0.01% каждые 5 секунд)
             state.stakedBalance = parseFloat((state.stakedBalance * 1.0001).toFixed(4));
             if (document.getElementById('tab-invest').classList.contains('active')) {
                 document.getElementById('staked-balance-view').innerText = state.stakedBalance.toLocaleString('ru-RU');
@@ -878,13 +916,13 @@
         state.balance += 15000;
         state.transactions.unshift({
             id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
-            name: 'Зачисление P2P Микрозайма',
+            name: 'P2P Пул Кредит',
             amount: 15000,
             type: 'plus',
             date: 'Сегодня'
         });
         save(); updateUI();
-        alert('Сумма займа 15 000 ₽ успешно зачислена из ликвидных резервов P2P пула на ваш рублевый баланс.');
+        alert('Кредитные лимиты зачислены.');
     }
 
     function renderAssets() {
@@ -892,8 +930,8 @@
         container.innerHTML = '';
         state.assets.forEach(asset => {
             container.innerHTML += `
-                <div class="list-row" style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius-lg);">
-                    <span style="font-size:13px; font-weight:600;">${asset.name}</span>
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius-lg);">
+                    <span style="font-size:13px; font-weight:600; color:var(--text);">${asset.name}</span>
                     <strong style="font-size:13px; color:var(--accent);">${asset.price.toLocaleString()} ₽</strong>
                 </div>`;
         });
