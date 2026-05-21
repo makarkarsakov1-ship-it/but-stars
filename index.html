@@ -244,8 +244,7 @@
             <button class="pin-btn" onclick="pressPin(0)">0</button>
         </div>
     </div>
-</div>
-<div class="container" id="main-bank">
+</div><div class="container" id="main-bank">
     <div id="tab-home" class="tab-content active">
         <div class="profile-header-area">
             <div class="profile-btn-trigger" onclick="openModal('modal-profile-view')">
@@ -452,138 +451,6 @@
         <div class="nav-item" onclick="switchTab('tab-settings', this)"><i class="fa-solid fa-gears"></i><span>Еще</span></div>
     </nav>
 </div>
-<div class="modal-bg" id="modal-full-history" onclick="if(event.target===this) closeModal('modal-full-history')">
-    <div class="glass">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <h3 style="font-size: 18px; font-weight: 800;">Глобальный аудит операций</h3>
-            <i class="fa-solid fa-circle-xmark" style="font-size:20px; color:var(--text-sub); cursor:pointer;" onclick="closeModal('modal-full-history')"></i>
-        </div>
-        <div class="input-group">
-            <input type="text" id="tx-search-input" class="form-ctrl" placeholder="Поиск по названию транзакции..." oninput="filterFullHistory()">
-        </div>
-        <div id="full-history-render-zone" style="max-height: 50vh; overflow-y: auto; padding-right:4px;"></div>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-tx-details" onclick="if(event.target===this) closeModal('modal-tx-details')">
-    <div class="glass" style="text-align:center;">
-        <div style="display:flex; justify-content:flex-end;"><i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeModal('modal-tx-details')"></i></div>
-        <div id="tx-det-icon" style="font-size:36px; margin: 10px 0;">🧾</div>
-        <h3 id="tx-det-title" style="font-weight:800; font-size:18px;">Транзакция</h3>
-        <p id="tx-det-date" style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">Дата</p>
-        <div class="glass" style="background:var(--bg); border:none; padding:14px; margin-bottom:16px;">
-            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px;"><span>Статус</span><strong style="color:var(--green);">Успешно проведено</strong></div>
-            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px;"><span>Хеш-код сети</span><span style="font-family:monospace; font-size:11px;" id="tx-det-hash">0x8a...f3</span></div>
-            <div style="display:flex; justify-content:space-between; font-size:13px;"><span>Категория</span><strong id="tx-det-category">Финансы</strong></div>
-        </div>
-        <div style="font-size:28px; font-weight:800; margin-bottom:20px;" id="tx-det-amount">0 ₽</div>
-        <button class="btn btn-sec" id="tx-det-action-btn" onclick="closeModal('modal-tx-details')">Сформировать PDF квитанцию</button>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-split-check" onclick="if(event.target===this) closeModal('modal-split-check')">
-    <div class="glass">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:10px;">Разделить ресторанный чек / счет</h3>
-        <div class="input-group"><label>Сумма общего чека (₽)</label><input type="number" id="split-total" class="form-ctrl" placeholder="5000"></div>
-        <div class="input-group"><label>Количество участников</label><input type="number" id="split-count" class="form-ctrl" placeholder="4"></div>
-        <button class="btn" onclick="executeSplitCheck()">Рассчитать и выставить ссылки</button>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-ai-advisor" onclick="if(event.target===this) closeModal('modal-ai-advisor')">
-    <div class="glass">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;"><i class="fa-solid fa-brain" style="color:var(--blue);"></i> Нейро-советник AURA</h3>
-        <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">Генеративная модель на основе вашего паттерна транзакций.</p>
-        <div class="glass" style="background:var(--bg); border:none; max-height:200px; overflow-y:auto; font-size:13px; line-height:1.4;" id="ai-response-box">
-            Нажмите кнопку ниже, чтобы запустить сканирование кошелька...
-        </div>
-        <button class="btn" style="background:var(--blue); margin-top:10px;" onclick="generateAiAdvice()">Собрать финансовые инсайты</button>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-quests" onclick="if(event.target===this) closeModal('modal-quests')">
-    <div class="glass">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:10px;">🏆 Доступные финансовые подвиги</h3>
-        <div id="quests-render-zone"></div>
-        <h4 style="font-size:13px; font-weight:700; margin:14px 0 6px;">Знаки отличия (Ачивки)</h4>
-        <div class="badge-grid" id="badges-zone"></div>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-defi-lend" onclick="if(event.target===this) closeModal('modal-defi-lend')">
-    <div class="glass">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:10px;">Внести ликвидность в пул займов</h3>
-        <div class="input-group"><label>Сумма займа (₽)</label><input type="number" id="lend-amount" class="form-ctrl" placeholder="10000"></div>
-        <div class="input-group"><label>Желаемый процент доходности (% APR)</label><input type="number" id="lend-apr" class="form-ctrl" placeholder="24" value="24"></div>
-        <button class="btn" style="background:var(--green);" onclick="actionDefiLend()">Разместить предложение ордера</button>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-defi-borrow" onclick="if(event.target===this) closeModal('modal-defi-borrow')">
-    <div class="glass">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:10px;">Взять экспресс-кредит из смарт-пула</h3>
-        <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">Мгновенное одобрение под залог активов биржи. Ставка: 18% годовых.</p>
-        <div class="input-group"><label>Требуемая сумма (₽)</label><input type="number" id="borrow-amount" class="form-ctrl" placeholder="5000"></div>
-        <button class="btn" onclick="actionDefiBorrow()">Акцептовать смарт-контракт займа</button>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-card-details" onclick="if(event.target===this) closeModal('modal-card-details')">
-    <div class="glass">
-        <h3 style="margin-bottom: 12px; font-size: 16px; font-weight: 700;">Криптоконтейнер реквизитов</h3>
-        <div id="modal-card-render-zone"></div>
-        <div class="glass" style="background:var(--bg); border:none; font-size:13px;">
-            <div class="list-row" style="padding:8px 0;"><span>Номер карты</span><strong id="det-card-number">0000 0000 0000 0000</strong></div>
-            <div class="list-row" style="padding:8px 0;"><span>Владелец</span><strong id="det-card-holder">IVAN IVANOV</strong></div>
-            <div class="list-row" style="padding:8px 0;"><span>Срок</span><strong id="det-card-expiry">12/30</strong></div>
-            <div class="list-row" style="padding:8px 0;"><span>CVC код безопасности</span><strong id="det-card-cvc" style="color:var(--accent);">000</strong></div>
-        </div>
-        <button class="btn" onclick="closeModal('modal-card-details')">Запереть реквизиты</button>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-profile-view" onclick="if(event.target===this) closeModal('modal-profile-view')">
-    <div class="glass">
-        <div style="text-align: center; margin-bottom: 16px;">
-            <div style="width: 48px; height: 48px; background: var(--accent-light); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 20px;"><i class="fa-solid fa-user-astronaut"></i></div>
-            <h3 style="font-weight: 700;" id="profile-modal-fullname">Профиль</h3>
-            <p style="font-size: 12px; color: var(--text-sub);" id="profile-modal-phone">+7...</p>
-            <p style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">Нода обслуживания: <strong id="profile-status-string" style="color:var(--accent);">Стандарт</strong></p>
-        </div>
-        <h4 style="font-size: 12px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; color:var(--text-sub);">Выбор уровня KYC ноды</h4>
-        <div class="glass verify-tier-card" id="tier-card-standard" onclick="selectTier('standard')" style="padding:10px; cursor:pointer; margin-bottom:8px;"><div style="display:flex; justify-content:space-between; font-weight:600; font-size:13px;"><span>Нода «Стандарт»</span></div><p style="font-size:11px; color:var(--text-sub);">Хранение до 15 000 ₽. ИИ-модули урезаны.</p></div>
-        <div class="glass verify-tier-card" id="tier-card-plus" onclick="selectTier('plus')" style="padding:10px; cursor:pointer; margin-bottom:8px;"><div style="display:flex; justify-content:space-between; font-weight:600; font-size:13px;"><span>Нода «Плюс»</span></div><p style="font-size:11px; color:var(--text-sub);">Лимит кошелька повышен до 500 000 ₽. Доступ к P2P пулу.</p></div>
-        <div class="glass verify-tier-card" id="tier-card-maximal" onclick="selectTier('maximal')" style="padding:10px; cursor:pointer; margin-bottom:8px;"><div style="display:flex; justify-content:space-between; font-weight:600; font-size:13px;"><span>Нода «Максимальная»</span></div><p style="font-size:11px; color:var(--text-sub);">Полный безлимит. Сниженная комиссия пулов до 0%.</p></div>
-        <button class="btn" onclick="confirmTierUpgrade()" style="margin-top:10px;">Сохранить параметры ноды</button>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-deposit" onclick="if(event.target===this) closeModal('modal-deposit')">
-    <div class="glass">
-        <h3 style="margin-bottom: 6px; font-size: 16px; font-weight: 700;">Пополнение ликвидности</h3>
-        <div class="input-group"><label>Сумма внесения (₽)</label><input type="number" id="deposit-input" class="form-ctrl" placeholder="1000" oninput="calculateDepositFee()"></div>
-        <div style="font-size: 12px; margin-bottom: 12px; color: var(--text-sub);">Депозит с учетом шлюза (1%): <strong id="deposit-fee-calc" style="color:var(--text);">0</strong> ₽</div>
-        <button class="btn" onclick="actionDeposit()">Провести инжект</button>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-transfer" onclick="if(event.target===this) closeModal('modal-transfer')">
-    <div class="glass">
-        <h3 style="margin-bottom: 6px; font-size: 16px; font-weight: 700;">Адресный перевод</h3>
-        <div class="input-group"><label>Телефон получателя в сети</label><input type="text" id="transfer-target" class="form-ctrl" placeholder="+7..."></div>
-        <div class="input-group"><label>Объем перевода (₽)</label><input type="number" id="transfer-input" class="form-ctrl" placeholder="0" oninput="calculateTransferFee()"></div>
-        <div style="font-size: 12px; margin-bottom: 12px; color: var(--text-sub);">Сессионный сбор (1.5%): <strong id="transfer-fee-calc" style="color:var(--red);">0</strong> ₽</div>
-        <button class="btn" onclick="actionTransfer()">Подписать транзакцию</button>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-refill-piggy" onclick="if(event.target===this) closeModal('modal-refill-piggy')">
-    <div class="glass">
-        <h3 style="font-size: 16px; font-weight: 700; margin-bottom:12px;">Контрибьюция в смарт-цель</h3>
-        <div class="input-group"><label>Объем транша (₽)</label><input type="number" id="piggy-refill-input" class="form-ctrl" placeholder="0"></div>
-        <button class="btn" onclick="actionRefillPiggy()">Распределить в цель</button>
-    </div>
-</div>
 <script>
     let state = {
         phone: '', firstName: '', lastName: '', pin: '', balance: 750000, investBalance: 0, initialInvestCost: 0,
@@ -610,6 +477,7 @@
 
     let tempPin = ''; let currentSmsCode = ''; let activePiggyId = null; let globalUsersDB = {}; let selectedTierTemp = 'standard';
     let currentExchangeRate = 1; let currentExchangeSign = '₽';
+    let selectedTxIdForReceipt = null; // Для отслеживания чека текущей модалки
 
     function init() {
         const globalDBRaw = localStorage.getItem('aura_users_db_v2');
@@ -775,13 +643,91 @@
 
     function viewTxDetails(id) {
         let tx = state.transactions.find(t => t.id === id); if(!tx) return;
+        selectedTxIdForReceipt = id; // Сохраняем ID для генерации чека
+        
         document.getElementById('tx-det-title').innerText = tx.name;
         document.getElementById('tx-det-date').innerText = tx.date;
         document.getElementById('tx-det-amount').innerText = `${tx.type==='plus'?'+':'-'} ${(tx.amount * currentExchangeRate).toLocaleString()} ${currentExchangeSign}`;
         document.getElementById('tx-det-amount').style.color = tx.type === 'plus' ? 'var(--green)' : 'var(--text)';
-        document.getElementById('tx-det-hash').innerText = '0x' + Array.from({length:12}, () => Math.floor(Math.random()*16).toString(16)).join('');
-        document.getElementById('tx-det-category').innerText = tx.amount > 10000 ? 'Крупные инвестиции' : 'Повседневные расходы';
+        document.getElementById('tx-det-hash').innerText = tx.hash || '0x8af3...';
+        document.getElementById('tx-det-category').innerText = tx.category || 'Финансы';
+        
+        const btn = document.getElementById('tx-det-action-btn');
+        if (tx.isReceiptable) {
+            btn.style.display = 'block';
+            btn.innerText = 'Сохранить чек в HTML';
+        } else {
+            btn.style.display = 'none';
+        }
+        
         openModal('modal-tx-details');
+    }
+
+    // НОВАЯ ФУНКЦИЯ: СБОРКА И СКАЧИВАНИЕ HTML-ЧЕКА НА ОСНОВЕ ВАШЕГО ШАБЛОНА
+    function downloadReceiptFromDetails() {
+        if (!selectedTxIdForReceipt) return;
+        let tx = state.transactions.find(t => t.id === selectedTxIdForReceipt);
+        if (!tx) return;
+
+        let titleText = tx.type === 'plus' ? 'Чек пополнения средств' : 'Чек перевода средств';
+        let customLabel = tx.type === 'plus' ? 'Узел / Источник ноды' : 'Номер телефона';
+        let customValue = tx.type === 'plus' ? 'AURA INJECT GATE' : (tx.targetPhone || '+7 (999) 000-00-00');
+        let feeValue = tx.fee ? `${tx.fee.toLocaleString()} ₽` : '0 ₽';
+
+        let receiptHtml = `<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>AURA — Чек</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #070b16; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; }
+        .receipt { width: 360px; background: linear-gradient(180deg, #111827, #0b1020); border-radius: 28px; padding: 28px; box-shadow: 0 0 30px rgba(138, 43, 226, 0.35); border: 1px solid rgba(255,255,255,0.08); }
+        .bank-name { font-size: 30px; font-weight: 700; text-align: center; margin-bottom: 10px; color: #a855f7; letter-spacing: 2px; }
+        .status { text-align: center; background: rgba(34,197,94,0.15); color: #4ade80; padding: 10px; border-radius: 14px; margin-bottom: 28px; font-weight: bold; }
+        .title { text-align: center; font-size: 22px; margin-bottom: 25px; color: #ffffff; }
+        .item { background: rgba(255,255,255,0.04); border-radius: 18px; padding: 16px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.05); }
+        .label { font-size: 13px; color: #9ca3af; margin-bottom: 6px; }
+        .value { font-size: 21px; font-weight: bold; color: white; }
+        .footer { margin-top: 25px; text-align: center; font-size: 12px; color: #6b7280; }
+        .glow { height: 4px; width: 100%; background: linear-gradient(90deg, #7c3aed, #3b82f6); border-radius: 999px; margin-bottom: 24px; }
+    </style>
+</head>
+<body>
+    <div class="receipt">
+        <div class="bank-name">AURA</div>
+        <div class="glow"></div>
+        <div class="status">ОДОБРЕНО</div>
+        <div class="title">${titleText}</div>
+        <div class="item">
+            <div class="label">${customLabel}</div>
+            <div class="value">${customValue}</div>
+        </div>
+        <div class="item">
+            <div class="label">Сумма</div>
+            <div class="value">${tx.amount.toLocaleString()} ₽</div>
+        </div>
+        <div class="item">
+            <div class="label">Комиссия</div>
+            <div class="value">${feeValue}</div>
+        </div>
+        <div class="item" style="padding:10px 16px;">
+            <div class="label">Дата и Хеш-код транзакции</div>
+            <div class="value" style="font-size:11px; font-family:monospace; word-break:break-all; color:#a855f7;">${tx.date}<br>${tx.hash}</div>
+        </div>
+        <div class="footer">
+            AURA BANK • Безопасный цифровой процессинг
+        </div>
+    </div>
+</body>
+</html>`;
+
+        // Скачивание файла в браузере
+        let blob = new Blob([receiptHtml], { type: 'text/html' });
+        let link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `aura_receipt_${tx.id}.html`;
+        link.click();
     }
 
     function openFullHistory() {
@@ -891,11 +837,25 @@
         });
     }
 
+    // ИЗМЕНЕНО: МОДЕРНИЗИРОВАННОЕ ПОПОЛНЕНИЕ (ПИШЕТ ДАННЫЕ ДЛЯ ЧЕКА)
     function actionDeposit() {
         const amt = parseInt(document.getElementById('deposit-input').value);
         if (isNaN(amt) || amt <= 0) return alert('Укажите сумму');
+        let calculatedFee = Math.round(amt * 0.01);
         state.balance += amt;
-        state.transactions.unshift({ id: Date.now(), name: 'Пополнение через смарт-ноду', amount: amt, type: 'plus', date: 'Сегодня' });
+        
+        let txHash = '0x' + Array.from({length:24}, () => Math.floor(Math.random()*16).toString(16)).join('');
+        state.transactions.unshift({ 
+            id: Date.now(), 
+            name: 'Пополнение через смарт-ноду', 
+            amount: amt, 
+            type: 'plus', 
+            date: 'Сегодня',
+            hash: txHash,
+            category: 'Пополнение ликвидности',
+            fee: calculatedFee,
+            isReceiptable: true // Флаг доступности чека
+        });
         
         let q = state.quests.find(x => x.id === 'first_dep');
         if(q && !q.done && amt >= 5000) { q.done = true; addXp(q.xp); }
@@ -903,11 +863,13 @@
         save(); updateUI(); closeModal('modal-deposit');
     }
 
+    // ИЗМЕНЕНО: МОДЕРНИЗИРОВАННЫЙ ПЕРЕВОД (ПИШЕТ ДАННЫЕ ДЛЯ ЧЕКА)
     function actionTransfer() {
         const amt = parseInt(document.getElementById('transfer-input').value);
         const target = document.getElementById('transfer-target').value.trim();
         if(!target || isNaN(amt) || amt <= 0) return alert('Проверьте реквизиты перевода');
-        let total = amt * 1.015;
+        let calculatedFee = Math.round(amt * 0.015);
+        let total = amt + calculatedFee;
         if(total > state.balance) return alert('Превышение баланса ликвидности');
         
         // Автоокругление в копилку при исходящем платеже
@@ -917,13 +879,27 @@
                 let change = Math.ceil(amt / 100) * 100 - amt;
                 if(change > 0 && state.balance >= total + change) {
                     total += change; activePiggy.current += change;
-                    state.transactions.unshift({ id: Date.now()+1, name: `Автосдача: ${activePiggy.name}`, amount: change, type: 'minus', date: 'Сегодня' });
+                    state.transactions.unshift({ id: Date.now()+1, name: `Автосдача: ${activePiggy.name}`, amount: change, type: 'minus', date: 'Сегодня', isReceiptable: false });
                 }
             }
         }
 
         state.balance -= total;
-        state.transactions.unshift({ id: Date.now(), name: `Перевод на ${target}`, amount: amt, type: 'minus', date: 'Сегодня' });
+        let txHash = '0x' + Array.from({length:24}, () => Math.floor(Math.random()*16).toString(16)).join('');
+        
+        state.transactions.unshift({ 
+            id: Date.now(), 
+            name: `Перевод на ${target}`, 
+            amount: amt, 
+            type: 'minus', 
+            date: 'Сегодня',
+            hash: txHash,
+            category: 'Переводы',
+            fee: calculatedFee,
+            targetPhone: target,
+            isReceiptable: true // Флаг доступности чека
+        });
+        
         save(); updateUI(); closeModal('modal-transfer');
     }
 
@@ -943,7 +919,7 @@
         let p = state.piggies.find(x => x.id === activePiggyId);
         if(p) {
             state.balance -= amt; p.current += amt; if(p.current >= p.target) p.done = true;
-            state.transactions.unshift({ id: Date.now(), name: `Накопление: ${p.name}`, amount: amt, type: 'minus', date: 'Сегодня' });
+            state.transactions.unshift({ id: Date.now(), name: `Накопление: ${p.name}`, amount: amt, type: 'minus', date: 'Сегодня', isReceiptable: false });
             save(); updateUI(); closeModal('modal-refill-piggy');
         }
     }
@@ -955,7 +931,7 @@
             let pct = Math.min((p.current / p.target) * 100, 100);
             c.innerHTML += `
                 <div class="piggy-card">
-                    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:13px;"><span>${p.name}</span><span>${p.current.toLocaleString()}/${p.target.toLocaleString()} ₽</span></div>
+                    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:13px;"><span>${p.name}</span><span>${p.current.toLocaleString()} / ${p.target.toLocaleString()} ₽</span></div>
                     <div class="progress-bar"><div class="progress-fill" style="width:${pct}%; background:var(--accent);"></div></div>
                     <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px;"><span style="color:var(--text-sub);">${Math.round(pct)}% Выполнено</span>${!p.done?`<button class="btn btn-sec btn-sm" onclick="openRefillPiggy(${p.id})">Пополнить</button>`:''}</div>
                 </div>`;
@@ -980,7 +956,7 @@
     function buyAsset(idx) {
         let a = state.assets[idx]; if(state.balance < a.price) return alert('Недостаточно баланса');
         state.balance -= a.price; a.owned++; state.initialInvestCost += a.price;
-        state.transactions.unshift({ id: Date.now(), name: `Купля актива: ${a.name}`, amount: a.price, type: 'minus', date: 'Сегодня' });
+        state.transactions.unshift({ id: Date.now(), name: `Купля актива: ${a.name}`, amount: a.price, type: 'minus', date: 'Сегодня', isReceiptable: false });
         
         let q = state.quests.find(x => x.id === 'invest_pro');
         if(q && !q.done) { q.done = true; addXp(q.xp); }
@@ -991,7 +967,7 @@
     function sellAsset(idx) {
         let a = state.assets[idx]; if(a.owned <= 0) return alert('У вас нет юнитов данного токена');
         state.balance += a.price; a.owned--; state.initialInvestCost = Math.max(0, state.initialInvestCost - a.price);
-        state.transactions.unshift({ id: Date.now(), name: `Ликвидация актива: ${a.name}`, amount: a.price, type: 'plus', date: 'Сегодня' });
+        state.transactions.unshift({ id: Date.now(), name: `Ликвидация актива: ${a.name}`, amount: a.price, type: 'plus', date: 'Сегодня', isReceiptable: false });
         save(); updateUI();
     }
 
@@ -1001,7 +977,7 @@
         if(isNaN(amt) || amt <= 0 || amt > state.balance) return alert('Ошибка ликвидности при создании DeFi предложения');
         state.balance -= amt;
         state.defiLoans.push({ id: Date.now(), type: 'lend', amount: amt, apr: apr, status: 'Активен (Фарминг)' });
-        state.transactions.unshift({ id: Date.now(), name: 'Стейкинг ликвидности в P2P пул', amount: amt, type: 'minus', date: 'Сегодня' });
+        state.transactions.unshift({ id: Date.now(), name: 'Стейкинг ликвидности в P2P пул', amount: amt, type: 'minus', date: 'Сегодня', isReceiptable: false });
         state.badges.find(b => b.id === 'b_whale').unlocked = true;
         save(); updateUI(); closeModal('modal-defi-lend');
     }
@@ -1011,7 +987,7 @@
         if(isNaN(amt) || amt <= 0 || amt > 50000) return alert('Лимит скоринга превышен (макс 50000 ₽)');
         state.balance += amt;
         state.defiLoans.push({ id: Date.now(), type: 'borrow', amount: amt, apr: 18, status: 'К возврату' });
-        state.transactions.unshift({ id: Date.now(), name: 'Экспресс Кредит из P2P Смарт-Пула', amount: amt, type: 'plus', date: 'Сегодня' });
+        state.transactions.unshift({ id: Date.now(), name: 'Экспресс Кредит из P2P Смарт-Пула', amount: amt, type: 'plus', date: 'Сегодня', isReceiptable: false });
         save(); updateUI(); closeModal('modal-defi-borrow');
     }
 
