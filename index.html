@@ -20,10 +20,9 @@
             --anim-speed: 0.25s;
         }
 
-        [data-theme="light"] { /* Оставляем как дефолтную для этого стиля */ }
+        [data-theme="light"] { /* Дефолтная светлая тема */ }
         
         [data-theme="cyberpunk"], [data-theme="sunset"], [data-theme="matrix"], [data-theme="ice"], [data-theme="luxury"] {
-            /* Оставляем поддержку тем, но адаптируем под плоский дизайн */
             --bg: #1a1a24; --panel: #242432; --border: #323246; --text: #ffffff; --accent: #ffdb4d;
         }
 
@@ -205,8 +204,7 @@
         </div>
 
         <h3 style="margin: 24px 4px 12px; font-size: 16px; font-weight: 700;" id="lang-tx-history">История операций</h3>
-        <div class="glass" id="history-box" style="padding: 4px 16px; max-height: 250px; overflow-y: auto;">
-            </div>
+        <div class="glass" id="history-box" style="padding: 4px 16px; max-height: 250px; overflow-y: auto;"></div>
     </div>
 
     <div id="tab-piggy" class="tab-content">
@@ -224,8 +222,7 @@
         </div>
 
         <h3 style="margin: 20px 4px 12px; font-size: 16px; font-weight: 700;" id="lang-active-piggies">Активные цели накопления</h3>
-        <div id="piggies-container">
-            </div>
+        <div id="piggies-container"></div>
     </div>
 
     <div id="tab-invest" class="tab-content">
@@ -239,8 +236,7 @@
         </div>
 
         <h3 style="margin: 20px 4px 12px; font-size: 16px; font-weight: 700;" id="lang-market-assets">Доступные биржевые активы</h3>
-        <div id="assets-container">
-            </div>
+        <div id="assets-container"></div>
     </div>
 
     <div id="tab-settings" class="tab-content">
@@ -277,10 +273,6 @@
             <select id="lang-selector" class="form-ctrl" onchange="changeLanguage()">
                 <option value="ru">Русский (RU)</option>
                 <option value="en">English (EN)</option>
-                <option value="zh">中文 (ZH)</option>
-                <option value="es">Español (ES)</option>
-                <option value="de">Deutsch (DE)</option>
-                <option value="fr">Français (FR)</option>
             </select>
         </div>
     </div>
@@ -345,15 +337,13 @@
 </div>
 
 <script>
-    // Все скрипты, логика базы данных, переводы и переключение языков полностью сохранены
     let state = {
         phone: '', pin: '', balance: 500000, investBalance: 0, initialInvestCost: 0,
         transactions: [], piggies: [],
         assets: [
-            { id: 'gold', name: 'Золото (XAU)', type: 'metal', price: 7200, yield: '12%', owned: 0, history: [7100, 7150, 7120, 7180, 7200] },
-            { id: 'silver', name: 'Серебро (XAG)', type: 'metal', price: 95, yield: '8%', owned: 0, history: [90, 92, 91, 94, 95] },
-            { id: 'btc', name: 'Bitcoin (BTC)', type: 'crypto', price: 5800000, yield: '45%', owned: 0, history: [5600000, 5750000, 5690000, 5820000, 5800000] },
-            { id: 'eth', name: 'Ethereum (ETH)', type: 'crypto', price: 310000, yield: '30%', owned: 0, history: [300000, 320000, 305000, 312000, 310000] }
+            { id: 'gold', name: 'Золото (XAU)', price: 7200, owned: 0, history: [7100, 7150, 7120, 7180, 7200] },
+            { id: 'silver', name: 'Серебро (XAG)', price: 95, owned: 0, history: [90, 92, 91, 94, 95] },
+            { id: 'btc', name: 'Bitcoin (BTC)', price: 5800000, owned: 0, history: [5600000, 5750000, 5690000, 5820000, 5800000] }
         ],
         secureTx: false, notify: true, sounds: true, anims: true, theme: 'default', lang: 'ru'
     };
@@ -424,39 +414,59 @@
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('pincode-screen').style.display = 'flex';
             document.getElementById('main-bank').style.display = 'none';
+            document.getElementById('user-phone-display').innerText = state.phone;
             translateText();
         }
     }
 
+    // ИСПРАВЛЕННАЯ ФУНКЦИЯ: Работает стабильно при любых условиях
     function sendSmsCode() {
-        const phone = document.getElementById('auth-phone').value.trim();
-        if(phone.length < 7) return alert('Введите корректный номер!');
-        playSystemSound();
+        const phoneInput = document.getElementById('auth-phone');
+        if (!phoneInput) return alert('Ошибка интерфейса');
+        
+        const phone = phoneInput.value.trim();
+        if (phone.length < 7) {
+            alert('Пожалуйста, введите корректный номер телефона!');
+            return;
+        }
+        
+        try { playSystemSound(); } catch(e) {}
+        
         currentSmsCode = Math.floor(10000 + Math.random() * 90000).toString();
-        document.getElementById('generated-sms-code').innerText = currentSmsCode;
-        document.getElementById('sms-block').style.display = 'block';
+        
+        const smsBlock = document.getElementById('sms-block');
+        const codeDisplay = document.getElementById('generated-sms-code');
+        
+        if (smsBlock && codeDisplay) {
+            codeDisplay.innerText = currentSmsCode;
+            smsBlock.style.display = 'block';
+            alert('Ваш код подтверждения: ' + currentSmsCode); // Резервное всплывающее окно
+        }
     }
 
     function verifySmsCode() {
-        const input = document.getElementById('auth-code-input').value;
-        if (input === currentSmsCode) {
-            playSystemSound();
+        const input = document.getElementById('auth-code-input').value.trim();
+        if (input === currentSmsCode && currentSmsCode !== '') {
             const checkedPhone = document.getElementById('auth-phone').value.trim();
-            
-            if (globalUsersDB[checkedPhone]) {
-                const userData = globalUsersDB[checkedPhone];
-                state.phone = checkedPhone; state.pin = userData.pin; state.balance = userData.balance;
-                state.investBalance = userData.investBalance; state.initialInvestCost = userData.initialInvestCost || 0;
-                state.transactions = userData.transactions || []; state.piggies = userData.piggies || [];
-                state.assets = userData.assets || state.assets; state.secureTx = userData.secureTx || false;
-                state.lang = userData.lang || 'ru';
-            } else {
-                state.phone = checkedPhone; state.pin = ''; state.balance = 500000; state.transactions = []; state.piggies = [];
-            }
-            save(); checkAuthStates();
+            executeDirectAuth(checkedPhone);
         } else {
-            alert('Неверный код!');
+            alert('Неверный SMS-код!');
         }
+    }
+
+    function executeDirectAuth(checkedPhone) {
+        try { playSystemSound(); } catch(e) {}
+        if (globalUsersDB[checkedPhone]) {
+            const userData = globalUsersDB[checkedPhone];
+            state.phone = checkedPhone; state.pin = userData.pin; state.balance = userData.balance;
+            state.investBalance = userData.investBalance; state.initialInvestCost = userData.initialInvestCost || 0;
+            state.transactions = userData.transactions || []; state.piggies = userData.piggies || [];
+            state.assets = userData.assets || state.assets; state.secureTx = userData.secureTx || false;
+            state.lang = userData.lang || 'ru';
+        } else {
+            state.phone = checkedPhone; state.pin = ''; state.balance = 500000; state.transactions = []; state.piggies = [];
+        }
+        save(); checkAuthStates();
     }
 
     function pressPin(num) {
@@ -470,7 +480,7 @@
                     alert('Код-пароль успешно установлен!'); checkAuthStates();
                 } else {
                     if (tempPin === state.pin) {
-                        playSystemSound();
+                        try { playSystemSound(); } catch(e) {}
                         document.getElementById('pincode-screen').style.display = 'none';
                         document.getElementById('main-bank').style.display = 'block';
                         tempPin = ''; renderPinDots(); updateUI();
@@ -496,11 +506,11 @@
         state = { phone: '', pin: '', balance: 500000, investBalance: 0, initialInvestCost: 0, transactions: [], piggies: [], assets: state.assets, secureTx: false, notify: true, sounds: true, anims: true, theme: 'default', lang: 'ru' };
         localStorage.removeItem('neobank_state');
         document.getElementById('auth-phone').value = ''; document.getElementById('auth-code-input').value = '';
-        document.getElementById('sms-block').style.display = 'none'; checkAuthStates();
+        document.getElementById('sms-block').style.display = 'none'; currentSmsCode = ''; checkAuthStates();
     }
 
     function switchTab(id, el) {
-        playSystemSound();
+        try { playSystemSound(); } catch(e) {}
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.getElementById(id).classList.add('active'); el.classList.add('active');
@@ -528,7 +538,8 @@
     }
 
     function openModal(id) {
-        playSystemSound(); const m = document.getElementById(id); m.classList.add('active');
+        try { playSystemSound(); } catch(e) {}
+        const m = document.getElementById(id); m.classList.add('active');
         if (id === 'modal-transfer' && state.secureTx) {
             activeTxSecureCode = Math.floor(1000 + Math.random() * 9000).toString();
             document.getElementById('secure-tx-block').style.display = 'block';
@@ -554,21 +565,21 @@
 
         if (state.secureTx) {
             const secInput = document.getElementById('transfer-secure-input').value;
-            if (secInput !== activeTxSecureCode) return alert('Неверный код!');
+            if (secInput !== activeTxSecureCode) return alert('Неверный код подтверждения!');
         }
 
         if (globalUsersDB[targetPhone]) {
             state.balance -= amt;
-            state.transactions.unshift({ name: `Перевод Получателю ${targetPhone}`, amount: amt, type: 'minus', date: 'Сегодня' });
+            state.transactions.unshift({ name: `Перевод пользователю ${targetPhone}`, amount: amt, type: 'minus', date: 'Сегодня' });
             globalUsersDB[targetPhone].balance += amt;
             globalUsersDB[targetPhone].transactions = globalUsersDB[targetPhone].transactions || [];
             globalUsersDB[targetPhone].transactions.unshift({ name: `Перевод от ${state.phone}`, amount: amt, type: 'plus', date: 'Сегодня' });
             localStorage.setItem('neobank_users_db', JSON.stringify(globalUsersDB));
-            alert('Перевод внутри системы выполнен успешно!');
+            alert('Перевод выполнен успешно!');
         } else {
             state.balance -= amt;
             state.transactions.unshift({ name: `Внешний перевод: ${targetPhone}`, amount: amt, type: 'minus', date: 'Сегодня' });
-            alert('Средства отправлены по внешнему шлюзу');
+            alert('Средства отправлены на внешний номер');
         }
         save(); updateUI(); closeModal('modal-transfer');
         document.getElementById('transfer-input').value = ''; document.getElementById('transfer-target').value = '';
@@ -668,7 +679,7 @@
     }
 
     function sellAsset(idx) {
-        const asset = state.assets[idx]; if (asset.owned <= 0) return alert('Нет актива для продажи');
+        const asset = state.assets[idx]; if (asset.owned <= 0) return alert('Нет активов для продажи');
         state.balance += asset.price; asset.owned -= 1; state.initialInvestCost = Math.max(0, state.initialInvestCost - asset.price);
         state.transactions.unshift({ name: `Продажа ${asset.name}`, amount: asset.price, type: 'plus', date: 'Сегодня' });
         save(); updateUI();
@@ -755,4 +766,15 @@
             document.getElementById('lang-mtx-amount').innerText = l.mtxAmount;
             document.getElementById('lang-mtx-sec-info').innerText = l.mtxSecInfo;
             document.getElementById('lang-mtx-cancel').innerText = l.mtxCancel;
-            document.getElementById('lang-mtx-execute').innerText
+            document.getElementById('lang-mtx-execute').innerText = l.mtxExecute;
+            document.getElementById('lang-mpig-title').innerText = l.mpigTitle;
+            document.getElementById('lang-mpig-amount').innerText = l.mpigAmount;
+            document.getElementById('lang-mpig-cancel').innerText = l.mpigCancel;
+            document.getElementById('lang-mpig-execute').innerText = l.mpigExecute;
+        }
+    }
+
+    window.onload = init;
+</script>
+</body>
+</html>
