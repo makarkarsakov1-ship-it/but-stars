@@ -1,32 +1,34 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AURA Neobank X</title>
+    <title>AURA Neobank Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg: #f5f6fa;
+            --bg: #f8f9fa;
             --panel: #ffffff;
-            --border: #e8eaf1;
-            --text: #0f1013;
-            --text-sub: #6c7385;
+            --border: #edf2f7;
+            --text: #0f172a;
+            --text-sub: #64748b;
             --accent: #6d28d9; 
             --accent-light: #f3e8ff;
             --green: #10b981;
             --red: #ef4444;
-            --orange: #f59e0b;
-            --anim-speed: 0.2s;
+            --card-black: linear-gradient(135deg, #1e1e24 0%, #0a0a0c 100%);
+            --radius-xl: 24px;
+            --radius-lg: 16px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         [data-theme="dark"] {
-            --bg: #0b0c10;
-            --panel: #14161f;
-            --border: #222533;
-            --text: #f1f3f9;
-            --text-sub: #878f9f;
-            --accent-light: #201730;
+            --bg: #090a0f;
+            --panel: #12141c;
+            --border: #1e2230;
+            --text: #f8fafc;
+            --text-sub: #94a3b8;
+            --accent-light: #1e152e;
         }
 
         * { 
@@ -41,65 +43,55 @@
             background: var(--bg); 
             color: var(--text); 
             min-height: 100vh; 
-            padding-bottom: 110px; 
+            padding-bottom: 100px; 
             overflow-x: hidden; 
-            transition: background var(--anim-speed), color var(--anim-speed);
+            transition: var(--transition);
         }
         
         .container { 
             width: 100%; 
-            max-width: 540px; 
+            max-width: 480px; 
             margin: 0 auto; 
-            padding: 20px 16px; 
+            padding: 16px; 
             display: none; 
         }
         
-        .glass { 
+        .block-card { 
             background: var(--panel); 
             border: 1px solid var(--border); 
-            border-radius: 24px; 
-            padding: 24px; 
+            border-radius: var(--radius-xl); 
+            padding: 20px; 
             margin-bottom: 16px; 
-            box-shadow: 0 4px 24px rgba(109, 40, 217, 0.01);
-            transition: background var(--anim-speed), border-color var(--anim-speed);
+            transition: var(--transition);
         }
 
         #auth-screen, #pincode-screen { 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: flex-start; 
-            min-height: 100vh; 
-            padding: 24px 20px; 
+            justify-content: center; 
             position: fixed; 
             top: 0; left: 0; width: 100%; height: 100%; 
             background: var(--bg); 
-            z-index: 1000; 
-            overflow-y: auto;
-        }
-        
-        .auth-card { 
-            width: 100%; 
-            max-width: 360px; 
-            text-align: center; 
-            margin: auto 0;
+            z-index: 10000; 
         }
 
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn var(--anim-speed) cubic-bezier(0.4, 0, 0.2, 1); }
+        .tab-content.active { display: block; animation: screenFade 0.3s ease; }
         
         .nav-bar { 
             position: fixed; 
-            bottom: 0; left: 0; right: 0; 
-            height: 76px; 
+            bottom: 0; left: 50%; 
+            transform: translateX(-50%);
+            width: 100%; max-width: 480px;
+            height: 72px; 
             background: var(--panel);
             border-top: 1px solid var(--border); 
             display: flex; 
             justify-content: space-around; 
             align-items: center; 
             z-index: 999; 
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.02);
-            transition: background var(--anim-speed), border-color var(--anim-speed);
+            transition: var(--transition);
         }
         .nav-item { 
             color: var(--text-sub); 
@@ -109,465 +101,407 @@
             font-size: 11px; 
             font-weight: 500; 
             cursor: pointer; 
-            transition: all 0.2s; 
             width: 20%; 
             text-align: center; 
         }
-        .nav-item i { font-size: 20px; margin-bottom: 4px; display: block; }
+        .nav-item i { font-size: 18px; margin-bottom: 4px; }
         .nav-item.active { color: var(--accent); }
 
         .btn { 
             background: var(--accent); 
             border: none; 
-            padding: 16px; 
-            border-radius: 18px; 
+            padding: 14px 20px; 
+            border-radius: var(--radius-lg); 
             color: #fff; 
             font-size: 15px; 
             font-weight: 600; 
             cursor: pointer; 
             width: 100%; 
-            transition: all 0.2s; 
-            margin-top: 12px; 
+            transition: var(--transition); 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             gap: 8px; 
         }
-        .btn:active { transform: scale(0.98); opacity: 0.9; }
+        .btn:active { transform: scale(0.98); opacity: 0.95; }
         .btn-sec { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
-        
-        .profile-header-area {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 0 4px;
-        }
-        .profile-btn-trigger {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--panel);
-            padding: 8px 16px;
-            border-radius: 30px;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text);
-        }
+        .btn-danger { background: rgba(239, 68, 66, 0.1); color: var(--red); border: 1px solid rgba(239, 68, 66, 0.2); }
 
-        .quick-actions { display: flex; gap: 12px; margin: 24px 0 8px; }
-        .action-circle { display: flex; flex-direction: column; align-items: center; font-size: 11px; font-weight: 600; cursor: pointer; gap: 6px; color: var(--text); flex: 1; }
-        .action-icon { width: 50px; height: 50px; background: var(--accent-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--accent); }
-
-        .input-group { margin-bottom: 16px; text-align: left; }
+        .input-group { margin-bottom: 16px; width: 100%; }
         .input-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-ctrl { width: 100%; background: var(--bg); border: 1px solid transparent; padding: 16px; border-radius: 16px; color: var(--text); font-size: 16px; outline: none; transition: all 0.2s; }
+        .form-ctrl { width: 100%; background: var(--bg); border: 1px solid var(--border); padding: 14px; border-radius: var(--radius-lg); color: var(--text); font-size: 15px; outline: none; transition: var(--transition); }
         .form-ctrl:focus { border-color: var(--accent); background: var(--panel); }
 
-        .balance-label { font-size: 13px; color: var(--text-sub); font-weight: 500; display: flex; justify-content: space-between; }
-        .balance-num { font-size: 38px; font-weight: 700; margin: 4px 0; color: var(--text); letter-spacing: -0.8px; }
-        
-        .currency-tabs { display: flex; gap: 6px; margin-top: 10px; }
-        .curr-tab { padding: 6px 14px; border-radius: 12px; font-size: 12px; font-weight: 600; background: var(--bg); color: var(--text-sub); border: 1px solid var(--border); cursor: pointer; }
-        .curr-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+        .pin-dot-wrap { display: flex; gap: 16px; margin-bottom: 40px; }
+        .pin-dot { width: 14px; height: 14px; border: 2px solid var(--border); border-radius: 50%; transition: var(--transition); }
+        .pin-dot.fill { background: var(--accent); border-color: var(--accent); transform: scale(1.1); }
+        .pin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; max-width: 280px; }
+        .pin-btn { width: 72px; height: 72px; border-radius: 50%; background: var(--panel); border: 1px solid var(--border); color: var(--text); font-size: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); }
+        .pin-btn:active { background: var(--bg); }
 
-        .section-title { margin: 24px 4px 12px; font-size: 17px; font-weight: 700; color: var(--text); display: flex; justify-content: space-between; align-items: center; }
-        .cards-wrap { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; min-height: 150px; }
-        .cards-wrap::-webkit-scrollbar { display: none; }
-        
-        .bank-card { 
-            min-width: 270px; 
-            height: 150px; 
-            border-radius: 24px; 
-            padding: 20px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            color: #fff; 
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            transition: transform 0.2s;
-        }
-        .bank-card:active { transform: scale(0.97); }
-        .card-style-virtual { background: linear-gradient(135deg, #a855f7, #6d28d9); }
-        .card-style-plastic { background: linear-gradient(135deg, #1f2937, #111827); border: 1px solid #374151; }
-        .card-style-crypto { background: linear-gradient(135deg, #0284c7, #0f172a); border-left: 4px solid #38bdf8; }
-        
-        .card-logo-area { display: flex; justify-content: space-between; align-items: center; }
-        .card-logo-text { font-weight: 800; font-size: 14px; letter-spacing: 1px; display: flex; align-items: center; gap: 4px; }
-        .card-type-badge { font-size: 10px; background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 12px; font-weight: 600; text-transform: uppercase; }
-
-        .list-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
-        .list-row:last-child { border: none; }
-        .tx-amount { font-weight: 600; font-size: 15px; }
-        .tx-amount.plus { color: var(--green); }
-        .tx-amount.minus { color: var(--text); }
-
-        .modal-bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); display: none; justify-content: center; align-items: flex-end; z-index: 9999; opacity: 0; transition: opacity 0.2s; }
-        .modal-bg.active { display: flex; opacity: 1; }
-        .modal-bg .glass { width: 100%; max-width: 540px; border-radius: 28px 28px 0 0; margin-bottom: 0; animation: slideUp 0.25s cubic-bezier(0.1, 0.76, 0.55, 0.94); padding-bottom: 40px; max-height: 85vh; overflow-y: auto; }
-
-        .pin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; width: 100%; max-width: 260px; }
-        .pin-dot-wrap { display: flex; gap: 14px; margin-bottom: 35px; }
-        .pin-dot { width: 12px; height: 12px; border: 2px solid var(--border); border-radius: 50%; }
-        .pin-dot.fill { background: var(--accent); border-color: var(--accent); }
-        .pin-btn { width: 68px; height: 68px; border-radius: 50%; background: var(--panel); border: 1px solid var(--border); color: var(--text); font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-
-        .piggy-card { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 12px; }
-        .progress-bar { background: var(--bg); height: 8px; border-radius: 4px; margin: 12px 0; overflow: hidden; }
-        .progress-fill { background: var(--accent); height: 100%; border-radius: 4px; transition: width 0.3s ease; }
-
-        /* Элементы геймификации */
-        .avatar-panel { display: flex; align-items: center; gap: 16px; background: linear-gradient(135deg, var(--accent), #4c1d95); color: white; border-radius: 24px; padding: 20px; margin-bottom: 16px; }
-        .avatar-circle { width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: 2px solid #fff; }
-        .xp-bar { background: rgba(255,255,255,0.2); height: 6px; border-radius: 3px; margin-top: 8px; overflow: hidden; }
-        .xp-fill { background: #10b981; height: 100%; width: 45%; }
-        
-        .badge-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; }
-        .badge-item { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 12px 6px; text-align: center; font-size: 10px; font-weight: 600; opacity: 0.4; }
-        .badge-item.unlocked { opacity: 1; border-color: var(--orange); background: var(--accent-light); color: var(--text); }
-        .badge-icon { font-size: 22px; margin-bottom: 4px; display: block; }
-
-        /* ИИ Модуль умного бюджета */
-        .ai-budget-card { background: linear-gradient(135deg, #1e1b4b, #311042); color: #e0e7ff; padding: 20px; border-radius: 24px; margin-bottom: 16px; }
-        .ai-chart-mock { display: flex; gap: 10px; align-items: flex-end; height: 60px; margin: 14px 0; padding-top: 10px; }
-        .ai-bar { flex: 1; background: rgba(255,255,255,0.15); border-radius: 4px 4px 0 0; font-size: 9px; text-align: center; color: #fff; padding-bottom: 4px; display: flex; align-items: flex-end; justify-content: center; }
-        .ai-bar.active { background: var(--accent); }
-
-        /* Чат-зона ИИ */
-        .ai-chat-box { height: 150px; overflow-y: auto; background: var(--bg); border-radius: 16px; padding: 12px; font-size: 13px; margin-bottom: 10px; border: 1px solid var(--border); }
-        .chat-msg { margin-bottom: 8px; padding: 8px 12px; border-radius: 12px; max-width: 85%; }
-        .chat-msg.ai { background: var(--accent-light); color: var(--accent); align-self: flex-start; }
-        .chat-msg.user { background: var(--border); color: var(--text); margin-left: auto; text-align: right; }
-
-        /* Свитч */
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 24px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--accent); }
-        input:checked + .slider:before { transform: translateX(20px); }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes screenFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div id="auth-screen">
-    <div class="glass auth-card">
-        <div style="font-size: 36px; margin-bottom: 10px;">💠</div>
-        <h2 style="margin-bottom: 4px; font-weight: 800; letter-spacing: -0.5px;">AURA NEOBANK X</h2>
-        <p style="font-size: 14px; color: var(--text-sub); margin-bottom: 24px;">Будущее децентрализованного банкинга & ИИ</p>
+    <div class="block-card" style="width: 90%; max-width: 360px; text-align: center;">
+        <div style="font-size: 40px; margin-bottom: 16px; color: var(--accent);">💠</div>
+        <h2 style="margin-bottom: 6px; font-weight: 800; letter-spacing: -0.5px;">AURA NEOBANK</h2>
+        <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 24px;">Вход в персональный финансовый узел</p>
         
         <div class="input-group">
-            <label>Имя финансового аватара</label>
+            <label>Имя</label>
             <input type="text" id="auth-firstname" class="form-ctrl" placeholder="Иван">
         </div>
         <div class="input-group">
-            <label>Фамилия</label>
-            <input type="text" id="auth-lastname" class="form-ctrl" placeholder="Иванов">
-        </div>
-        <div class="input-group">
             <label>Номер телефона</label>
-            <input type="tel" id="auth-phone" class="form-ctrl" placeholder="+7 (999) 999-99-99">
+            <input type="tel" id="auth-phone" class="form-ctrl" placeholder="+7 (999) 999-00-00">
         </div>
-        <button class="btn" onclick="sendSmsCode()">Создать Нео-профиль</button>
-
-        <div id="sms-block" style="display: none; margin-top: 24px;">
-            <div style="background: var(--accent-light); padding: 14px; border-radius: 16px; margin-bottom: 16px;">
-                <span style="font-size: 13px; color: var(--accent);">Биометрический пуш-код подтверждения:</span>
-                <div id="generated-sms-code" style="font-size: 28px; font-weight: 700; color: var(--accent); letter-spacing: 4px; margin-top: 4px;">00000</div>
-            </div>
-            <input type="number" id="auth-code-input" class="form-ctrl" placeholder="Введите код из пуша" style="text-align:center;">
-            <button class="btn btn-sec" onclick="verifySmsCode()" style="margin-top:12px;">Подтвердить девайс</button>
-        </div>
+        <button class="btn" onclick="registerAndGoToPin()">Создать кошелек</button>
     </div>
 </div>
 
 <div id="pincode-screen" style="display: none;">
-    <div class="auth-card" style="display: flex; flex-direction: column; align-items: center;">
-        <h3 id="pincode-title" style="margin-bottom: 8px; font-weight: 700;">Вход в AURA Vault</h3>
-        <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 24px;">Введите защитный ПИН-код доступа</p>
-        <div class="pin-dot-wrap">
-            <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
-            <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
-        </div>
-        <div class="pin-grid">
-            <button class="pin-btn" onclick="pressPin(1)">1</button>
-            <button class="pin-btn" onclick="pressPin(2)">2</button>
-            <button class="pin-btn" onclick="pressPin(3)">3</button>
-            <button class="pin-btn" onclick="pressPin(4)">4</button>
-            <button class="pin-btn" onclick="pressPin(5)">5</button>
-            <button class="pin-btn" onclick="pressPin(6)">6</button>
-            <button class="pin-btn" onclick="pressPin(7)">7</button>
-            <button class="pin-btn" onclick="pressPin(8)">8</button>
-            <button class="pin-btn" onclick="pressPin(9)">9</button>
-            <button class="pin-btn" style="background:transparent; border:none;" onclick="clearPin()"><i class="fa-solid fa-delete-left"></i></button>
-            <button class="pin-btn" onclick="pressPin(0)">0</button>
-        </div>
+    <h3 id="pincode-title" style="margin-bottom: 6px; font-weight: 700;">Вход в AURA Vault</h3>
+    <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 32px;" id="pin-screen-desc">Задайте ПИН-код из 4 цифр</p>
+    <div class="pin-dot-wrap" id="pin-dots-container">
+        <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+    </div>
+    <div class="pin-grid">
+        <button class="pin-btn" onclick="pressPin(1)">1</button>
+        <button class="pin-btn" onclick="pressPin(2)">2</button>
+        <button class="pin-btn" onclick="pressPin(3)">3</button>
+        <button class="pin-btn" onclick="pressPin(4)">4</button>
+        <button class="pin-btn" onclick="pressPin(5)">5</button>
+        <button class="pin-btn" onclick="pressPin(6)">6</button>
+        <button class="pin-btn" onclick="pressPin(7)">7</button>
+        <button class="pin-btn" onclick="pressPin(8)">8</button>
+        <button class="pin-btn" onclick="pressPin(9)">9</button>
+        <button class="pin-btn" style="background:transparent; border:none;" onclick="clearPin()"><i class="fa-solid fa-delete-left"></i></button>
+        <button class="pin-btn" onclick="pressPin(0)">0</button>
     </div>
 </div>
-
 <div class="container" id="main-bank">
     <div id="tab-home" class="tab-content active">
-        <div class="profile-header-area">
-            <div class="profile-btn-trigger" onclick="switchTab('tab-gamification', document.getElementById('nav-item-more'))">
-                <i class="fa-solid fa-user-astronaut"></i>
-                <span id="user-name-top-badge">Аватар</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 40px; height: 40px; background: var(--accent-light); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;" id="user-avatar-letters">AA</div>
+                <div>
+                    <div style="font-size: 14px; font-weight: 700;" id="user-name-display">Пользователь</div>
+                    <div style="font-size: 11px; color: var(--text-sub);" id="user-phone-display">+7 (999) 000-00-00</div>
+                </div>
             </div>
-            <div style="font-size: 12px; font-weight: 700; color: var(--orange); background: rgba(245, 158, 11, 0.1); padding: 6px 12px; border-radius: 20px;">
-                <i class="fa-solid fa-crown"></i> Lvl <span id="user-level-badge">1</span>
-            </div>
+            <button class="btn btn-sec" style="width: auto; padding: 10px 14px; border-radius: 30px; font-size: 13px;" onclick="toggleTheme()">
+                <i class="fa-solid fa-moon" id="theme-icon"></i> <span id="theme-text">Темная тема</span>
+            </button>
         </div>
 
-        <div class="glass">
-            <div class="balance-label">
-                <span>Ликвидные активы AURA</span>
-                <span id="current-currency-name" style="font-weight:700; color:var(--accent);">RUB (₽)</span>
+        <div class="block-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; color: var(--text-sub); font-weight: 500;">Доступный остаток</span>
+                <span id="current-currency-badge" style="font-size: 11px; font-weight: 700; background: var(--accent-light); color: var(--accent); padding: 2px 8px; border-radius: 8px;">RUB (₽)</span>
             </div>
-            <div class="balance-num"><span id="main-balance">500 000</span> <span id="curr-symbol">₽</span></div>
+            <div style="font-size: 36px; font-weight: 700; margin: 8px 0; letter-spacing: -0.8px; color: var(--text);">
+                <span id="main-balance">0</span> <span id="curr-symbol">₽</span>
+            </div>
             
-            <div class="currency-tabs">
-                <div class="curr-tab active" onclick="changeCurrency('RUB')">RUB ₽</div>
-                <div class="curr-tab" onclick="changeCurrency('USD')">USD $</div>
-                <div class="curr-tab" onclick="changeCurrency('EUR')">EUR €</div>
+            <div style="display: flex; gap: 8px; margin-top: 16px;">
+                <button class="form-ctrl" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 600; text-align: center; cursor: pointer; border-radius: 12px;" id="curr-tab-RUB" onclick="changeCurrency('RUB')">RUB ₽</button>
+                <button class="form-ctrl" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 600; text-align: center; cursor: pointer; border-radius: 12px;" id="curr-tab-USD" onclick="changeCurrency('USD')">USD $</button>
+                <button class="form-ctrl" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 600; text-align: center; cursor: pointer; border-radius: 12px;" id="curr-tab-EUR" onclick="changeCurrency('EUR')">EUR €</button>
             </div>
             
-            <div class="quick-actions">
-                <div class="action-circle" onclick="openModal('modal-deposit')">
-                    <div class="action-icon"><i class="fa-solid fa-wallet"></i></div>
-                    <span>Пополнить</span>
-                </div>
-                <div class="action-circle" onclick="openModal('modal-transfer')">
-                    <div class="action-icon"><i class="fa-solid fa-paper-plane"></i></div>
-                    <span>Перевести</span>
-                </div>
-                <div class="action-circle" onclick="openModal('modal-split')">
-                    <div class="action-icon"><i class="fa-solid fa-circle-split"></i><i class="fa-solid fa-users"></i></div>
-                    <span>Сплит чека</span>
-                </div>
+            <div style="display: flex; gap: 12px; margin-top: 20px;">
+                <button class="btn" style="flex: 1; font-size: 13px; padding: 12px;" onclick="openModal('modal-deposit')">
+                    <i class="fa-solid fa-wallet"></i> Пополнить
+                </button>
+                <button class="btn" style="flex: 1; font-size: 13px; padding: 12px;" onclick="openModal('modal-transfer')">
+                    <i class="fa-solid fa-paper-plane"></i> Перевести
+                </button>
+                <button class="btn btn-sec" style="flex: 1; font-size: 13px; padding: 12px;" onclick="openModal('modal-split')">
+                    <i class="fa-solid fa-arrows-split-up-and-left"></i> Сплит
+                </button>
             </div>
         </div>
 
-        <div class="ai-budget-card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="font-size:13px; font-weight:700;"><i class="fa-solid fa-brain" style="color:#a855f7;"></i> Смарт-бюджетирование ИИ</div>
-                <span style="font-size:11px; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:8px;">Анализ</span>
-            </div>
-            <div class="ai-chart-mock">
-                <div class="ai-bar" style="height:40%;">Еда</div>
-                <div class="ai-bar active" style="height:85%;">DeFi</div>
-                <div class="ai-bar" style="height:25%;">Кафе</div>
-                <div class="ai-bar" style="height:60%;">Такси</div>
-            </div>
-            <p id="ai-budget-tip" style="font-size:12px; opacity:0.9; line-height:1.4;">ИИ-Совет: Траты на инвестиции превышают средние на 15%. Рекомендуется запустить стейкинг USDT.</p>
+        <div style="margin: 20px 4px 12px; font-size: 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center;">
+            <span>Мои банковские карты</span>
+            <span style="font-size: 12px; color: var(--accent); cursor: pointer; font-weight: 600;" onclick="switchTab('tab-cards', document.getElementById('nav-item-cards'))">Управление</span>
         </div>
+        
+        <div style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none;" id="home-cards-container">
+            </div>
 
-        <h3 class="section-title">Активные нео-карты</h3>
-        <div class="cards-wrap" id="home-cards-container"></div>
-
-        <h3 class="section-title">Лента транзакций</h3>
-        <div class="glass" id="history-box" style="padding: 4px 20px; max-height: 200px; overflow-y: auto;"></div>
+        <div style="margin: 20px 4px 12px; font-size: 16px; font-weight: 700;">Последние транзакции</div>
+        <div class="block-card" id="history-box" style="padding: 4px 16px; max-height: 240px; overflow-y: auto;">
+            </div>
     </div>
 
     <div id="tab-cards" class="tab-content">
-        <h3 class="section-title" style="margin-top:0;">Маркетплейс карт</h3>
-        <div class="glass" style="padding:16px; margin-bottom:12px;">
-            <div class="bank-card card-style-virtual" style="width:100%; margin-bottom:10px; height:120px; cursor:default;">
-                <div class="card-logo-area"><span class="card-logo-text">💠 AURA DIGITAL</span></div>
-                <div style="font-size:12px; opacity:0.8;">Мгновенный выпуск</div>
+        <div style="margin: 0 4px 16px; font-size: 20px; font-weight: 800;">Управление картами</div>
+        
+        <div class="block-card" style="border-left: 4px solid #111;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                <div>
+                    <h4 style="font-size: 15px; font-weight: 700; color: var(--text);">Премиальная пластиковая карта</h4>
+                    <p style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">Матовый черный дизайн, курьерская доставка</p>
+                </div>
+                <span style="font-size: 11px; background: rgba(16,185,129,0.1); color: var(--green); padding: 2px 8px; border-radius: 8px; font-weight: 700;">NEW</span>
             </div>
-            <button class="btn" onclick="issueCard('virtual')">Выпустить вирт-карту</button>
-        </div>
-        <div class="glass" style="padding:16px; margin-bottom:12px;">
-            <div class="bank-card card-style-crypto" style="width:100%; margin-bottom:10px; height:120px; cursor:default;">
-                <div class="card-logo-area"><span class="card-logo-text">💠 AURA DEFI LINK</span></div>
-                <div style="font-size:12px; opacity:0.8;">Конвертация Web3 на лету</div>
+            <div style="background: var(--card-black); height: 130px; border-radius: 16px; margin-bottom: 14px; padding: 20px; color: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 16px rgba(0,0,0,0.15);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 13px; font-weight: 700; letter-spacing: 1px;">AURA PREMIUM</span>
+                    <i class="fa-solid fa-bolt" style="color: #eab308;"></i>
+                </div>
+                <div style="font-size: 16px; letter-spacing: 2px;">•••• •••• •••• 0000</div>
             </div>
-            <button class="btn" onclick="issueCard('crypto')">Выпустить Web3-карту</button>
+            <button class="btn btn-sec" style="border-color: var(--text); font-weight: 700;" onclick="issueCard('plastic')">Заказать черную пластиковую карту</button>
         </div>
-        <h3 class="section-title">Ваша суверенная коллекция карт</h3>
-        <div class="cards-wrap" id="tab-cards-list-container"></div>
-    </div>
 
+        <div class="block-card" style="border-left: 4px solid var(--accent);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                <div>
+                    <h4 style="font-size: 15px; font-weight: 700;">Цифровая виртуальная карта</h4>
+                    <p style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">Мгновенный выпуск для безопасных покупок</p>
+                </div>
+            </div>
+            <button class="btn" onclick="issueCard('virtual')">Выпустить вирт-кату мгновенно</button>
+        </div>
+
+        <div style="margin: 20px 4px 12px; font-size: 15px; font-weight: 700; color: var(--text-sub);">Ваш активный портфель карт</div>
+        <div style="display: flex; flex-direction: column; gap: 12px;" id="tab-cards-list-container">
+            </div>
+    </div>
     <div id="tab-piggy" class="tab-content">
-        <div class="glass">
-            <h3 style="margin-bottom: 12px; font-size: 16px; font-weight: 700;"><i class="fa-solid fa-robot"></i> ИИ Умное автоокругление</h3>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <span style="font-size:13px; color:var(--text-sub);">Округлять все траты до сотен и отправлять сдачу в копилку</span>
-                <label class="switch">
-                    <input type="checkbox" id="ai-round-toggle" onchange="toggleAiRounding()">
-                    <span class="slider"></span>
+        <div style="margin: 0 4px 16px; font-size: 20px; font-weight: 800;">Смарт-копилки</div>
+        
+        <div class="block-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h4 style="font-size: 15px; font-weight: 700;"><i class="fa-solid fa-calculator" style="color: var(--accent); margin-right: 6px;"></i>Автоокругление транзакций</h4>
+                <label class="switch" style="position: relative; display: inline-block; width: 44px; height: 24px;">
+                    <input type="checkbox" id="round-toggle" onchange="toggleAutoRounding()" style="opacity: 0; width: 0; height: 0;">
+                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 24px;" id="round-slider-design"></span>
                 </label>
             </div>
+            <p style="font-size: 12px; color: var(--text-sub); line-height: 1.4;">
+                Автоматически округляет любые ваши траты и переводы до ближайших 100 рублей, а «сдачу» мгновенно переводит в первую активную копилку.
+            </p>
         </div>
-        <div class="glass">
-            <h3 style="margin-bottom: 16px; font-size: 16px; font-weight: 700;">Создать смарт-цель</h3>
-            <div class="input-group"><label>Цель накопления</label><input type="text" id="piggy-name" class="form-ctrl" placeholder="Новый Макбук"></div>
-            <div class="input-group"><label>Сумма (₽)</label><input type="number" id="piggy-target" class="form-ctrl" placeholder="150000"></div>
-            <button class="btn" onclick="createPiggyTarget()">Запустить алгоритм накопления</button>
+
+        <div class="block-card">
+            <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 14px;">Открыть сейф-цель</h4>
+            <div class="input-group">
+                <label>Название цели</label>
+                <input type="text" id="piggy-name" class="form-ctrl" placeholder="Инвестиционный резерв">
+            </div>
+            <div class="input-group">
+                <label>Целевая сумма (₽)</label>
+                <input type="number" id="piggy-target" class="form-ctrl" placeholder="100000">
+            </div>
+            <button class="btn" onclick="createPiggyTarget()">Активировать алгоритм накопления</button>
         </div>
-        <h3 class="section-title">Ваши хранилища</h3>
-        <div id="piggies-container"></div>
+
+        <div style="margin: 20px 4px 12px; font-size: 15px; font-weight: 700; color: var(--text-sub);">Ваши целевые накопительные фонды</div>
+        <div id="piggies-container" style="display: flex; flex-direction: column; gap: 12px;">
+            </div>
     </div>
 
     <div id="tab-invest" class="tab-content">
-        <div class="glass" style="background: linear-gradient(135deg, #0d9488, #115e59); color: white;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <div style="font-size: 13px; opacity: 0.9;">DeFi-лайт Стейкинг & Маркет</div>
-                    <div class="balance-num" style="font-size: 28px; color: white;"><span id="staked-balance-view">0</span> USDT</div>
-                    <div style="font-size: 12px;" id="staking-yield-text">Пассивный доход: +12.4% APY</div>
-                </div>
-                <i class="fa-solid fa-layer-group" style="font-size: 32px; opacity: 0.5;"></i>
-            </div>
-        </div>
-
-        <h3 class="section-title">Yield Farming / Стейкинг смарт-контракты</h3>
-        <div class="glass">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <div>
-                    <strong style="font-size:14px;">USDT Ликвидный Стейкинг</strong>
-                    <div style="font-size:11px; color:var(--text-sub);">Доход капает каждые 4 секунды</div>
-                </div>
-                <span style="color:var(--green); font-weight:700;">12.4% APY</span>
-            </div>
-            <div style="display:flex; gap:10px;">
-                <input type="number" id="stake-input-amt" class="form-ctrl" placeholder="Сумма USDT" style="padding:10px;">
-                <button class="btn" style="width:auto; margin:0; padding:10px 20px;" onclick="actionStakeCrypto()">Стейк</button>
-            </div>
-        </div>
-
-        <h3 class="section-title">P2P-Кредитная площадка</h3>
-        <div class="glass">
-            <h4 style="font-size:14px; font-weight:700; margin-bottom:10px;">Взять мгновенный P2P микрозайм</h4>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:12px; color:var(--text-sub);">
-                <span>Доступный кредитный лимит: 50,000 ₽</span>
-                <span>Ставка: 5% фиксировано</span>
-            </div>
-            <button class="btn btn-sec" onclick="actionTakeP2PLoan()">Взять займ 10 000 ₽</button>
-        </div>
-
-        <h3 class="section-title">Традиционные Биржевые активы</h3>
-        <div id="assets-container"></div>
-    </div>
-
-    <div id="tab-gamification" class="tab-content">
-        <div class="avatar-panel">
-            <div class="avatar-circle" id="avatar-emoji">🧙‍♂️</div>
-            <div style="flex:1;">
-                <h3 id="avatar-name" style="font-weight:700;">Крипто-Маг</h3>
-                <span style="font-size:12px; opacity:0.9;">Уровень <span id="avatar-level">1</span> Финансового IQ</span>
-                <div class="xp-bar"><div class="xp-fill" id="avatar-xp-bar"></div></div>
-                <div style="font-size:10px; text-align:right; margin-top:2px; opacity:0.8;"><span id="avatar-xp-text">45</span> / 100 XP</div>
-            </div>
-        </div>
-
-        <div class="glass">
-            <h3 style="font-size:15px; font-weight:700; margin-bottom:12px;"><i class="fa-solid fa-scroll" style="color:var(--orange);"></i> Ежедневные Квесты</h3>
-            <div class="list-row" style="padding:10px 0;" id="quest-1">
-                <div><div style="font-size:13px; font-weight:500;">Сделать ИИ-округление транзакции</div><div style="font-size:11px; color:var(--green);">+20 XP</div></div>
-                <i class="fa-regular fa-circle"></i>
-            </div>
-            <div class="list-row" style="padding:10px 0;" id="quest-2">
-                <div><div style="font-size:13px; font-weight:500;">Отправить в DeFi-стейкинг любой объем</div><div style="font-size:11px; color:var(--green);">+35 XP</div></div>
-                <i class="fa-regular fa-circle"></i>
-            </div>
-        </div>
-
-        <h3 class="section-title">Разблокированные ачивки</h3>
-        <div class="badge-grid">
-            <div class="badge-item unlocked" id="badge-pioneer"><span class="badge-icon">🚀</span>Нео-Пионер</div>
-            <div class="badge-item" id="badge-staker"><span class="badge-icon">🥩</span>DeFi Кинг</div>
-            <div class="badge-item" id="badge-splitter"><span class="badge-icon">🍕</span>Мастер Сплита</div>
-            <div class="badge-item" id="badge-rich"><span class="badge-icon">💰</span>Капиталист</div>
-        </div>
-
-        <h3 class="section-title"><i class="fa-solid fa-headset"></i> AI Финансовый Коуч-Консультант</h3>
-        <div class="glass" style="padding:16px;">
-            <div class="ai-chat-box" id="ai-chat-box-zone">
-                <div class="chat-msg ai">Привет! Я твой ИИ-наставник AURA. Спроси меня, как оптимизировать бюджет или заработать на стейкинге!</div>
-            </div>
-            <div style="display:flex; gap:8px;">
-                <input type="text" id="ai-chat-input" class="form-ctrl" placeholder="Как накопить на мечту быстрее?" style="padding:12px;">
-                <button class="btn" style="width:auto; margin:0; padding:12px;" onclick="sendAiChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-        </div>
+        <div style="margin: 0 4px 16px; font-size: 20px; font-weight: 800;">DeFi & P2P кредитование</div>
         
-        <button class="btn btn-sec" onclick="logOutAccount()" style="color:var(--red); font-weight:700; margin-top:20px;">Уничтожить сессию кошелька</button>
+        <div class="block-card" style="background: linear-gradient(135deg, #0f766e 0%, #115e59 100%); color: #ffffff;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <div style="font-size: 12px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px;">Ликвидный стейкинг</div>
+                    <div style="font-size: 32px; font-weight: 700; margin: 6px 0 2px;"><span id="staked-balance-view">0</span> USDT</div>
+                    <div style="font-size: 11px; opacity: 0.9;" id="staking-yield-text"><i class="fa-solid fa-chart-line"></i> Доходность: +14.2% APY фиксировано</div>
+                </div>
+                <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    <i class="fa-solid fa-cubes"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="block-card">
+            <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">USDT Смарт-Контракт</h4>
+            <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 14px;">Покупка и автоматическое зачисление из рублевого баланса.</p>
+            <div style="display: flex; gap: 10px;">
+                <input type="number" id="stake-input-amt" class="form-ctrl" placeholder="Количество USDT" style="flex: 2; padding: 12px;">
+                <button class="btn" style="flex: 1; margin: 0; padding: 12px;" onclick="actionStakeCrypto()">В стейкинг</button>
+            </div>
+        </div>
+
+        <div style="margin: 24px 4px 12px; font-size: 16px; font-weight: 700;">Пул P2P-кредитования</div>
+        <div class="block-card">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 12px; color: var(--text-sub);">
+                <span>Доступный лимит займа: 75 000 ₽</span>
+                <span>Ставка пула: 6.5% фиксировано</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.4; margin-bottom: 14px;">
+                Займы выдаются мгновенно напрямую из децентрализованных ликвидных резервов платформы без проверки кредитных историй.
+            </p>
+            <button class="btn btn-sec" style="border-color: var(--border); font-weight: 700;" onclick="actionTakeP2PLoan()">Взять мгновенный P2P-займ (15 000 ₽)</button>
+        </div>
+
+        <div style="margin: 24px 4px 12px; font-size: 16px; font-weight: 700;">Рыночные маркеры</div>
+        <div id="assets-container" style="display: flex; flex-direction: column; gap: 10px;">
+            </div>
     </div>
 
     <nav class="nav-bar">
-        <div class="nav-item active" onclick="switchTab('tab-home', this)"><i class="fa-solid fa-house"></i><span>Главная</span></div>
-        <div class="nav-item" onclick="switchTab('tab-cards', this)"><i class="fa-solid fa-credit-card"></i><span>Карты</span></div>
-        <div class="nav-item" onclick="switchTab('tab-piggy', this)"><i class="fa-solid fa-piggy-bank"></i><span>Копилки</span></div>
-        <div class="nav-item" onclick="switchTab('tab-invest', this)"><i class="fa-solid fa-chart-line"></i><span>DeFi Биржа</span></div>
-        <div class="nav-item" id="nav-item-more" onclick="switchTab('tab-gamification', this)"><i class="fa-solid fa-gamepad"></i><span>Квесты & ИИ</span></div>
+        <div class="nav-item active" onclick="switchTab('tab-home', this)"><i class="fa-solid fa-wallet"></i><span>Главная</span></div>
+        <div class="nav-item" id="nav-item-cards" onclick="switchTab('tab-cards', this)"><i class="fa-solid fa-credit-card"></i><span>Карты</span></div>
+        <div class="nav-item" onclick="switchTab('tab-piggy', this)"><i class="fa-solid fa-box-archive"></i><span>Копилки</span></div>
+        <div class="nav-item" onclick="switchTab('tab-invest', this)"><i class="fa-solid fa-chart-pie"></i><span>DeFi / P2P</span></div>
     </nav>
 </div>
-
-<div class="modal-bg" id="modal-deposit" onclick="if(event.target===this) closeModal('modal-deposit')">
-    <div class="glass">
-        <h3 style="margin-bottom: 8px; font-size: 18px; font-weight: 700;">Пополнение баланса</h3>
-        <div class="input-group"><label>Сумма внесения</label><input type="number" id="deposit-input" class="form-ctrl" placeholder="10000"></div>
-        <button class="btn" onclick="actionDeposit()">Пополнить счет</button>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-transfer" onclick="if(event.target===this) closeModal('modal-transfer')">
-    <div class="glass">
-        <h3 style="margin-bottom: 8px; font-size: 18px; font-weight: 700;">Перевод средств</h3>
-        <div class="input-group"><label>Телефон получателя</label><input type="text" id="transfer-target" class="form-ctrl" placeholder="+7 (999) 000-00-00"></div>
-        <div class="input-group"><label>Сумма</label><input type="number" id="transfer-input" class="form-ctrl" placeholder="500"></div>
-        <button class="btn" onclick="actionTransfer()">Выполнить перевод</button>
-    </div>
-</div>
-
-<div class="modal-bg" id="modal-split" onclick="if(event.target===this) closeModal('modal-split')">
-    <div class="glass">
-        <h3 style="margin-bottom: 6px; font-size: 18px; font-weight: 700;"><i class="fa-solid fa-pizza-slice"></i> Совместный сплит чека</h3>
-        <p style="font-size:12px; color:var(--text-sub); margin-bottom:16px;">Разделите счет из ресторана или общий сбор с друзьями мгновенно.</p>
-        <div class="input-group"><label>Общая сумма чека (₽)</label><input type="number" id="split-total" class="form-ctrl" placeholder="3000" oninput="calculateSplitBills()"></div>
-        <div class="input-group"><label>Количество персон (включая вас)</label><input type="number" id="split-persons" class="form-ctrl" value="3" min="2" oninput="calculateSplitBills()"></div>
-        <div style="background:var(--bg); padding:14px; border-radius:16px; margin-bottom:16px; font-size:14px;">
-            Доля с каждого участника: <strong id="split-calculated-per-person" style="color:var(--accent);">1 000</strong> ₽
+<div class="modal-bg" id="modal-deposit" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: flex-end; z-index: 11000;" onclick="if(event.target===this) closeModal('modal-deposit')">
+    <div class="block-card" style="width: 100%; max-width: 480px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin-bottom: 0; padding-bottom: 34px; background: var(--panel);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="font-size: 18px; font-weight: 700;">Пополнить мультивалютный счет</h3>
+            <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-sub);" onclick="closeModal('modal-deposit')"></i>
         </div>
-        <button class="btn" onclick="actionExecuteSplitBill()">Сгенерировать ссылки запроса оплаты</button>
+        <div class="input-group">
+            <label>Сумма внесения (<span class="modal-curr-symbol">₽</span>)</label>
+            <input type="number" id="deposit-input" class="form-ctrl" placeholder="15000">
+        </div>
+        <button class="btn" onclick="actionDeposit()">Внести средства</button>
     </div>
 </div>
 
+<div class="modal-bg" id="modal-transfer" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: flex-end; z-index: 11000;" onclick="if(event.target===this) closeModal('modal-transfer')">
+    <div class="block-card" style="width: 100%; max-width: 480px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin-bottom: 0; padding-bottom: 34px; background: var(--panel);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="font-size: 18px; font-weight: 700;">Перевод по номеру телефона</h3>
+            <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-sub);" onclick="closeModal('modal-transfer')"></i>
+        </div>
+        
+        <div id="transfer-step-inputs">
+            <div class="input-group">
+                <label>Номер телефона получателя</label>
+                <input type="text" id="transfer-target" class="form-ctrl" placeholder="+7 (999) 111-22-33">
+            </div>
+            <div class="input-group">
+                <label>Сумма отправления (<span class="modal-curr-symbol">₽</span>)</label>
+                <input type="number" id="transfer-input-amt" class="form-ctrl" placeholder="5000">
+            </div>
+            <button class="btn" onclick="requestTransferVerification()">Запросить код подтверждения</button>
+        </div>
+
+        <div id="transfer-step-secure" style="display: none; text-align: center; margin-top: 10px;">
+            <div style="background: var(--accent-light); padding: 12px; border-radius: var(--radius-lg); margin-bottom: 16px;">
+                <span style="font-size: 12px; color: var(--accent); font-weight: 600;">Одноразовый пуш-код транзакции:</span>
+                <div id="secure-sms-view" style="font-size: 26px; font-weight: 800; color: var(--accent); letter-spacing: 4px; margin-top: 2px;">4402</div>
+            </div>
+            <div class="input-group">
+                <label style="text-align: left;">Введите 4-значный код безопасности</label>
+                <input type="number" id="transfer-secure-code-input" class="form-ctrl" placeholder="0000" style="text-align: center; font-size: 20px; letter-spacing: 4px;">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-sec" style="flex: 1;" onclick="cancelTransferSecure()">Назад</button>
+                <button class="btn" style="flex: 2; background: var(--green);" onclick="actionTransferSecureExecute()">Подтвердить & Отправить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-bg" id="modal-split" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: flex-end; z-index: 11000;" onclick="if(event.target===this) closeModal('modal-split')">
+    <div class="block-card" style="width: 100%; max-width: 480px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin-bottom: 0; padding-bottom: 34px; background: var(--panel);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <h3 style="font-size: 18px; font-weight: 700;"><i class="fa-solid fa-arrows-split-up-and-left"></i> Сплит чека (Разделение счёта)</h3>
+            <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-sub);" onclick="closeModal('modal-split')"></i>
+        </div>
+        <div class="input-group">
+            <label>Общая сумма к оплате в ресторане / за покупку (₽)</label>
+            <input type="number" id="split-total-sum" class="form-ctrl" placeholder="4500" oninput="recalcSplitValue()">
+        </div>
+        <div class="input-group">
+            <label>Количество участников (включая вас)</label>
+            <input type="number" id="split-total-persons" class="form-ctrl" value="3" min="2" oninput="recalcSplitValue()">
+        </div>
+        <div style="background: var(--bg); padding: 14px; border-radius: var(--radius-lg); margin-bottom: 18px; font-size: 14px; display: flex; justify-content: space-between;">
+            <span>Доля каждого участника:</span>
+            <strong style="color: var(--accent);"><span id="split-per-person-view">1 500</span> ₽</strong>
+        </div>
+        <button class="btn" onclick="executeSplitBillGeneration()">Сформировать линки запросов</button>
+    </div>
+</div>
+
+<div class="modal-bg" id="modal-receipt" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 12000;" onclick="if(event.target===this) closeModal('modal-receipt')">
+    <div class="block-card" style="width: 90%; max-width: 380px; text-align: center; background: var(--panel); border: 2px dashed var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+        <div style="font-size: 32px; color: var(--green); margin-bottom: 10px;"><i class="fa-solid fa-circle-check"></i></div>
+        <h3 style="font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Электронный чек</h3>
+        <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 16px;" id="receipt-tx-id">ID операции: TXN-000000</p>
+        
+        <div style="border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); padding: 14px 0; margin-bottom: 16px; text-align: left; font-size: 13px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Тип платежа:</span><strong id="receipt-tx-name">Перевод</strong></div>
+            <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Дата & Время:</span><span id="receipt-tx-date">Сегодня</span></div>
+            <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-sub);">Статус операции:</span><span style="color: var(--green); font-weight: 600;">Успешно проведено</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 16px; margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--border);"><span style="font-weight: 700;">Итоговая сумма:</span><strong id="receipt-tx-amount" style="color: var(--accent);">0 ₽</strong></div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-sec" style="flex: 1; padding: 10px; font-size: 13px;" onclick="closeModal('modal-receipt')">Закрыть</button>
+            <button class="btn" style="flex: 1; padding: 10px; font-size: 13px; background: var(--text); color: #fff;" onclick="downloadReceiptSimulate()">Скачать PDF чек</button>
+        </div>
+    </div>
+</div>
 <script>
+    // Глобальное состояние приложения с привязкой к localStorage
     let state = {
-        phone: '', firstName: '', lastName: '', pin: '', 
-        balance: 500000, currentCurrency: 'RUB',
-        stakedBalance: 0, xp: 20, level: 1, aiRoundingActive: false,
-        transactions: [], piggies: [], cards: [],
+        phone: '', firstName: '', 
+        balance: 450000, // Исходный баланс в рублях
+        currentCurrency: 'RUB',
+        stakedBalance: 0,
+        autoRoundingActive: false,
+        transactions: [], 
+        piggies: [], 
+        cards: [],
         assets: [
-            { id: 'gold', name: 'Золото Tokenized', price: 7200, owned: 0 },
-            { id: 'btc', name: 'Bitcoin (Wrapped)', price: 5800000, owned: 0 }
+            { id: 'gold', name: 'Токенизированное Золото (XAU)', price: 7400 },
+            { id: 'btc', name: 'Bitcoin Vault (wBTC)', price: 6200000 }
         ]
     };
 
     const currencyRates = { 'RUB': 1, 'USD': 0.011, 'EUR': 0.0105 };
     const currencySymbols = { 'RUB': '₽', 'USD': '$', 'EUR': '€' };
+    let tempPin = '';
+    let isRegistering = false;
+    let pendingTransferData = null;
 
+    // Инициализация при загрузке страницы
     function init() {
-        const local = localStorage.getItem('aura_state_x');
-        if (local) state = { ...state, ...JSON.parse(local) };
+        const localData = localStorage.getItem('aura_neobank_pro_state');
+        if (localData) {
+            state = { ...state, ...JSON.parse(localData) };
+        } else {
+            // Дефолтные карты при первой сессии
+            state.cards = [
+                { id: 101, style: 'card-style-virtual', badge: 'virtual', number: '4276880011223344' }
+            ];
+            state.transactions = [
+                { id: 'TXN-982142', name: 'Стартовый баланс узла', amount: 450000, type: 'plus', date: '21.05.2026' }
+            ];
+        }
         
+        // Восстановление темы оформления
+        const savedTheme = localStorage.getItem('aura_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeUI(savedTheme);
+
+        checkAuthStatus();
         updateUI();
-        checkAuthStates();
-        setInterval(simulateDeFiYield, 4000);
+        
+        // Симуляция начисления процентов по DeFi-стейкингу в реальном времени
+        setInterval(simulateDeFiYield, 5000);
     }
 
     function save() {
-        localStorage.setItem('aura_state_x', JSON.stringify(state));
+        localStorage.setItem('aura_neobank_pro_state', JSON.stringify(state));
     }
 
-    function checkAuthStates() {
+    function checkAuthStatus() {
         if (!state.phone) {
             document.getElementById('auth-screen').style.display = 'flex';
             document.getElementById('pincode-screen').style.display = 'none';
@@ -576,238 +510,397 @@
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('pincode-screen').style.display = 'flex';
             document.getElementById('main-bank').style.display = 'none';
-            document.getElementById('user-name-top-badge').innerText = state.firstName || "Аватар";
+            document.getElementById('pin-screen-desc').innerText = 'Введите 4-значный мастер-код';
+            document.getElementById('user-name-display').innerText = state.firstName;
+            document.getElementById('user-phone-display').innerText = state.phone;
+            
+            // Генерация инициалов для аватара
+            document.getElementById('user-avatar-letters').innerText = state.firstName.substring(0, 2).toUpperCase();
         }
     }
 
-    function sendSmsCode() {
+    function registerAndGoToPin() {
+        const name = document.getElementById('auth-firstname').value.trim();
         const phone = document.getElementById('auth-phone').value.trim();
-        const fName = document.getElementById('auth-firstname').value.trim();
-        if (!phone || !fName) return alert('Заполните данные!');
-        state.firstName = fName;
+        if (!name || !phone) return alert('Пожалуйста, заполните поля авторизации');
+        
+        state.firstName = name;
         state.phone = phone;
-        document.getElementById('generated-sms-code').innerText = "77011";
-        document.getElementById('sms-block').style.display = 'block';
+        isRegistering = true;
+        
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('pincode-screen').style.display = 'flex';
+        document.getElementById('pin-screen-desc').innerText = 'Задайте новый 4-значный ПИН-код безопасности';
     }
 
-    function verifySmsCode() {
-        if (document.getElementById('auth-code-input').value === "77011") {
-            save(); checkAuthStates();
-        } else alert('Неверный код!');
-    }
-
-    let tempPin = '';
     function pressPin(num) {
-        if (tempPin.length >= 6) return;
+        if (tempPin.length >= 4) return;
         tempPin += num;
-        const dots = document.querySelectorAll('#pincode-screen .pin-dot');
-        dots.forEach((d, i) => i < tempPin.length ? d.classList.add('fill') : d.classList.remove('fill'));
+        
+        const dots = document.querySelectorAll('#pin-dots-container .pin-dot');
+        dots.forEach((dot, idx) => idx < tempPin.length ? dot.classList.add('fill') : dot.classList.remove('fill'));
 
-        if (tempPin.length === 6) {
+        if (tempPin.length === 4) {
             setTimeout(() => {
                 document.getElementById('pincode-screen').style.display = 'none';
                 document.getElementById('main-bank').style.display = 'block';
                 tempPin = '';
-                dots.forEach(d => d.classList.remove('fill'));
-                addXp(15);
-            }, 150);
+                dots.forEach(dot => dot.classList.remove('fill'));
+                save();
+            }, 200);
         }
     }
-    function clearPin() { tempPin = tempPin.slice(0, -1); }
 
-    function logOutAccount() {
-        localStorage.removeItem('aura_state_x');
-        location.reload();
+    function clearPin() {
+        tempPin = tempPin.slice(0, -1);
+        const dots = document.querySelectorAll('#pin-dots-container .pin-dot');
+        dots.forEach((dot, idx) => idx < tempPin.length ? dot.classList.add('fill') : dot.classList.remove('fill'));
     }
 
-    function switchTab(id, el) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.nav-bar .nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById(id).classList.add('active'); el.classList.add('active');
+    // Переключение тем оформления
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('aura_theme', newTheme);
+        updateThemeUI(newTheme);
     }
 
-    function changeCurrency(curr) {
-        state.currentCurrency = curr;
-        document.getElementById('current-currency-name').innerText = curr + ` (${currencySymbols[curr]})`;
-        document.getElementById('curr-symbol').innerText = currencySymbols[curr];
-        document.querySelectorAll('.curr-tab').forEach(t => t.innerText.includes(curr) ? t.classList.add('active') : t.classList.remove('active'));
+    function updateThemeUI(theme) {
+        const icon = document.getElementById('theme-icon');
+        const text = document.getElementById('theme-text');
+        if (theme === 'dark') {
+            icon.className = 'fa-solid fa-sun';
+            text.innerText = 'Светлая тема';
+        } else {
+            icon.className = 'fa-solid fa-moon';
+            text.innerText = 'Темная тема';
+        }
+    }
+
+    function switchTab(tabId, element) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.nav-bar .nav-item').forEach(item => item.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        if (element) element.classList.add('active');
+    }
+
+    // Мультивалютный процессинг
+    function changeCurrency(currency) {
+        state.currentCurrency = currency;
+        document.getElementById('current-currency-badge').innerText = `${currency} (${currencySymbols[currency]})`;
+        document.getElementById('curr-symbol').innerText = currencySymbols[currency];
+        
+        document.querySelectorAll('.modal-curr-symbol').forEach(el => el.innerText = currencySymbols[currency]);
+        
+        ['RUB', 'USD', 'EUR'].forEach(c => {
+            const btn = document.getElementById(`curr-tab-${c}`);
+            if (c === currency) {
+                btn.style.background = 'var(--accent)';
+                btn.style.color = '#fff';
+                btn.style.borderColor = 'var(--accent)';
+            } else {
+                btn.style.background = 'var(--bg)';
+                btn.style.color = 'var(--text-sub)';
+                btn.style.borderColor = 'var(--border)';
+            }
+        });
         updateUI();
     }
 
     function updateUI() {
-        let displayBalance = state.balance * currencyRates[state.currentCurrency];
-        document.getElementById('main-balance').innerText = Math.round(displayBalance).toLocaleString('ru-RU');
+        const rate = currencyRates[state.currentCurrency];
+        const computedBalance = state.balance * rate;
+        document.getElementById('main-balance').innerText = Math.round(computedBalance).toLocaleString('ru-RU');
         document.getElementById('staked-balance-view').innerText = state.stakedBalance.toLocaleString('ru-RU');
         
-        // Обновление аватара лояльности
-        document.getElementById('user-level-badge').innerText = state.level;
-        document.getElementById('avatar-level').innerText = state.level;
-        document.getElementById('avatar-xp-text').innerText = state.xp;
-        document.getElementById('avatar-xp-bar').style.width = `${state.xp}%`;
-        
-        if(state.level >= 2) {
-            document.getElementById('avatar-emoji').innerText = "🧜‍♂️";
-            document.getElementById('avatar-name').innerText = "DeFi Сталкер";
-        }
-
-        document.getElementById('ai-round-toggle').checked = state.aiRoundingActive;
-
-        renderHistory(); renderCards(); renderPiggies(); renderAssets();
-    }
-
-    function addXp(amt) {
-        state.xp += amt;
-        if(state.xp >= 100) {
-            state.level += 1;
-            state.xp = state.xp - 100;
-            alert(`🎉 Уровень вашего Финансового Аватара повышен до ${state.level}! Открыты новые привилегии тарифов.`);
-        }
-        save(); updateUI();
-    }
-
-    function toggleAiRounding() {
-        state.aiRoundingActive = document.getElementById('ai-round-toggle').checked;
-        if(state.aiRoundingActive) {
-            document.getElementById('quest-1').querySelector('i').className = "fa-solid fa-circle-check";
-            document.getElementById('quest-1').style.color = "var(--green)";
-            addXp(20);
-        }
-        save();
-    }
-
-    function actionDeposit() {
-        const amt = parseInt(document.getElementById('deposit-input').value) || 0;
-        if(amt <= 0) return;
-        state.balance += amt;
-        state.transactions.unshift({ name: 'Входящий крипто-платеж', amount: amt, type: 'plus' });
-        if(amt > 100000) document.getElementById('badge-rich').classList.add('unlocked');
-        save(); updateUI(); closeModal('modal-deposit');
-    }
-
-    function actionTransfer() {
-        let amt = parseInt(document.getElementById('transfer-input').value) || 0;
-        if(amt <= 0 || amt > state.balance) return alert('Ошибка лимитов');
-        
-        let roundTip = 0;
-        if(state.aiRoundingActive) {
-            let nextHundred = Math.ceil(amt / 100) * 100;
-            if(nextHundred !== amt) {
-                roundTip = nextHundred - amt;
-                if(state.piggies.length > 0) {
-                    state.piggies[0].current += roundTip;
-                    state.transactions.unshift({ name: `ИИ-Автоокругление в ${state.piggies[0].name}`, amount: roundTip, type: 'minus' });
-                }
-            }
-        }
-
-        state.balance -= (amt + roundTip);
-        state.transactions.unshift({ name: 'Перевод по P2P-линку', amount: amt, type: 'minus' });
-        save(); updateUI(); closeModal('modal-transfer');
-    }
-
-    function calculateSplitBills() {
-        let total = parseFloat(document.getElementById('split-total').value) || 0;
-        let persons = parseInt(document.getElementById('split-persons').value) || 2;
-        document.getElementById('split-calculated-per-person').innerText = Math.round(total / persons).toLocaleString('ru-RU');
-    }
-
-    function actionExecuteSplitBill() {
-        let total = parseFloat(document.getElementById('split-total').value) || 0;
-        if(total <= 0) return;
-        document.getElementById('badge-splitter').classList.add('unlocked');
-        addXp(40);
-        alert('Смарт-ссылки на сплит оплаты успешно отправлены выбранным контактам!');
-        closeModal('modal-split');
-    }
-
-    function actionStakeCrypto() {
-        let amt = parseInt(document.getElementById('stake-input-amt').value) || 0;
-        let rubCost = amt * 90; // Примерная симуляция
-        if(rubCost <= 0 || rubCost > state.balance) return alert('Недостаточно RUB для покупки/стейкинга USDT');
-        
-        state.balance -= rubCost;
-        state.stakedBalance += amt;
-        state.transactions.unshift({ name: 'DeFi Стейкинг контракт контракт', amount: rubCost, type: 'minus' });
-        document.getElementById('badge-staker').classList.add('unlocked');
-        document.getElementById('quest-2').querySelector('i').className = "fa-solid fa-circle-check";
-        document.getElementById('quest-2').style.color = "var(--green)";
-        addXp(35);
-        save(); updateUI();
-    }
-
-    function actionTakeP2PLoan() {
-        state.balance += 10000;
-        state.transactions.unshift({ name: 'Получен P2P Кредит', amount: 10000, type: 'plus' });
-        alert('Займ одобрен децентрализованным пулом AURA! Кредитные средства поступили на баланс.');
-        save(); updateUI();
-    }
-
-    function sendAiChatMessage() {
-        let input = document.getElementById('ai-chat-input').value;
-        if(!input) return;
-        let box = document.getElementById('ai-chat-box-zone');
-        box.innerHTML += `<div class="chat-msg user">${input}</div>`;
-        document.getElementById('ai-chat-input').value = '';
-        
-        setTimeout(() => {
-            box.innerHTML += `<div class="chat-msg ai">Анализирую... Основываясь на вашем балансе и Смарт-бюджете, я рекомендую задействовать до 15% активов в стейкинге для перекрытия трат в категории «Кафе».</div>`;
-            box.scrollTop = box.scrollHeight;
-        }, 1000);
-    }
-
-    function simulateDeFiYield() {
-        if(state.stakedBalance > 0) {
-            state.stakedBalance += Math.round(state.stakedBalance * 0.002);
-            if(document.getElementById('tab-invest').classList.contains('active')) updateUI();
-        }
-    }
-
-    function issueCard(type) {
-        state.cards.push({ id: Date.now(), style: type === 'virtual' ? 'card-style-virtual' : 'card-style-crypto', badge: type, number: '4276' + Math.floor(100000000000 + Math.random() * 900000000000) });
-        save(); updateUI();
-    }
-
-    function createPiggyTarget() {
-        let name = document.getElementById('piggy-name').value;
-        let target = parseInt(document.getElementById('piggy-target').value) || 0;
-        if(!name || target <= 0) return;
-        state.piggies.push({ name, target, current: 0 });
-        save(); updateUI();
+        renderHistory();
+        renderCards();
+        renderPiggies();
+        renderAssets();
     }
 
     function renderHistory() {
-        let box = document.getElementById('history-box'); box.innerHTML = '';
-        state.transactions.forEach(t => {
-            box.innerHTML += `<div class="list-row"><div><strong>${t.name}</strong></div><div class="tx-amount ${t.type}">${t.type==='plus'?'+':'-'} ${t.amount.toLocaleString()} ₽</div></div>`;
+        const box = document.getElementById('history-box');
+        box.innerHTML = '';
+        if (state.transactions.length === 0) {
+            box.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-sub); font-size:13px;">Операций пока нет</div>';
+            return;
+        }
+        state.transactions.forEach((tx, index) => {
+            const sign = tx.type === 'plus' ? '+' : '-';
+            const colorClass = tx.type === 'plus' ? 'color: var(--green);' : 'color: var(--text);';
+            const convertedAmount = tx.amount * currencyRates[state.currentCurrency];
+            
+            box.innerHTML += `
+                <div class="list-row" style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--border); cursor:pointer;" onclick="viewDetailedReceipt(${index})">
+                    <div>
+                        <div style="font-size:14px; font-weight:600;">${tx.name}</div>
+                        <div style="font-size:11px; color:var(--text-sub); margin-top:2px;">${tx.date || 'Сегодня'} • <span style="color:var(--accent);">Чек <i class="fa-solid fa-receipt"></i></span></div>
+                    </div>
+                    <div style="font-weight:700; font-size:14px; ${colorClass}">${sign} ${Math.round(convertedAmount).toLocaleString()} ${currencySymbols[state.currentCurrency]}</div>
+                </div>`;
         });
+    }
+
+    function viewDetailedReceipt(index) {
+        const tx = state.transactions[index];
+        if (!tx) return;
+        document.getElementById('receipt-tx-id').innerText = `ID операции: ${tx.id || 'TXN-' + Math.floor(100000 + Math.random() * 900000)}`;
+        document.getElementById('receipt-tx-name').innerText = tx.name;
+        document.getElementById('receipt-tx-date').innerText = tx.date || 'В режиме реального времени';
+        document.getElementById('receipt-tx-amount').innerText = `${tx.type === 'plus' ? '+' : '-'} ${tx.amount.toLocaleString()} ₽`;
+        openModal('modal-receipt');
+    }
+
+    function downloadReceiptSimulate() {
+        alert('Электронный чек скомпилирован в буфер обмена системы и сохранен в хранилище /Downloads/ в формате PDF.');
+        closeModal('modal-receipt');
     }
 
     function renderCards() {
-        let html = '';
-        state.cards.forEach(c => {
-            html += `<div class="bank-card ${c.style}"><div class="card-logo-area"><span>AURA X</span><span class="card-type-badge">${c.badge}</span></div><div>•••• ${c.number.substring(12)}</div></div>`;
+        const homeContainer = document.getElementById('home-cards-container');
+        const listContainer = document.getElementById('tab-cards-list-container');
+        homeContainer.innerHTML = '';
+        listContainer.innerHTML = '';
+
+        state.cards.forEach(card => {
+            const styleClass = card.style === 'card-style-plastic' ? 'background: var(--card-black);' : 'background: linear-gradient(135deg, var(--accent), #4c1d95);';
+            const formattedNumber = `•••• •••• •••• ${card.number.substring(12)}`;
+            
+            const cardHtml = `
+                <div style="${styleClass} min-width: 240px; width: 240px; height: 130px; border-radius: var(--radius-lg); padding: 16px; color:#fff; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.06); flex-shrink: 0;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:11px; font-weight:700; letter-spacing:0.5px; opacity:0.9;">AURA PRO</span>
+                        <span style="font-size:9px; text-transform:uppercase; background:rgba(255,255,255,0.2); padding:2px 6px; border-radius:4px;">${card.badge}</span>
+                    </div>
+                    <div style="font-size:14px; letter-spacing:1.5px; font-family:monospace;">${formattedNumber}</div>
+                </div>`;
+            
+            homeContainer.innerHTML += cardHtml;
+            
+            const extendedListHtml = `
+                <div class="block-card" style="display:flex; justify-content:space-between; align-items:center; padding:16px;">
+                    <div>
+                        <div style="font-size:14px; font-weight:700; text-transform:capitalize;">${card.badge === 'plastic' ? 'Черный пластик MasterCard' : 'Цифровая карта Visa'}</div>
+                        <div style="font-size:12px; color:var(--text-sub); margin-top:2px;">${formattedNumber}</div>
+                    </div>
+                    <span style="font-size:12px; font-weight:600; color:var(--green);">Активна</span>
+                </div>`;
+            listContainer.innerHTML += extendedListHtml;
         });
-        document.getElementById('home-cards-container').innerHTML = html || 'Карт нет';
-        document.getElementById('tab-cards-list-container').innerHTML = html || 'Карт нет';
+    }
+
+    function issueCard(type) {
+        const newCard = {
+            id: Date.now(),
+            style: type === 'plastic' ? 'card-style-plastic' : 'card-style-virtual',
+            badge: type,
+            number: '4276' + Math.floor(100000000000 + Math.random() * 900000000000).toString()
+        };
+        state.cards.push(newCard);
+        if (type === 'plastic') {
+            alert('Заявка на выпуск премиальной пластиковой карты отправлена курьерской службе. Карта отобразится в вашем портфеле как активная.');
+        }
+        save(); updateUI();
+    }
+
+    function toggleAutoRounding() {
+        state.autoRoundingActive = document.getElementById('round-toggle').checked;
+        const slider = document.getElementById('round-slider-design');
+        slider.style.backgroundColor = state.autoRoundingActive ? 'var(--accent)' : '#ccc';
+        save();
+    }
+
+    function createPiggyTarget() {
+        const name = document.getElementById('piggy-name').value.trim();
+        const target = parseFloat(document.getElementById('piggy-target').value) || 0;
+        if (!name || target <= 0) return alert('Введите корректные параметры накопительной цели');
+        
+        state.piggies.push({ name, target, current: 0 });
+        document.getElementById('piggy-name').value = '';
+        document.getElementById('piggy-target').value = '';
+        save(); updateUI();
     }
 
     function renderPiggies() {
-        let container = document.getElementById('piggies-container'); container.innerHTML = '';
-        state.piggies.forEach(p => {
-            let pct = Math.min((p.current / p.target) * 100, 100);
-            container.innerHTML += `<div class="piggy-card"><div><strong>${p.name}</strong> - ${p.current} / ${p.target} ₽</div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+        const container = document.getElementById('piggies-container');
+        container.innerHTML = '';
+        if (state.piggies.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-sub); font-size:13px;">Активных целей накопления нет</div>';
+            return;
+        }
+        state.piggies.forEach(piggy => {
+            const percentage = Math.min((piggy.current / piggy.target) * 100, 100);
+            container.innerHTML += `
+                <div class="block-card" style="padding:16px;">
+                    <div style="display:flex; justify-content:space-between; font-size:14px; font-weight:600; margin-bottom:8px;">
+                        <span>${piggy.name}</span>
+                        <span>${Math.round(piggy.current).toLocaleString()} / ${piggy.target.toLocaleString()} ₽</span>
+                    </div>
+                    <div style="background:var(--bg); height:6px; border-radius:3px; overflow:hidden;">
+                        <div style="background:var(--accent); height:100%; width:${percentage}%; transition:width 0.4s ease;"></div>
+                    </div>
+                </div>`;
         });
+    }
+
+    // Двухфакторная верификация перед проведением транзакции
+    function requestTransferVerification() {
+        const target = document.getElementById('transfer-target').value.trim();
+        const inputAmt = parseFloat(document.getElementById('transfer-input-amt').value) || 0;
+        const currentRate = currencyRates[state.currentCurrency];
+        const rubAmount = inputAmt / currentRate; // Перевод в рубли для проверки лимита
+
+        if (!target || inputAmt <= 0) return alert('Проверьте корректность реквизитов платежа');
+        if (rubAmount > state.balance) return alert('Превышен доступный лимит средств на счете');
+
+        pendingTransferData = { target, rubAmount, originalAmount: inputAmt };
+        
+        // Показ окна генерации одноразового кода безопасности
+        document.getElementById('transfer-step-inputs').style.display = 'none';
+        document.getElementById('secure-sms-view').innerText = "5591"; // Фиксированная эмуляция защитного пуша
+        document.getElementById('transfer-step-secure').style.display = 'block';
+    }
+
+    function cancelTransferSecure() {
+        document.getElementById('transfer-step-secure').style.display = 'none';
+        document.getElementById('transfer-step-inputs').style.display = 'block';
+        pendingTransferData = null;
+    }
+
+    function actionTransferSecureExecute() {
+        const codeInput = document.getElementById('transfer-secure-code-input').value.trim();
+        if (codeInput !== "5591") return alert('Неверный код подтверждения безопасности транзакции');
+
+        let baseAmount = pendingTransferData.rubAmount;
+        let roundingDiff = 0;
+
+        // Расчет автоокругления трат, если флаг включен и создана хотя бы одна копилка
+        if (state.autoRoundingActive && state.piggies.length > 0) {
+            const nextHundred = Math.ceil(baseAmount / 100) * 100;
+            if (nextHundred !== baseAmount) {
+                roundingDiff = nextHundred - baseAmount;
+                state.piggies[0].current += roundingDiff;
+                state.transactions.unshift({
+                    id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+                    name: `Автоокругление в копилку: ${state.piggies[0].name}`,
+                    amount: roundingDiff,
+                    type: 'minus',
+                    date: 'Сегодня'
+                });
+            }
+        }
+
+        state.balance -= (baseAmount + roundingDiff);
+        state.transactions.unshift({
+            id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+            name: `Перевод на ${pendingTransferData.target}`,
+            amount: baseAmount,
+            type: 'minus',
+            date: 'Сегодня'
+        });
+
+        document.getElementById('transfer-target').value = '';
+        document.getElementById('transfer-input-amt').value = '';
+        document.getElementById('transfer-secure-code-input').value = '';
+        
+        cancelTransferSecure();
+        closeModal('modal-transfer');
+        save(); updateUI();
+        alert('Транзакция успешно верифицирована распределенной сетью и исполнена.');
+    }
+
+    function actionDeposit() {
+        const inputVal = parseFloat(document.getElementById('deposit-input').value) || 0;
+        if (inputVal <= 0) return;
+        const rubAmount = inputVal / currencyRates[state.currentCurrency];
+        
+        state.balance += rubAmount;
+        state.transactions.unshift({
+            id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+            name: 'Пополнение баланса через шлюз',
+            amount: rubAmount,
+            type: 'plus',
+            date: 'Сегодня'
+        });
+        
+        document.getElementById('deposit-input').value = '';
+        closeModal('modal-deposit');
+        save(); updateUI();
+    }
+
+    function recalcSplitValue() {
+        const total = parseFloat(document.getElementById('split-total-sum').value) || 0;
+        const persons = parseInt(document.getElementById('split-total-persons').value) || 2;
+        document.getElementById('split-per-person-view').innerText = Math.round(total / persons).toLocaleString('ru-RU');
+    }
+
+    function executeSplitBillGeneration() {
+        const total = parseFloat(document.getElementById('split-total-sum').value) || 0;
+        if (total <= 0) return alert('Введите корректную сумму чека');
+        alert('Запросы на разделение оплаты сгенерированы. Ссылки скопированы в буфер обмена для отправки участникам.');
+        closeModal('modal-split');
+    }
+
+    // Модуль DeFi-лайт
+    function actionStakeCrypto() {
+        const usdtAmt = parseFloat(document.getElementById('stake-input-amt').value) || 0;
+        const rubCost = usdtAmt * 92; // Фиксированный внутренний курс симуляции
+        if (usdtAmt <= 0) return;
+        if (rubCost > state.balance) return alert('Недостаточно средств для обеспечения смарт-контракта стейкинга');
+
+        state.balance -= rubCost;
+        state.stakedBalance += usdtAmt;
+        state.transactions.unshift({
+            id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+            name: 'Перевод в DeFi ликвидный стейкинг',
+            amount: rubCost,
+            type: 'minus',
+            date: 'Сегодня'
+        });
+        document.getElementById('stake-input-amt').value = '';
+        save(); updateUI();
+    }
+
+    function simulateDeFiYield() {
+        if (state.stakedBalance > 0) {
+            // Начисление доходности в реальном времени (+0.01% каждые 5 секунд)
+            state.stakedBalance = parseFloat((state.stakedBalance * 1.0001).toFixed(4));
+            if (document.getElementById('tab-invest').classList.contains('active')) {
+                document.getElementById('staked-balance-view').innerText = state.stakedBalance.toLocaleString('ru-RU');
+            }
+        }
+    }
+
+    function actionTakeP2PLoan() {
+        state.balance += 15000;
+        state.transactions.unshift({
+            id: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+            name: 'Зачисление P2P Микрозайма',
+            amount: 15000,
+            type: 'plus',
+            date: 'Сегодня'
+        });
+        save(); updateUI();
+        alert('Сумма займа 15 000 ₽ успешно зачислена из ликвидных резервов P2P пула на ваш рублевый баланс.');
     }
 
     function renderAssets() {
-        let container = document.getElementById('assets-container'); container.innerHTML = '';
-        state.assets.forEach(a => {
-            container.innerHTML += `<div class="glass" style="margin-bottom:8px; padding:12px; display:flex; justify-content:space-between;"><span>${a.name}</span><strong>${a.price} ₽</strong></div>`;
+        const container = document.getElementById('assets-container');
+        container.innerHTML = '';
+        state.assets.forEach(asset => {
+            container.innerHTML += `
+                <div class="list-row" style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius-lg);">
+                    <span style="font-size:13px; font-weight:600;">${asset.name}</span>
+                    <strong style="font-size:13px; color:var(--accent);">${asset.price.toLocaleString()} ₽</strong>
+                </div>`;
         });
     }
 
-    function openModal(id) { document.getElementById(id).classList.add('active'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
     window.onload = init;
 </script>
